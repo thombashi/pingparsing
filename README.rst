@@ -18,14 +18,21 @@ Installation
 
     pip install pingparsing
 
+Premise
+=======
+
+Output language of the ping command is in english.
+
 Usage
 =====
 
 Parsing ping output
 -------------------
 
-parse\_sample.py
-~~~~~~~~~~~~~~~~
+Example: parse ping output of debian 8.2 w/ iputils-ping 20121221-5+b2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``parse_sample.py``
 
 .. code:: python
 
@@ -50,9 +57,6 @@ parse\_sample.py
     print "rtt_mdev:", ping_parser.rtt_mdev
     print ping_parser.as_dict()
 
-Execution result of parse\_sample.py
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. code:: console
 
     ./parse_sample.py
@@ -65,44 +69,80 @@ Execution result of parse\_sample.py
     rtt_mdev: 27.566
     {'packet_loss': 0.0, 'packet_receive': 60, 'packet_transmit': 60, 'rtt_min': 61.425, 'rtt_max': 212.597, 'rtt_mdev': 27.566, 'rtt_avg': 99.731}
 
+Example: parse ping output of Windows 7 SP1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``parse_sample.py``
+
+::
+
+    #!/usr/bin/env python
+    import pingparsing
+    ping_parser = pingparsing.PingParsing()
+
+    # parse out put of `ping google.com -n 10`
+    ping_parser.parse("""
+    Pinging google.com [216.58.196.238] with 32 bytes of data:
+    Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
+    Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
+    Reply from 216.58.196.238: bytes=32 time=56ms TTL=51
+    Reply from 216.58.196.238: bytes=32 time=95ms TTL=51
+    Reply from 216.58.196.238: bytes=32 time=194ms TTL=51
+    Reply from 216.58.196.238: bytes=32 time=98ms TTL=51
+    Reply from 216.58.196.238: bytes=32 time=93ms TTL=51
+    Reply from 216.58.196.238: bytes=32 time=96ms TTL=51
+    Reply from 216.58.196.238: bytes=32 time=96ms TTL=51
+    Reply from 216.58.196.238: bytes=32 time=165ms TTL=51
+
+    Ping statistics for 216.58.196.238:
+        Packets: Sent = 10, Received = 10, Lost = 0 (0% loss),
+    Approximate round trip times in milli-seconds:
+        Minimum = 56ms, Maximum = 194ms, Average = 107ms
+    """)
+
+    print ping_parser.as_dict()
+
+.. code:: console
+
+    ./parse_sample.py
+    {'packet_loss': 0.0, 'packet_receive': 10, 'packet_transmit': 10, 'rtt_min': 56.0, 'rtt_max': 194.0, 'rtt_mdev': None, 'rtt_avg': 107.0}
+
 Execute ping and parse
 ----------------------
 
-ping\_sample.py
-~~~~~~~~~~~~~~~
+Example code
+~~~~~~~~~~~~
+
+``ping_sample.py``
 
 .. code:: python
 
     import pingparsing
     ping_parser = pingparsing.PingParsing()
-    ping_parser.destination_host = "192.168.11.25"
-    ping_parser.waittime = 5
+    ping_parser.destination_host = "192.168.0.1"
+    ping_parser.waittime = 60
     result = ping_parser.ping()
     ping_parser.parse(result)
 
-    print "packet_transmit:", ping_parser.packet_transmit
-    print "packet_receive:", ping_parser.packet_receive
-    print "packet_loss:", ping_parser.packet_loss
-    print "rtt_min:", ping_parser.rtt_min
-    print "rtt_avg:", ping_parser.rtt_avg
-    print "rtt_max:", ping_parser.rtt_max
-    print "rtt_mdev:", ping_parser.rtt_mdev
     print ping_parser.as_dict()
 
-Execution result of ping\_sample.py
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Example execution result: Debian 8.2 w/ iputils-ping 20121221-5+b2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: console
 
-    ./sample.py
-    packet_transmit: 5379
-    packet_receive: 5379
-    packet_loss: 0.0
-    rtt_min: 0.397
-    rtt_avg: 0.911
-    rtt_max: 7.393
-    rtt_mdev: 0.783
-    {'packet_loss': 0.0, 'packet_receive': 5379, 'packet_transmit': 5379, 'rtt_min': 0.397, 'rtt_max': 7.393, 'rtt_mdev': 0.783, 'rtt_avg': 0.911}
+    # python ping_sample.py
+    {'packet_loss': 0.0, 'packet_receive': 60, 'packet_transmit': 60, 'rtt_min': 0.814, 'rtt_max': 27.958, 'rtt_mdev': 3.574, 'rtt_avg': 2.004}
+
+Example execution result: Windows 7 SP1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: console
+
+    >python ping_sample.py
+    Minimum = 0ms, Maximum = 56ms, Average = 2ms
+    {'packet_loss': 0.0, 'packet_receive': 60, 'packet_transmit': 60, 'rtt_min': 0.0
+    , 'rtt_max': 56.0, 'rtt_mdev': None, 'rtt_avg': 2.0}
 
 Dependencies
 ============
@@ -118,3 +158,18 @@ Test dependencies
 -  `pytest <https://pypi.python.org/pypi/pytest>`__
 -  `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
 -  `tox <https://pypi.python.org/pypi/tox>`__
+
+Tested Environment
+==================
+
++-----------------+----------------------------------+
+| OS              | ping version                     |
++=================+==================================+
+| Debian 8.2      | iputils-ping 20121221-5+b2       |
++-----------------+----------------------------------+
+| Debian 5.0.10   | iputils-ping 20071127-1+lenny1   |
++-----------------+----------------------------------+
+| Windows 7 SP1   | ``-``                            |
++-----------------+----------------------------------+
+| Windows 8.1     | ``-``                            |
++-----------------+----------------------------------+
