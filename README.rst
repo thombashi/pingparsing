@@ -74,7 +74,7 @@ Example: parse ping output of Windows 7 SP1
 
 ``parse_sample.py``
 
-::
+.. code:: python
 
     #!/usr/bin/env python
     import pingparsing
