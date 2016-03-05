@@ -29,7 +29,7 @@ class PingTransmitter(object):
         ]
 
         if dataproperty.is_not_empty_string(self.ping_option):
-            command_list.append(self.extra_option)
+            command_list.append(self.ping_option)
         else:
             if platform.system() == "Windows":
                 command_list.append("-n %d" % (self.waittime))
