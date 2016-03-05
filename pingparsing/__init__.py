@@ -30,11 +30,11 @@ class PingTransmitter(object):
 
         if dataproperty.is_not_empty_string(self.ping_option):
             command_list.append(self.ping_option)
+
+        if platform.system() == "Windows":
+            command_list.append("-n %d" % (self.waittime))
         else:
-            if platform.system() == "Windows":
-                command_list.append("-n %d" % (self.waittime))
-            else:
-                command_list.append("-q -w %d" % (self.waittime))
+            command_list.append("-q -w %d" % (self.waittime))
 
         ping_proc = subprocess.Popen(
             " ".join(command_list), shell=True,
