@@ -118,10 +118,10 @@ Example code
 .. code:: python
 
     import pingparsing
-    ping_parser = pingparsing.PingParsing()
-    ping_parser.destination_host = "192.168.0.1"
-    ping_parser.waittime = 60
-    result = ping_parser.ping()
+    transmitter = pingparsing.PingTransmitter()
+    transmitter.destination_host = "192.168.0.1"
+    transmitter.waittime = 60
+    result = transmitter.ping()
     ping_parser.parse(result)
 
     print ping_parser.as_dict()

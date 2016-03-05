@@ -11,6 +11,50 @@ import dataproperty
 import pyparsing as pp
 
 
+class PingTransmitter(object):
+
+    def __init__(self):
+        self.destination_host = ""
+        self.waittime = 1
+        self.ping_option = ""
+
+    def ping(self):
+        import subprocess
+
+        self.__validate_ping_param()
+
+        command_list = [
+            "ping",
+            self.destination_host,
+        ]
+
+        if dataproperty.is_not_empty_string(self.ping_option):
+            command_list.append(self.extra_option)
+        else:
+            if platform.system() == "Windows":
+                command_list.append("-n %d" % (self.waittime))
+            else:
+                command_list.append("-q -w %d" % (self.waittime))
+
+        ping_proc = subprocess.Popen(
+            " ".join(command_list), shell=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = ping_proc.communicate()
+
+        if ping_proc.returncode != 0:
+            raise RuntimeError(stderr)
+
+        return stdout
+
+    def __validate_ping_param(self):
+        if dataproperty.is_empty_string(self.destination_host):
+            raise ValueError("destination_host host is empty")
+
+        if self.waittime <= 0:
+            raise ValueError(
+                "waittime expected to be greater than or equal to zero")
+
+
 class PingParsing(object):
 
     def __init__(self):
@@ -59,33 +103,19 @@ class PingParsing(object):
             "rtt_mdev": self.rtt_mdev,
         }
 
-    def ping(self):
-        import subprocess
+    def parse(self, ping_message):
+        self.__initialize_parse_result()
 
-        self.__validate_ping_param()
+        if dataproperty.is_empty_string(ping_message):
+            return
 
-        command_list = [
-            "ping",
-            self.destination_host,
-        ]
+        try:
+            self.__parse_linux_ping(ping_message)
+            return
+        except ValueError:
+            pass
 
-        if dataproperty.is_not_empty_string(self.ping_option):
-            command_list.append(self.extra_option)
-        else:
-            if platform.system() == "Windows":
-                command_list.append("-n %d" % (self.waittime))
-            else:
-                command_list.append("-q -w %d" % (self.waittime))
-
-        ping_proc = subprocess.Popen(
-            " ".join(command_list), shell=True,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = ping_proc.communicate()
-
-        if ping_proc.returncode != 0:
-            raise RuntimeError(stderr)
-
-        return stdout
+        self.__parse_windows_ping(ping_message)
 
     def __parse_windows_ping(self, ping_message):
         line_list = ping_message.splitlines()
@@ -164,20 +194,6 @@ class PingParsing(object):
         self.__rtt_max = float(parse_list[5])
         self.__rtt_mdev = float(parse_list[7])
 
-    def parse(self, ping_message):
-        self.__initialize_parse_result()
-
-        if dataproperty.is_empty_string(ping_message):
-            return
-
-        try:
-            self.__parse_linux_ping(ping_message)
-            return
-        except ValueError:
-            pass
-
-        self.__parse_windows_ping(ping_message)
-
     def __initialize_parse_result(self):
         self.__packet_transmit = None
         self.__packet_receive = None
@@ -186,11 +202,3 @@ class PingParsing(object):
         self.__rtt_avg = None
         self.__rtt_max = None
         self.__rtt_mdev = None
-
-    def __validate_ping_param(self):
-        if dataproperty.is_empty_string(self.destination_host):
-            raise ValueError("destination_host host is empty")
-
-        if self.waittime <= 0:
-            raise ValueError(
-                "waittime expected to be greater than or equal to zero")
