@@ -26,8 +26,8 @@ English. The Ping command output in any other languages is may fail to
 parse. This is because the output of the ping command is changed
 depending on the language.
 
-How to temporarily change the language setting
-==============================================
+Recommended ping command execution
+==================================
 
 The following methods are recommended to execute ping command for
 parsing. These will change the language setting to English temporarily.
