@@ -21,7 +21,40 @@ Installation
 Premise
 =======
 
-Output language of the ping command is in english.
+This library expects to output language of the ping command is in
+English. The Ping command output in any other languages is may fail to
+parse. This is because the output of the ping command is changed
+depending on the language.
+
+Recommended ping command execution
+==================================
+
+The following methods are recommended to execute ping command for
+parsing. These will change the language setting to English temporarily.
+
+Linux
+-----
+
+.. code:: console
+
+    LC_ALL=C ping <host or IP address> -w <seconds> [option] > <output.file>
+
+Windows
+-------
+
+.. code:: console
+
+    > chcp
+    Active code page: <XXX>    # get current code page
+
+    > chcp 437    # change code page to english
+    > ping <host or IP address> -n <ping count> > <output.file>
+    > chcp <XXX>    # restore code page
+
+Reference
+~~~~~~~~~
+
+https://technet.microsoft.com/en-us/library/cc733037
 
 Usage
 =====
