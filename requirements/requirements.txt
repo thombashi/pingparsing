@@ -1,2 +1,2 @@
-DataProperty
+DataProperty>=0.2.1
 pyparsing
