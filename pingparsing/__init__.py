@@ -9,6 +9,14 @@ import re
 
 import dataproperty
 import pyparsing as pp
+import six
+
+
+def _to_unicode(text):
+    try:
+        return text.decode("ascii")
+    except AttributeError:
+        return text
 
 
 class PingTransmitter(object):
@@ -118,7 +126,7 @@ class PingParsing(object):
         self.__parse_windows_ping(ping_message)
 
     def __parse_windows_ping(self, ping_message):
-        line_list = ping_message.splitlines()
+        line_list = _to_unicode(ping_message).splitlines()
 
         for i, line in enumerate(line_list):
             if re.search("^Ping statistics for ", line):
@@ -138,7 +146,7 @@ class PingParsing(object):
             pp.Word(pp.nums) + "(" +
             pp.Word(pp.nums + ".")
         )
-        parse_list = packet_pattern.parseString(packet_line)
+        parse_list = packet_pattern.parseString(_to_unicode(packet_line))
         self.__packet_transmit = int(parse_list[1])
         self.__packet_receive = int(parse_list[3])
         self.__packet_loss = float(parse_list[7])
@@ -151,13 +159,13 @@ class PingParsing(object):
             pp.Literal("ms, Average = ") +
             pp.Word(pp.nums)
         )
-        parse_list = rtt_pattern.parseString(rtt_line)
+        parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
         self.__rtt_min = float(parse_list[1])
         self.__rtt_avg = float(parse_list[5])
         self.__rtt_max = float(parse_list[3])
 
     def __parse_linux_ping(self, ping_message):
-        line_list = ping_message.splitlines()
+        line_list = _to_unicode(ping_message).splitlines()
 
         for i, line in enumerate(line_list):
             if re.search("--- .* ping statistics ---", line):
@@ -175,7 +183,7 @@ class PingParsing(object):
             pp.Word(pp.nums + ".") +
             pp.Literal("% packet loss")
         )
-        parse_list = packet_pattern.parseString(packet_line)
+        parse_list = packet_pattern.parseString(_to_unicode(packet_line))
         self.__packet_transmit = int(parse_list[0])
         self.__packet_receive = int(parse_list[2])
         self.__packet_loss = float(parse_list[4])
@@ -188,7 +196,7 @@ class PingParsing(object):
             pp.Word(pp.nums + ".") +
             pp.Word(pp.nums + "ms")
         )
-        parse_list = rtt_pattern.parseString(rtt_line)
+        parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
         self.__rtt_min = float(parse_list[1])
         self.__rtt_avg = float(parse_list[3])
         self.__rtt_max = float(parse_list[5])
