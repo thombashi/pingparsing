@@ -1,11 +1,17 @@
 language: python
-
-env:
-  - TOXENV=py25
-  - TOXENV=py26
-  - TOXENV=py27
-  - TOXENV=py33
-  - TOXENV=py34
+  
+matrix:
+  include:
+    - python: 2.6
+      env: TOXENV=python2.6
+    - python: 2.7
+      env: TOXENV=python2.7
+    - python: 3.3
+      env: TOXENV=python3.3
+    - python: 3.4
+      env: TOXENV=python3.4
+    - python: 3.5
+      env: TOXENV=python3.5
 
 os:
   - linux
@@ -20,3 +26,7 @@ script:
 
 after_success:
   - coveralls
+
+notifications:
+  slack:
+    secure: GKve91fTPx7OIYn5zZ3X+nqy7OT9Pq7763zIPcvTqcN7ZM9C+q9LKbSk9sWGmp15fCp26Eu4/6/y9ExXmp80f3zF/caCbOlmF4o15ggLmyRb1E55NoPvMfGHz4wnlJN6wczc5/yyKMm0I0IZ5rjN5fPWaoJ4rf1huHAmIbJzS0FNH0gNFAeTDY/a+lRgHnJhSsOv/Ai+nLCL9y8Ilf83THWKW923fGA7ME+rL6t07WzKnIf71ld70eDEF+OnwYVp/7u1+Yxmo14G5Q0T/aXwhZkMTFKog6F186zBqpO+KGxLaM0q1N37DOSx4K6vKvSt60BZVJ0Wq9zUKpAIVNcYGXvj4EYouW2TFJUa1ka3ITToBT2P+/ts9N4vtlAniL4SykoaM1G2Ok8MepLyC+j38LT1ItOFi6OeDBpf5mCAaSaMQO44A6BTpIJmBk5U046GaFTHw+hQPmOyRKrCJCzzgD6RfnKB1U6kknq63lsN8SdrZAe9NcPmG3pTU+wu1uBNX+vkGYRd8bpSajxLktLBLU0DTzbmsJQqNuATe//pBHgxMJYTobjmq6L5/bgK4ePlD6sGud7JJs47G++FBCAMNoQL+X0AHTthYlDC/amlDtpPHaE415KgLR25+vf6PVgQYMyFfZyTH4ECI3zA8UM6aGmD+RyVZUHZl4lDxOreGpk=
