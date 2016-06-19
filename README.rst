@@ -215,7 +215,7 @@ Example execution result: Windows 7 SP1
 Dependencies
 ============
 
-Python 2.5+ or 3.3+
+Python 2.6+ or 3.3+
 
 -  `DataPropery <https://github.com/thombashi/DataProperty>`__
 -  `pyparsing <https://pyparsing.wikispaces.com/>`__
