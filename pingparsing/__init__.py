@@ -1,8 +1,10 @@
-#!/usr/bin/env python
+# encoding: utf-8
 
-'''
-@author: Tsuyoshi Hombashi
-'''
+"""
+.. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
+"""
+
+from __future__ import unicode_literals
 
 import platform
 import re
