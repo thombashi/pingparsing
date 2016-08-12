@@ -5,7 +5,6 @@
 """
 
 from __future__ import unicode_literals
-
 import platform
 import re
 
@@ -42,9 +41,9 @@ class PingTransmitter(object):
             command_list.append(self.ping_option)
 
         if platform.system() == "Windows":
-            command_list.append("-n %d" % (self.waittime))
+            command_list.append("-n {:d}".format(self.waittime))
         else:
-            command_list.append("-q -w %d" % (self.waittime))
+            command_list.append("-q -w {:d}".format(self.waittime))
 
         ping_proc = subprocess.Popen(
             " ".join(command_list), shell=True,
@@ -182,13 +181,14 @@ class PingParsing(object):
             pp.Literal("packets transmitted,") +
             pp.Word(pp.nums) +
             pp.Literal("received,") +
+            pp.SkipTo(pp.Word(pp.nums + ".%") + pp.Literal("packet loss")) +
             pp.Word(pp.nums + ".") +
             pp.Literal("% packet loss")
         )
         parse_list = packet_pattern.parseString(_to_unicode(packet_line))
         self.__packet_transmit = int(parse_list[0])
         self.__packet_receive = int(parse_list[2])
-        self.__packet_loss = float(parse_list[4])
+        self.__packet_loss = float(parse_list[-2])
 
         rtt_pattern = (
             pp.Literal("rtt min/avg/max/mdev =") +

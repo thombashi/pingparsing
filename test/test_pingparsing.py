@@ -32,6 +32,13 @@ PING_DEBIAN = six.b("""PING google.com (216.58.196.238) 56(84) bytes of data.
 rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
 """)
 
+PING_FEDORA_LOSS = six.b("""
+PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
+
+--- 192.168.0.1 ping statistics ---
+1688 packets transmitted, 1553 received, +1 duplicates, 7% packet loss, time 2987ms
+rtt min/avg/max/mdev = 0.282/0.642/11.699/0.699 ms, pipe 2, ipg/ewma 1.770/0.782 ms
+""")
 
 # ping google.com -n 10:
 #   Windows 7 SP1
@@ -76,6 +83,18 @@ class Test_PingParsing_parse:
             }
         ],
         [
+            PING_FEDORA_LOSS,
+            {
+                'packet_loss': 7.0,
+                'packet_receive': 1553,
+                'packet_transmit': 1688,
+                'rtt_min': 0.282,
+                'rtt_max': 11.699,
+                'rtt_mdev': 0.699,
+                'rtt_avg': 0.642,
+            }
+        ],
+        [
             PING_WINDOWS,
             {
                 "packet_transmit": 10,
@@ -86,7 +105,7 @@ class Test_PingParsing_parse:
                 "rtt_max": 194,
                 "rtt_mdev": None,
             }
-        ]
+        ],
     ])
     def test_normal(self, ping_parser, ping_text, expected):
         ping_parser.parse(ping_text)
