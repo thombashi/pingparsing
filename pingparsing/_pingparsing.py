@@ -11,6 +11,8 @@ import re
 import dataproperty
 import pyparsing as pp
 
+from .error import EmptyPingStaticticsError
+
 
 def _to_unicode(text):
     try:
