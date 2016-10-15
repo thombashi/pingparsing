@@ -13,8 +13,8 @@ class Test_PingTransmitter_ping:
 
     @pytest.mark.parametrize(["host", "waittime", "expected"], [
         ["", 1, ValueError],
-        ["test", 0, ValueError],
-        ["test", -1, ValueError],
+        ["localhost", 0, ValueError],
+        ["localhost", -1, ValueError],
     ])
     def test_except(self, host, waittime, expected):
         transmitter = PingTransmitter()
