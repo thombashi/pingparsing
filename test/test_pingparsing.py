@@ -43,6 +43,7 @@ PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
 PING_DEBIAN_UNREACHABLE_1 = PING_DEBIAN_UNREACHABLE_0 + "\n"
 PING_DEBIAN_UNREACHABLE_2 = PING_DEBIAN_UNREACHABLE_1 + "\n"
 
+
 PING_FEDORA_LOSS = six.b("""
 PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 
@@ -62,6 +63,12 @@ From 192.168.207.128 icmp_seq=5 Destination Host Unreachable
 --- 192.168.207.100 ping statistics ---
 5 packets transmitted, 0 received, +5 errors, 100% packet loss, time 4003ms
 """
+
+PING_FEDORA_INVALID = six.b("""
+PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
+
+--- 192.168.0.1 ping statistics ---
+""")
 
 
 # ping google.com -n 10:
@@ -99,6 +106,18 @@ Ping statistics for 192.168.207.100:
 """
 PING_WINDOWS_UNREACHABLE_1 = PING_WINDOWS_UNREACHABLE_0 + "\n"
 PING_WINDOWS_UNREACHABLE_2 = PING_WINDOWS_UNREACHABLE_1 + "\n"
+
+
+PING_WINDOWS_INVALID = """
+
+Pinging 192.168.207.100 with 32 bytes of data:
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 192.168.207.100:
+"""
 
 
 @pytest.fixture
@@ -205,3 +224,11 @@ class Test_PingParsing_parse:
         assert ping_parser.rtt_avg is None
         assert ping_parser.rtt_max is None
         assert ping_parser.rtt_mdev is None
+
+    @pytest.mark.parametrize(["ping_text", "expected"], [
+        [PING_FEDORA_INVALID, EmptyPingStaticticsError],
+        [PING_WINDOWS_INVALID, EmptyPingStaticticsError],
+    ])
+    def test_exception(self, ping_parser, ping_text, expected):
+        with pytest.raises(expected):
+            ping_parser.parse(ping_text)
