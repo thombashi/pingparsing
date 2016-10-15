@@ -83,6 +83,10 @@ class PingParsing(object):
 
         self.__parse_windows_ping(ping_message)
 
+    def __validate_stats_body(self, body_line_list):
+        if dataproperty.is_empty_sequence(body_line_list):
+            raise EmptyPingStaticticsError("ping statistics is empty")
+
     def __parse_windows_ping(self, ping_message):
         line_list = _to_unicode(ping_message).splitlines()
 
@@ -92,7 +96,9 @@ class PingParsing(object):
         else:
             raise ValueError("can not parse")
 
-        packet_line = line_list[i + 1].strip()
+        body_line_list = line_list[i + 1:]
+        self.__validate_stats_body(body_line_list)
+        packet_line = body_line_list[0].strip()
         packet_pattern = (
             pp.Literal("Packets: Sent = ") +
             pp.Word(pp.nums) +
@@ -108,7 +114,7 @@ class PingParsing(object):
         self.__packet_loss = float(parse_list[7])
 
         try:
-            rtt_line = line_list[i + 3].strip()
+            rtt_line = body_line_list[2].strip()
         except IndexError:
             return
         if dataproperty.is_empty_string(rtt_line):
@@ -136,8 +142,7 @@ class PingParsing(object):
             raise ValueError("can not parse")
 
         body_line_list = line_list[i + 1:]
-        if len(body_line_list) < 0:
-            raise EmptyPingStaticticsError("ping statistics is empty")
+        self.__validate_stats_body(body_line_list)
 
         packet_line = body_line_list[0]
         packet_pattern = (
