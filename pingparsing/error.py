@@ -9,5 +9,5 @@ from __future__ import absolute_import
 
 class EmptyPingStaticticsError(Exception):
     """
-    Raised when a ping statistics is empty.
+    Raised when a ping statistics is empty in a parsing text.
     """
