@@ -96,8 +96,6 @@ class PingParsing(object):
             raise ValueError("can not parse")
 
         packet_line = line_list[i + 1].strip()
-        rtt_line = line_list[i + 3].strip()
-
         packet_pattern = (
             pp.Literal("Packets: Sent = ") +
             pp.Word(pp.nums) +
@@ -112,6 +110,12 @@ class PingParsing(object):
         self.__packet_receive = int(parse_list[3])
         self.__packet_loss = float(parse_list[7])
 
+        try:
+            rtt_line = line_list[i + 3].strip()
+        except IndexError:
+            return
+        if dataproperty.is_empty_string(rtt_line):
+            return
         rtt_pattern = (
             pp.Literal("Minimum = ") +
             pp.Word(pp.nums) +
@@ -134,8 +138,11 @@ class PingParsing(object):
         else:
             raise ValueError("can not parse")
 
-        packet_line, rtt_line = line_list[i + 1:]
+        body_line_list = line_list[i + 1:]
+        if len(body_line_list) < 0:
+            raise EmptyPingStaticticsError("ping statistics is empty")
 
+        packet_line = body_line_list[0]
         packet_pattern = (
             pp.Word(pp.nums) +
             pp.Literal("packets transmitted,") +
@@ -149,6 +156,13 @@ class PingParsing(object):
         self.__packet_transmit = int(parse_list[0])
         self.__packet_receive = int(parse_list[2])
         self.__packet_loss = float(parse_list[-2])
+
+        try:
+            rtt_line = body_line_list[1]
+        except IndexError:
+            return
+        if dataproperty.is_empty_string(rtt_line):
+            return
 
         rtt_pattern = (
             pp.Literal("rtt min/avg/max/mdev =") +

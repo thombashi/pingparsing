@@ -5,6 +5,7 @@
 """
 
 from __future__ import unicode_literals
+import itertools
 
 import pytest
 import six
@@ -32,6 +33,16 @@ PING_DEBIAN_SUCCESS = six.b("""PING google.com (216.58.196.238) 56(84) bytes of 
 rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
 """)
 
+
+PING_DEBIAN_UNREACHABLE_0 = """
+PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
+
+--- 192.168.207.100 ping statistics ---
+5 packets transmitted, 0 received, 100% packet loss, time 4009ms
+"""
+PING_DEBIAN_UNREACHABLE_1 = PING_DEBIAN_UNREACHABLE_0 + "\n"
+PING_DEBIAN_UNREACHABLE_2 = PING_DEBIAN_UNREACHABLE_1 + "\n"
+
 PING_FEDORA_LOSS = six.b("""
 PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 
@@ -39,6 +50,19 @@ PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 1688 packets transmitted, 1553 received, +1 duplicates, 7% packet loss, time 2987ms
 rtt min/avg/max/mdev = 0.282/0.642/11.699/0.699 ms, pipe 2, ipg/ewma 1.770/0.782 ms
 """)
+
+PING_FEDORA_UNREACHABLE = """
+PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
+From 192.168.207.128 icmp_seq=1 Destination Host Unreachable
+From 192.168.207.128 icmp_seq=2 Destination Host Unreachable
+From 192.168.207.128 icmp_seq=3 Destination Host Unreachable
+From 192.168.207.128 icmp_seq=4 Destination Host Unreachable
+From 192.168.207.128 icmp_seq=5 Destination Host Unreachable
+
+--- 192.168.207.100 ping statistics ---
+5 packets transmitted, 0 received, +5 errors, 100% packet loss, time 4003ms
+"""
+
 
 # ping google.com -n 10:
 #   Windows 7 SP1
@@ -60,6 +84,21 @@ Ping statistics for 216.58.196.238:
 Approximate round trip times in milli-seconds:
     Minimum = 56ms, Maximum = 194ms, Average = 107ms
 """)
+
+
+PING_WINDOWS_UNREACHABLE_0 = """
+
+Pinging 192.168.207.100 with 32 bytes of data:
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 192.168.207.100:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+"""
+PING_WINDOWS_UNREACHABLE_1 = PING_WINDOWS_UNREACHABLE_0 + "\n"
+PING_WINDOWS_UNREACHABLE_2 = PING_WINDOWS_UNREACHABLE_1 + "\n"
 
 
 @pytest.fixture
@@ -95,6 +134,18 @@ class Test_PingParsing_parse:
             }
         ],
         [
+            PING_FEDORA_UNREACHABLE,
+            {
+                "packet_transmit": 5,
+                "packet_receive": 0,
+                "packet_loss": 100.0,
+                "rtt_min": None,
+                "rtt_avg": None,
+                "rtt_max": None,
+                "rtt_mdev": None,
+            }
+        ],
+        [
             PING_WINDOWS_SUCCESS,
             {
                 "packet_transmit": 10,
@@ -106,7 +157,38 @@ class Test_PingParsing_parse:
                 "rtt_mdev": None,
             }
         ],
-    ])
+    ] + list(itertools.product(
+        [
+            PING_DEBIAN_UNREACHABLE_0,
+            PING_DEBIAN_UNREACHABLE_1,
+            PING_DEBIAN_UNREACHABLE_2,
+        ],
+        [{
+            "packet_transmit": 5,
+            "packet_receive": 0,
+            "packet_loss": 100.0,
+            "rtt_min": None,
+            "rtt_avg": None,
+            "rtt_max": None,
+            "rtt_mdev": None,
+        }]
+    )) + list(itertools.product(
+        [
+            PING_WINDOWS_UNREACHABLE_0,
+            PING_WINDOWS_UNREACHABLE_1,
+            PING_WINDOWS_UNREACHABLE_2,
+        ],
+        [{
+            "packet_transmit": 4,
+            "packet_receive": 0,
+            "packet_loss": 100.0,
+            "rtt_min": None,
+            "rtt_avg": None,
+            "rtt_max": None,
+            "rtt_mdev": None,
+        }]
+    ))
+    )
     def test_normal(self, ping_parser, ping_text, expected):
         ping_parser.parse(ping_text)
 
