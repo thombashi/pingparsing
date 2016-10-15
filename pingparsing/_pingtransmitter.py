@@ -6,9 +6,13 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+from collections import namedtuple
 import platform
 
 import dataproperty
+
+
+PingResult = namedtuple("PingResult", "stdout stderr returncode")
 
 
 class PingTransmitter(object):
@@ -41,10 +45,7 @@ class PingTransmitter(object):
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = ping_proc.communicate()
 
-        if ping_proc.returncode != 0:
-            raise RuntimeError(stderr)
-
-        return stdout
+        return PingResult(stdout, stderr, ping_proc.returncode)
 
     def __validate_ping_param(self):
         if dataproperty.is_empty_string(self.destination_host):
@@ -52,4 +53,4 @@ class PingTransmitter(object):
 
         if self.waittime <= 0:
             raise ValueError(
-                "waittime expected to be greater than or equal to zero")
+                "wait time expected to be greater than or equal to zero")
