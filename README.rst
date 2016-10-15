@@ -102,6 +102,7 @@ Example execution result: Windows 10
 
 Note: ``rtt_mdev`` not available with Windows
 
+
 Parsing ``ping`` command output
 -------------------------------
 
@@ -133,6 +134,13 @@ Windows
 -  Reference
 
    -  https://technet.microsoft.com/en-us/library/cc733037
+
+   
+Sample code
+~~~~~~~~~~~
+
+``examples/parse_sample.py``
+
 
 Example: Debian 8
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
