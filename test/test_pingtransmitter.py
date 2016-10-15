@@ -2,7 +2,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-
 import pytest
 
 from pingparsing import *

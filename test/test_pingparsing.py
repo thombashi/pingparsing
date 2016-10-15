@@ -41,7 +41,7 @@ PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
 """
 PING_DEBIAN_UNREACHABLE_1 = PING_DEBIAN_UNREACHABLE_0 + "\n"
 PING_DEBIAN_UNREACHABLE_2 = PING_DEBIAN_UNREACHABLE_1 + "\n"
-
+PING_DEBIAN_UNREACHABLE_3 = PING_DEBIAN_UNREACHABLE_0 + "\npipe 4\n"
 
 PING_FEDORA_LOSS = six.b("""
 PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
@@ -63,7 +63,7 @@ From 192.168.207.128 icmp_seq=5 Destination Host Unreachable
 5 packets transmitted, 0 received, +5 errors, 100% packet loss, time 4003ms
 """
 
-PING_FEDORA_INVALID = six.b("""
+PING_FEDORA_EMPTY_BODY = six.b("""
 PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 
 --- 192.168.0.1 ping statistics ---
@@ -225,7 +225,7 @@ class Test_PingParsing_parse:
         assert ping_parser.rtt_mdev is None
 
     @pytest.mark.parametrize(["ping_text", "expected"], [
-        [PING_FEDORA_INVALID, EmptyPingStaticticsError],
+        [PING_FEDORA_EMPTY_BODY, EmptyPingStaticticsError],
         [PING_WINDOWS_INVALID, EmptyPingStaticticsError],
     ])
     def test_exception(self, ping_parser, ping_text, expected):
