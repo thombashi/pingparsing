@@ -7,7 +7,7 @@
 from __future__ import absolute_import
 
 
-class EmptyPingStaticticsError(ValueError):
+class EmptyPingStaticticsError(Exception):
     """
     Raised when a ping statistics is empty.
     """
