@@ -6,5 +6,7 @@
 
 from __future__ import absolute_import
 
+from .error import EmptyPingStaticticsError
+
 from ._pingparsing import PingParsing
 from ._pingtransmitter import PingTransmitter
