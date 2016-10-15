@@ -20,16 +20,14 @@ class PingTransmitter(object):
         self.destination_host = ""
         self.waittime = 1
         self.ping_option = ""
+        self.auto_codepage = True
 
     def ping(self):
         import subprocess
 
         self.__validate_ping_param()
 
-        command_list = [
-            "ping",
-            self.destination_host,
-        ]
+        command_list = self.__get_base_ping_command()
 
         if dataproperty.is_not_empty_string(self.ping_option):
             command_list.append(self.ping_option)
@@ -53,3 +51,16 @@ class PingTransmitter(object):
         if self.waittime <= 0:
             raise ValueError(
                 "wait time expected to be greater than or equal to zero")
+
+    def __get_base_ping_command(self):
+        command_list = []
+
+        if platform.system() == "Windows" and self.auto_codepage:
+            command_list.append("chcp 437 &")
+
+        command_list.extend([
+            "ping",
+            self.destination_host,
+        ])
+
+        return command_list
