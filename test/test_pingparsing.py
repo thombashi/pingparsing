@@ -42,7 +42,7 @@ rtt min/avg/max/mdev = 0.282/0.642/11.699/0.699 ms, pipe 2, ipg/ewma 1.770/0.782
 
 # ping google.com -n 10:
 #   Windows 7 SP1
-PING_WINDOWS = six.b("""
+PING_WINDOWS_SUCCESS = six.b("""
 Pinging google.com [216.58.196.238] with 32 bytes of data:
 Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
 Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
@@ -95,7 +95,7 @@ class Test_PingParsing_parse:
             }
         ],
         [
-            PING_WINDOWS,
+            PING_WINDOWS_SUCCESS,
             {
                 "packet_transmit": 10,
                 "packet_receive": 10,
