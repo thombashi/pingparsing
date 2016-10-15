@@ -11,6 +11,7 @@ import re
 import dataproperty
 import pyparsing as pp
 
+from .error import PingStaticticsHeaderNotFoundError
 from .error import EmptyPingStaticticsError
 
 
@@ -78,10 +79,20 @@ class PingParsing(object):
         try:
             self.__parse_linux_ping(ping_message)
             return
-        except ValueError:
+        except PingStaticticsHeaderNotFoundError:
             pass
 
         self.__parse_windows_ping(ping_message)
+
+    def __find_ststs_head_line_idx(self, line_list, re_stats_header):
+        for i, line in enumerate(line_list):
+            if re_stats_header.search(line):
+                break
+        else:
+            raise PingStaticticsHeaderNotFoundError(
+                "ping statistics not found")
+
+        return i
 
     def __validate_stats_body(self, body_line_list):
         if dataproperty.is_empty_sequence(body_line_list):
@@ -90,11 +101,8 @@ class PingParsing(object):
     def __parse_windows_ping(self, ping_message):
         line_list = _to_unicode(ping_message).splitlines()
 
-        for i, line in enumerate(line_list):
-            if re.search("^Ping statistics for ", line):
-                break
-        else:
-            raise ValueError("can not parse")
+        i = self.__find_ststs_head_line_idx(
+            line_list, re.compile("^Ping statistics for "))
 
         body_line_list = line_list[i + 1:]
         self.__validate_stats_body(body_line_list)
@@ -135,11 +143,8 @@ class PingParsing(object):
     def __parse_linux_ping(self, ping_message):
         line_list = _to_unicode(ping_message).splitlines()
 
-        for i, line in enumerate(line_list):
-            if re.search("--- .* ping statistics ---", line):
-                break
-        else:
-            raise ValueError("can not parse")
+        i = self.__find_ststs_head_line_idx(
+            line_list, re.compile("--- .* ping statistics ---"))
 
         body_line_list = line_list[i + 1:]
         self.__validate_stats_body(body_line_list)
