@@ -134,7 +134,11 @@ class PingParsing(object):
             pp.Literal("ms, Average = ") +
             pp.Word(pp.nums)
         )
-        parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
+        try:
+            parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
+        except pp.ParseBaseException:
+            return
+
         self.__rtt_min = float(parse_list[1])
         self.__rtt_avg = float(parse_list[5])
         self.__rtt_max = float(parse_list[3])
@@ -178,7 +182,11 @@ class PingParsing(object):
             pp.Word(pp.nums + ".") +
             pp.Word(pp.nums + "ms")
         )
-        parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
+        try:
+            parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
+        except pp.ParseBaseException:
+            return
+
         self.__rtt_min = float(parse_list[1])
         self.__rtt_avg = float(parse_list[3])
         self.__rtt_max = float(parse_list[5])
