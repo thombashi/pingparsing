@@ -1,0 +1,17 @@
+
+Pinging google.com [216.58.196.238] with 32 bytes of data:
+Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=56ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=95ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=194ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=98ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=93ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=96ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=96ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=165ms TTL=51
+
+Ping statistics for 216.58.196.238:
+    Packets: Sent = 10, Received = 10, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 56ms, Maximum = 194ms, Average = 107ms
