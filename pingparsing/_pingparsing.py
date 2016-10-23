@@ -22,6 +22,9 @@ def _to_unicode(text):
 
 
 class PingParsing(object):
+    """
+    Parser class to parsing ping command output.
+    """
 
     def __init__(self):
         self.destination_host = ""
@@ -32,26 +35,56 @@ class PingParsing(object):
 
     @property
     def packet_transmit(self):
+        """
+        :return: Number of packets transmitted.
+        :rtype: int
+        """
+
         return self.__packet_transmit
 
     @property
     def packet_receive(self):
+        """
+        :return: Number of packets received.
+        :rtype: int
+        """
+
         return self.__packet_receive
 
     @property
     def packet_loss(self):
+        """
+        :return: Percentage of packet loss [%].
+        :rtype: float
+        """
+
         return self.__packet_loss
 
     @property
     def rtt_min(self):
+        """
+        :return: Percentage of packet loss [%].
+        :rtype: float
+        """
+
         return self.__rtt_min
 
     @property
     def rtt_avg(self):
+        """
+        :return: Minimum round trip time of transmitted ICMP packets [ms].
+        :rtype: float
+        """
+
         return self.__rtt_avg
 
     @property
     def rtt_max(self):
+        """
+        :return: Maximum round trip time of transmitted ICMP packets [ms].
+        :rtype: float
+        """
+
         return self.__rtt_max
 
     @property
@@ -59,6 +92,11 @@ class PingParsing(object):
         return self.__rtt_mdev
 
     def as_dict(self):
+        """
+        :return: Parsed result as a dictionary.
+        :rtype: dict
+        """
+
         return {
             "packet_transmit": self.packet_transmit,
             "packet_receive": self.packet_receive,
@@ -70,6 +108,12 @@ class PingParsing(object):
         }
 
     def parse(self, ping_message):
+        """
+        Parse ping command output.
+
+        :param str ping_message: String of ping command output.
+        """
+
         self.__initialize_parse_result()
 
         if dataproperty.is_empty_string(ping_message):
