@@ -4,8 +4,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from dataproperty import FloatType
 import pytest
-from dataproperty.type import FloatTypeChecker
 
 from pingparsing import *
 
@@ -25,10 +25,10 @@ class Test_PingParse:
         ping_parser = PingParsing()
         ping_parser.parse(result.stdout)
 
-        assert FloatTypeChecker(ping_parser.packet_transmit).is_type()
-        assert FloatTypeChecker(ping_parser.packet_receive).is_type()
-        assert FloatTypeChecker(ping_parser.packet_loss).is_type()
-        assert FloatTypeChecker(ping_parser.rtt_min).is_type()
-        assert FloatTypeChecker(ping_parser.rtt_avg).is_type()
-        assert FloatTypeChecker(ping_parser.rtt_max).is_type()
-        assert FloatTypeChecker(ping_parser.rtt_mdev).is_type()
+        assert FloatType(ping_parser.packet_transmit).is_type()
+        assert FloatType(ping_parser.packet_receive).is_type()
+        assert FloatType(ping_parser.packet_loss).is_type()
+        assert FloatType(ping_parser.rtt_min).is_type()
+        assert FloatType(ping_parser.rtt_avg).is_type()
+        assert FloatType(ping_parser.rtt_max).is_type()
+        assert FloatType(ping_parser.rtt_mdev).is_type()
