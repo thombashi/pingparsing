@@ -89,6 +89,11 @@ class PingParsing(object):
 
     @property
     def rtt_mdev(self):
+        """
+        :return: Standard deviation of transmitted ICMP packets (Linux only).
+        :rtype: float
+        """
+
         return self.__rtt_mdev
 
     def as_dict(self):
@@ -110,6 +115,19 @@ class PingParsing(object):
     def parse(self, ping_message):
         """
         Parse ping command output.
+        You can get  parsing results by attributes:
+
+            - :py:attr:`.packet_transmit`
+            - :py:attr:`.packet_receive`
+            - :py:attr:`.packet_loss`
+            - :py:attr:`.rtt_min`
+            - :py:attr:`.rtt_avg`
+            - :py:attr:`.rtt_max`
+            - :py:attr:`.rtt_mdev`
+
+        Or as a dictionary:
+
+            - :py:meth:`.as_dict`
 
         :param str ping_message: String of ping command output.
         """
