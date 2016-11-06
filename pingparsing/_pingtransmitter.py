@@ -46,11 +46,11 @@ class PingTransmitter(object):
 
     def __validate_ping_param(self):
         if dataproperty.is_empty_string(self.destination_host):
-            raise ValueError("destination_host host is empty")
+            raise ValueError("required destination_host")
 
         if self.waittime <= 0:
             raise ValueError(
-                "wait time expected to be greater than or equal to zero")
+                "wait time must be greater than or equal to zero")
 
     def __get_base_ping_command(self):
         command_list = []
