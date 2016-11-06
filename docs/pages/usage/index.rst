@@ -10,7 +10,7 @@ ping output as a string.
 Sample code
 ~~~~~~~~~~~
 
-``examples/ping_sample.py``
+https://github.com/thombashi/pingparsing/blob/master/examples/ping_sample.py
 
 Sample output: Debian 8
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,45 +76,13 @@ Note: ``rtt_mdev`` not available with Windows
 Parsing ``ping`` command output
 -------------------------------
 
-Recommended ping command execution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The following methods are recommended to execute ``ping`` command for
-parsing. These will change the locale setting to English temporarily.
-
-Linux
-^^^^^
-
-.. code:: console
-
-    LC_ALL=C ping <host or IP address> -w <seconds> [option] > <output.file>
-
-Windows
-^^^^^^^
-
-.. code:: console
-
-    > chcp
-    Active code page: <XXX>    # get current code page
-
-    > chcp 437    # change code page to english
-    > ping <host or IP address> -n <ping count> > <output.file>
-    > chcp <XXX>    # restore code page
-
--  Reference
-
-   -  https://technet.microsoft.com/en-us/library/cc733037
-
-   
 Sample code
 ~~~~~~~~~~~
-
-``examples/parse_sample.py``
+https://github.com/thombashi/pingparsing/blob/master/examples/parse_sample.py
 
 
 Example: Debian 8
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 Input
 ^^^^^
 
@@ -156,7 +124,6 @@ Output
 
 Example: Windows 10
 ~~~~~~~~~~~~~~~~~~~
-
 Input
 ^^^^^
 
@@ -208,3 +175,32 @@ Output
         "rtt_max": 194.0,
         "rtt_mdev": null
     }
+
+Recommended ping command execution
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following methods are recommended to execute ``ping`` command for
+parsing. These will change the locale setting to English temporarily.
+
+Linux
+^^^^^
+
+.. code:: console
+
+    LC_ALL=C ping <host or IP address> -w <seconds> [option] > <output.file>
+
+Windows
+^^^^^^^
+
+.. code:: console
+
+    > chcp
+    Active code page: <XXX>    # get current code page
+
+    > chcp 437    # change code page to english
+    > ping <host or IP address> -n <ping count> > <output.file>
+    > chcp <XXX>    # restore code page
+
+-  Reference
+
+   -  https://technet.microsoft.com/en-us/library/cc733037
+    

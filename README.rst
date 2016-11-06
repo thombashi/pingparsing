@@ -1,32 +1,16 @@
-**pingparsing**
+pingparsing
+===========
 
-.. image:: https://travis-ci.org/thombashi/pingparsing.svg?branch=master
+.. image:: https://img.shields.io/travis/thombashi/pingparsing/master.svg?label=Linux
     :target: https://travis-ci.org/thombashi/pingparsing
-.. image:: https://ci.appveyor.com/api/projects/status/h5wqaowr2lql5yy6?svg=true
+
+.. image:: https://img.shields.io/appveyor/ci/thombashi/pingparsing/master.svg?label=Windows
     :target: https://ci.appveyor.com/project/thombashi/pingparsing
 
-.. contents:: Table of contents
-   :backlinks: top
-   :local:
-
 Summary
-=======
+-------
+
 pingparsing is a python library of parsing ping command output.
-
-Installation
-============
-
-::
-
-    pip install pingparsing
-
-Premise
-=======
-
-This library expects locale setup to English. Parsing the ``ping``
-command output with any other locale may fail. This is because the
-output of the ``ping`` command is changed depending on the locale
-setting.
 
 Usage
 =====
@@ -40,7 +24,7 @@ ping output as a string.
 Sample code
 ~~~~~~~~~~~
 
-``examples/ping_sample.py``
+https://github.com/thombashi/pingparsing/blob/master/examples/ping_sample.py
 
 Sample output: Debian 8
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,45 +90,13 @@ Note: ``rtt_mdev`` not available with Windows
 Parsing ``ping`` command output
 -------------------------------
 
-Recommended ping command execution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The following methods are recommended to execute ``ping`` command for
-parsing. These will change the locale setting to English temporarily.
-
-Linux
-^^^^^
-
-.. code:: console
-
-    LC_ALL=C ping <host or IP address> -w <seconds> [option] > <output.file>
-
-Windows
-^^^^^^^
-
-.. code:: console
-
-    > chcp
-    Active code page: <XXX>    # get current code page
-
-    > chcp 437    # change code page to english
-    > ping <host or IP address> -n <ping count> > <output.file>
-    > chcp <XXX>    # restore code page
-
--  Reference
-
-   -  https://technet.microsoft.com/en-us/library/cc733037
-
-   
 Sample code
 ~~~~~~~~~~~
-
-``examples/parse_sample.py``
+https://github.com/thombashi/pingparsing/blob/master/examples/parse_sample.py
 
 
 Example: Debian 8
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 Input
 ^^^^^
 
@@ -186,7 +138,6 @@ Output
 
 Example: Windows 10
 ~~~~~~~~~~~~~~~~~~~
-
 Input
 ^^^^^
 
@@ -239,6 +190,43 @@ Output
         "rtt_mdev": null
     }
 
+Recommended ping command execution
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following methods are recommended to execute ``ping`` command for
+parsing. These will change the locale setting to English temporarily.
+
+Linux
+^^^^^
+
+.. code:: console
+
+    LC_ALL=C ping <host or IP address> -w <seconds> [option] > <output.file>
+
+Windows
+^^^^^^^
+
+.. code:: console
+
+    > chcp
+    Active code page: <XXX>    # get current code page
+
+    > chcp 437    # change code page to english
+    > ping <host or IP address> -n <ping count> > <output.file>
+    > chcp <XXX>    # restore code page
+
+-  Reference
+
+   -  https://technet.microsoft.com/en-us/library/cc733037
+
+
+Installation
+============
+
+::
+
+    pip install pingparsing
+
+
 Dependencies
 ============
 
@@ -255,6 +243,7 @@ Test dependencies
 -  `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
 -  `tox <https://pypi.python.org/pypi/tox>`__
 
+
 Tested Environment
 ==================
 
@@ -267,3 +256,17 @@ Tested Environment
 +--------------+-----------------------------------+
 | Windows 10   | ``-``                             |
 +--------------+-----------------------------------+
+
+Premise
+=======
+
+This library expects locale setup to English. Parsing the ``ping``
+command output with any other locale may fail. This is because the
+output of the ``ping`` command is changed depending on the locale
+setting.
+
+Documentation
+=============
+
+http://pingparsing.readthedocs.org/en/latest/
+

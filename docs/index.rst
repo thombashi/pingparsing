@@ -13,6 +13,7 @@ Contents:
    pages/usage/index
    pages/reference/index
    pages/genindex
+   pages/links
 
 
 Indices and tables

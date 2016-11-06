@@ -10,4 +10,7 @@ from .error import PingStaticticsHeaderNotFoundError
 from .error import EmptyPingStaticticsError
 
 from ._pingparsing import PingParsing
-from ._pingtransmitter import PingTransmitter
+from ._pingtransmitter import (
+    PingTransmitter,
+    PingResult
+)

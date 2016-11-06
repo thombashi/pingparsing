@@ -11,10 +11,47 @@ import platform
 import dataproperty
 
 
-PingResult = namedtuple("PingResult", "stdout stderr returncode")
+class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
+    """
+    Data class to store ``ping`` command execution result.
+
+    .. py:attribute:: stdout
+
+        Standard output of ``ping`` command execution result.
+
+    .. py:attribute:: stderr
+
+        Standard error of ``ping`` command execution result.
+
+    .. py:attribute:: returncode
+
+        Return code of ``ping`` command execution result.
+    """
 
 
 class PingTransmitter(object):
+    """
+    Transmitter class to send ICMP packets by using the built-in ``ping``
+    command.
+
+    .. py:attribute:: destination_host
+
+        Hostname/IP-address to sending ICMP packets.
+
+    .. py:attribute:: waittime
+
+        Time [sec] for sending packets.
+        Defaults to 1 [sec].
+
+    .. py:attribute:: ping_option
+
+        Additional ``ping`` command option.
+
+    .. py:attribute:: auto_codepage
+
+        Automatically change code page if ``True``.
+        Defaults to ``True``.
+    """
 
     def __init__(self):
         self.destination_host = ""
@@ -23,6 +60,14 @@ class PingTransmitter(object):
         self.auto_codepage = True
 
     def ping(self):
+        """
+        Sending ICMP packets.
+
+        :return: ``ping`` command execution result.
+        :rtype: :py:class:`.PingResult`
+        :raises ValueError: If parameters not valid.
+        """
+
         import subprocess
 
         self.__validate_ping_param()
@@ -46,11 +91,11 @@ class PingTransmitter(object):
 
     def __validate_ping_param(self):
         if dataproperty.is_empty_string(self.destination_host):
-            raise ValueError("destination_host host is empty")
+            raise ValueError("required destination_host")
 
         if self.waittime <= 0:
             raise ValueError(
-                "wait time expected to be greater than or equal to zero")
+                "wait time must be greater than or equal to zero")
 
     def __get_base_ping_command(self):
         command_list = []

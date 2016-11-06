@@ -4,4 +4,7 @@ Parser class
 .. autoclass:: pingparsing.PingParsing
     :inherited-members:
     :undoc-members:
-    :show-inheritance:
+
+.. autoclass:: pingparsing.PingParsing
+    :inherited-members:
+    :undoc-members:
