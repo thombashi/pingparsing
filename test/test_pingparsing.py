@@ -207,8 +207,27 @@ class Test_PingParsing_parse:
         }]
     ))
     )
-    def test_normal(self, ping_parser, ping_text, expected):
+    def test_normal_text(self, ping_parser, ping_text, expected):
         ping_parser.parse(ping_text)
+
+        assert ping_parser.as_dict() == expected
+
+    @pytest.mark.parametrize(["pingresult", "expected"], [
+        [
+            PingResult(PING_DEBIAN_SUCCESS, "", 0),
+            {
+                "packet_transmit": 60,
+                "packet_receive": 60,
+                "packet_loss": 0.0,
+                "rtt_min": 61.425,
+                "rtt_avg": 99.731,
+                "rtt_max": 212.597,
+                "rtt_mdev": 27.566,
+            }
+        ]
+    ])
+    def test_normal_pingresult(self, ping_parser, pingresult, expected):
+        ping_parser.parse(pingresult.stdout)
 
         assert ping_parser.as_dict() == expected
 

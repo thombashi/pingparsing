@@ -10,11 +10,11 @@ import pytest
 from pingparsing import *
 
 
-class Test_PingParse:
+class Test_PingParse_parse:
 
     @pytest.mark.xfail
     @pytest.mark.parametrize(["host", "waittime", "expected"], [
-        ["localhost", 5, ValueError],
+        ["localhost", 3, ValueError],
     ])
     def test_normal(self, host, waittime, expected):
         transmitter = PingTransmitter()
