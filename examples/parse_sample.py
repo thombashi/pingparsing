@@ -15,7 +15,7 @@ import pingparsing
 
 def parse_option():
     parser = argparse.ArgumentParser()
-    parser .add_argument(
+    parser.add_argument(
         "-f", "--file", required=True, help="input file path")
 
     return parser.parse_args()
