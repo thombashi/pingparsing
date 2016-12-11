@@ -92,6 +92,9 @@ class PingTransmitter(object):
         if dp.is_empty_string(self.destination_host):
             raise ValueError("required destination_host")
 
+        self.__validate_waittime()
+
+    def __validate_waittime(self):
         if self.waittime is None:
             return
 
