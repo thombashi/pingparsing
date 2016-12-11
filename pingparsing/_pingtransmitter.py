@@ -8,7 +8,7 @@ from __future__ import absolute_import
 from collections import namedtuple
 import platform
 
-import dataproperty
+import dataproperty as dp
 
 
 class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
@@ -31,7 +31,7 @@ class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
 
 class PingTransmitter(object):
     """
-    Transmitter class to send ICMP packets by using the built-in ``ping``
+    Transmitter class to send ICMP packets by using the OS built-in ``ping``
     command.
 
     .. py:attribute:: destination_host
@@ -41,7 +41,15 @@ class PingTransmitter(object):
     .. py:attribute:: waittime
 
         Time [sec] for sending packets.
+        If the value is ``None``, sending packets time will be the same as
+        built-in ``ping`` command.
         Defaults to 1 [sec].
+
+    .. py:attribute:: count
+
+        Number of sending ICMP packets.
+        The value will be ignored if the value is ``None``.
+        Defaults to ``None``.
 
     .. py:attribute:: ping_option
 
@@ -49,13 +57,14 @@ class PingTransmitter(object):
 
     .. py:attribute:: auto_codepage
 
-        Automatically change code page if ``True``.
-        Defaults to ``True``.
+        [Only for windows environment] Automatically change code page if
+        ``True``. Defaults to ``True``.
     """
 
     def __init__(self):
         self.destination_host = ""
         self.waittime = 1
+        self.count = None
         self.ping_option = ""
         self.auto_codepage = True
 
@@ -74,13 +83,11 @@ class PingTransmitter(object):
 
         command_list = self.__get_base_ping_command()
 
-        if dataproperty.is_not_empty_string(self.ping_option):
+        if dp.is_not_empty_string(self.ping_option):
             command_list.append(self.ping_option)
 
-        if platform.system() == "Windows":
-            command_list.append("-n {:d}".format(self.waittime))
-        else:
-            command_list.append("-q -w {:d}".format(self.waittime))
+        command_list.append(self.__get_waittime_option())
+        command_list.append(self.__get_count_option())
 
         ping_proc = subprocess.Popen(
             " ".join(command_list), shell=True,
@@ -90,12 +97,35 @@ class PingTransmitter(object):
         return PingResult(stdout, stderr, ping_proc.returncode)
 
     def __validate_ping_param(self):
-        if dataproperty.is_empty_string(self.destination_host):
+        if dp.is_empty_string(self.destination_host):
             raise ValueError("required destination_host")
 
-        if self.waittime <= 0:
-            raise ValueError(
-                "wait time must be greater than or equal to zero")
+        self.__validate_waittime()
+        self.__validate_count()
+
+    def __validate_waittime(self):
+        if self.waittime is None:
+            return
+
+        waittime = dp.IntegerType(self.waittime).try_convert()
+        if waittime is None:
+            raise ValueError("wait time must be an integer: actual={}".format(
+                self.waittime))
+
+        if waittime <= 0:
+            raise ValueError("wait time must be greater than zero")
+
+    def __validate_count(self):
+        if self.count is None:
+            return
+
+        count = dp.IntegerType(self.count).try_convert()
+        if count is None:
+            raise ValueError("count must be an integer: actual={}".format(
+                self.count))
+
+        if count <= 0:
+            raise ValueError("count must be greater than zero")
 
     def __get_base_ping_command(self):
         command_list = []
@@ -109,3 +139,23 @@ class PingTransmitter(object):
         ])
 
         return command_list
+
+    def __get_waittime_option(self):
+        waittime = dp.IntegerType(self.waittime).try_convert()
+        if waittime is None:
+            return ""
+
+        if platform.system() == "Windows":
+            return "-n {:d}".format(waittime)
+        else:
+            return "-q -w {:d}".format(waittime)
+
+    def __get_count_option(self):
+        count = dp.IntegerType(self.count).try_convert()
+        if count is None:
+            return ""
+
+        if platform.system() == "Windows":
+            return "-n {:d}".format(count)
+        else:
+            return "-c {:d}".format(count)
