@@ -41,7 +41,7 @@ class PingTransmitter(object):
     .. py:attribute:: waittime
 
         Time [sec] for sending packets.
-        if the value is ``None``, sending packets time will be the same as
+        If the value is ``None``, sending packets time will be the same as
         built-in ``ping`` command.
         Defaults to 1 [sec].
 
@@ -104,8 +104,7 @@ class PingTransmitter(object):
                 self.waittime))
 
         if waittime <= 0:
-            raise ValueError(
-                "wait time must be greater than zero")
+            raise ValueError("wait time must be greater than zero")
 
     def __get_base_ping_command(self):
         command_list = []
