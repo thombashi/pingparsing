@@ -63,7 +63,7 @@ class PingParsing(object):
     @property
     def rtt_min(self):
         """
-        :return: Percentage of packet loss [%].
+        :return: Minimum round trip time of transmitted ICMP packets [ms].
         :rtype: float
         """
 
@@ -72,7 +72,7 @@ class PingParsing(object):
     @property
     def rtt_avg(self):
         """
-        :return: Minimum round trip time of transmitted ICMP packets [ms].
+        :return: Average round trip time of transmitted ICMP packets [ms].
         :rtype: float
         """
 
@@ -115,7 +115,7 @@ class PingParsing(object):
     def parse(self, ping_message):
         """
         Parse ping command output.
-        You can get  parsing results by attributes:
+        You can get parsing results by attributes:
 
             - :py:attr:`.packet_transmit`
             - :py:attr:`.packet_receive`
@@ -125,9 +125,7 @@ class PingParsing(object):
             - :py:attr:`.rtt_max`
             - :py:attr:`.rtt_mdev`
 
-        Or as a dictionary:
-
-            - :py:meth:`.as_dict`
+        Or you can get as a dictionary by :py:meth:`.as_dict`
 
         :param str ping_message: String of ping command output.
         """

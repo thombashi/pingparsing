@@ -31,7 +31,7 @@ class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
 
 class PingTransmitter(object):
     """
-    Transmitter class to send ICMP packets by using the built-in ``ping``
+    Transmitter class to send ICMP packets by using the OS built-in ``ping``
     command.
 
     .. py:attribute:: destination_host
@@ -49,8 +49,8 @@ class PingTransmitter(object):
 
     .. py:attribute:: auto_codepage
 
-        Automatically change code page if ``True``.
-        Defaults to ``True``.
+        [Only for windows environment] Automatically change code page if
+        ``True``. Defaults to ``True``.
     """
 
     def __init__(self):
