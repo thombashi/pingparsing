@@ -41,6 +41,8 @@ class PingTransmitter(object):
     .. py:attribute:: waittime
 
         Time [sec] for sending packets.
+        if the value is ``None``, sending packets time will be the same as
+        built-in ``ping`` command.
         Defaults to 1 [sec].
 
     .. py:attribute:: ping_option
@@ -77,10 +79,7 @@ class PingTransmitter(object):
         if dp.is_not_empty_string(self.ping_option):
             command_list.append(self.ping_option)
 
-        if platform.system() == "Windows":
-            command_list.append("-n {:d}".format(self.waittime))
-        else:
-            command_list.append("-q -w {:d}".format(self.waittime))
+        command_list.append(self.__get_waittime_option())
 
         ping_proc = subprocess.Popen(
             " ".join(command_list), shell=True,
@@ -93,9 +92,17 @@ class PingTransmitter(object):
         if dp.is_empty_string(self.destination_host):
             raise ValueError("required destination_host")
 
-        if self.waittime <= 0:
+        if self.waittime is None:
+            return
+
+        waittime = dp.IntegerType(self.waittime).try_convert()
+        if waittime is None:
+            raise ValueError("wait time must be an integer: actual={}".format(
+                self.waittime))
+
+        if waittime <= 0:
             raise ValueError(
-                "wait time must be greater than or equal to zero")
+                "wait time must be greater than zero")
 
     def __get_base_ping_command(self):
         command_list = []
@@ -109,3 +116,13 @@ class PingTransmitter(object):
         ])
 
         return command_list
+
+    def __get_waittime_option(self):
+        waittime = dp.IntegerType(self.waittime).try_convert()
+        if waittime is None:
+            return ""
+
+        if platform.system() == "Windows":
+            return "-n {:d}".format(waittime)
+        else:
+            return "-q -w {:d}".format(waittime)

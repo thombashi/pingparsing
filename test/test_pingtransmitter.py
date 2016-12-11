@@ -29,6 +29,7 @@ class Test_PingTransmitter_ping:
         ["", 1, ValueError],
         ["localhost", 0, ValueError],
         ["localhost", -1, ValueError],
+        ["localhost", "a", ValueError],
         [None, 1, ValueError],
     ])
     def test_except(self,  transmitter, host, waittime, expected):
