@@ -45,6 +45,12 @@ class PingTransmitter(object):
         built-in ``ping`` command.
         Defaults to 1 [sec].
 
+    .. py:attribute:: count
+
+        Number of sending ICMP packets.
+        The value will be ignored if the value is ``None``.
+        Defaults to ``None``.
+
     .. py:attribute:: ping_option
 
         Additional ``ping`` command option.
@@ -58,6 +64,7 @@ class PingTransmitter(object):
     def __init__(self):
         self.destination_host = ""
         self.waittime = 1
+        self.count = None
         self.ping_option = ""
         self.auto_codepage = True
 
@@ -80,6 +87,7 @@ class PingTransmitter(object):
             command_list.append(self.ping_option)
 
         command_list.append(self.__get_waittime_option())
+        command_list.append(self.__get_count_option())
 
         ping_proc = subprocess.Popen(
             " ".join(command_list), shell=True,
@@ -93,6 +101,7 @@ class PingTransmitter(object):
             raise ValueError("required destination_host")
 
         self.__validate_waittime()
+        self.__validate_count()
 
     def __validate_waittime(self):
         if self.waittime is None:
@@ -105,6 +114,18 @@ class PingTransmitter(object):
 
         if waittime <= 0:
             raise ValueError("wait time must be greater than zero")
+
+    def __validate_count(self):
+        if self.count is None:
+            return
+
+        count = dp.IntegerType(self.count).try_convert()
+        if count is None:
+            raise ValueError("count must be an integer: actual={}".format(
+                self.count))
+
+        if count <= 0:
+            raise ValueError("count must be greater than zero")
 
     def __get_base_ping_command(self):
         command_list = []
@@ -128,3 +149,13 @@ class PingTransmitter(object):
             return "-n {:d}".format(waittime)
         else:
             return "-q -w {:d}".format(waittime)
+
+    def __get_count_option(self):
+        count = dp.IntegerType(self.count).try_convert()
+        if count is None:
+            return ""
+
+        if platform.system() == "Windows":
+            return "-n {:d}".format(count)
+        else:
+            return "-c {:d}".format(count)
