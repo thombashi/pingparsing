@@ -28,7 +28,6 @@ class PingParsing(object):
 
     def __init__(self):
         self.destination_host = ""
-        self.waittime = 1
         self.ping_option = ""
 
         self.__initialize_parse_result()
