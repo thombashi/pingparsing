@@ -8,7 +8,7 @@ from __future__ import absolute_import
 from collections import namedtuple
 import platform
 
-import dataproperty
+import dataproperty as dp
 
 
 class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
@@ -74,7 +74,7 @@ class PingTransmitter(object):
 
         command_list = self.__get_base_ping_command()
 
-        if dataproperty.is_not_empty_string(self.ping_option):
+        if dp.is_not_empty_string(self.ping_option):
             command_list.append(self.ping_option)
 
         if platform.system() == "Windows":
@@ -90,7 +90,7 @@ class PingTransmitter(object):
         return PingResult(stdout, stderr, ping_proc.returncode)
 
     def __validate_ping_param(self):
-        if dataproperty.is_empty_string(self.destination_host):
+        if dp.is_empty_string(self.destination_host):
             raise ValueError("required destination_host")
 
         if self.waittime <= 0:
