@@ -274,5 +274,5 @@ setting.
 Documentation
 =============
 
-http://pingparsing.readthedocs.org/en/latest/
+http://pingparsing.rtfd.io/
 
