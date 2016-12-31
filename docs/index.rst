@@ -1,7 +1,8 @@
 Welcome to pingparsing's documentation!
 =======================================
 
-Contents:
+.. image:: https://img.shields.io/github/stars/thombashi/pingparsing.svg?style=social&label=Star
+   :target: https://github.com/thombashi/pingparsing
 
 .. toctree::
    :caption: Table of Contents
