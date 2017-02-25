@@ -5,8 +5,10 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import unicode_literals
 import sys
 
+from path import Path
 import readmemaker
 
 
@@ -17,7 +19,9 @@ OUTPUT_DIR = ".."
 def write_examples(maker):
     maker.set_indent_level(0)
 
-    maker.write_example_file("index.rst")
+    usage_root = Path("pages").joinpath("usage")
+
+    maker.write_file(usage_root.joinpath("index.rst"))
 
 
 def main():

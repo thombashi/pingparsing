@@ -238,16 +238,16 @@ Dependencies
 
 Python 2.7+ or 3.3+
 
--  `DataPropery <https://github.com/thombashi/DataProperty>`__
--  `pyparsing <https://pyparsing.wikispaces.com/>`__
--  `six <https://pypi.python.org/pypi/six/>`__
+- `pyparsing <https://pyparsing.wikispaces.com/>`__
+- `six <https://pypi.python.org/pypi/six/>`__
+- `typepy <https://github.com/thombashi/typepy>`__
 
 Test dependencies
 -----------------
 
--  `pytest <https://pypi.python.org/pypi/pytest>`__
--  `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
--  `tox <https://pypi.python.org/pypi/tox>`__
+- `pytest <https://pypi.python.org/pypi/pytest>`__
+- `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
+- `tox <https://pypi.python.org/pypi/tox>`__
 
 
 Tested Environment
