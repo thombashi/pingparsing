@@ -1,5 +1,13 @@
-import sys
+# encoding: utf-8
+
+"""
+.. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
+"""
+
+from __future__ import unicode_literals
 import os.path
+import sys
+
 import setuptools
 
 
@@ -24,7 +32,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 setuptools.setup(
     name="pingparsing",
-    version="0.4.0",
+    version="0.4.1",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
     url="https://github.com/thombashi/pingparsing",
@@ -40,6 +48,7 @@ setuptools.setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
+        "Intended Audience :: Information Technology",
         "License :: OSI Approved :: MIT License",
         "Operating System :: POSIX",
         "Operating System :: POSIX :: Linux",
