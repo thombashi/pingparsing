@@ -5,13 +5,14 @@
 """
 
 from __future__ import absolute_import
+
 import re
 
-import dataproperty
+import typepy
 import pyparsing as pp
 
-from .error import PingStaticticsHeaderNotFoundError
 from .error import EmptyPingStaticticsError
+from .error import PingStaticticsHeaderNotFoundError
 
 
 def _to_unicode(text):
@@ -131,7 +132,7 @@ class PingParsing(object):
 
         self.__initialize_parse_result()
 
-        if dataproperty.is_empty_string(ping_message):
+        if typepy.is_null_string(ping_message):
             return
 
         try:
@@ -153,7 +154,7 @@ class PingParsing(object):
         return i
 
     def __validate_stats_body(self, body_line_list):
-        if dataproperty.is_empty_sequence(body_line_list):
+        if typepy.is_empty_sequence(body_line_list):
             raise EmptyPingStaticticsError("ping statistics is empty")
 
     def __parse_windows_ping(self, ping_message):
@@ -183,7 +184,7 @@ class PingParsing(object):
             rtt_line = body_line_list[2].strip()
         except IndexError:
             return
-        if dataproperty.is_empty_string(rtt_line):
+        if typepy.is_null_string(rtt_line):
             return
         rtt_pattern = (
             pp.Literal("Minimum = ") +
@@ -230,7 +231,7 @@ class PingParsing(object):
             rtt_line = body_line_list[1]
         except IndexError:
             return
-        if dataproperty.is_empty_string(rtt_line):
+        if typepy.is_null_string(rtt_line):
             return
 
         rtt_pattern = (

@@ -4,10 +4,9 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-from dataproperty import FloatType
-import pytest
-
 from pingparsing import *
+import pytest
+from typepy.type import RealNumber
 
 
 class Test_PingParse_parse:
@@ -25,10 +24,10 @@ class Test_PingParse_parse:
         ping_parser = PingParsing()
         ping_parser.parse(result.stdout)
 
-        assert FloatType(ping_parser.packet_transmit).is_type()
-        assert FloatType(ping_parser.packet_receive).is_type()
-        assert FloatType(ping_parser.packet_loss).is_type()
-        assert FloatType(ping_parser.rtt_min).is_type()
-        assert FloatType(ping_parser.rtt_avg).is_type()
-        assert FloatType(ping_parser.rtt_max).is_type()
-        assert FloatType(ping_parser.rtt_mdev).is_type()
+        assert RealNumber(ping_parser.packet_transmit).is_type()
+        assert RealNumber(ping_parser.packet_receive).is_type()
+        assert RealNumber(ping_parser.packet_loss).is_type()
+        assert RealNumber(ping_parser.rtt_min).is_type()
+        assert RealNumber(ping_parser.rtt_avg).is_type()
+        assert RealNumber(ping_parser.rtt_max).is_type()
+        assert RealNumber(ping_parser.rtt_mdev).is_type()

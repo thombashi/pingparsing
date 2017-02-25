@@ -8,7 +8,8 @@ from __future__ import absolute_import
 from collections import namedtuple
 import platform
 
-import dataproperty as dp
+import typepy
+from typepy.type import Integer
 
 
 class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
@@ -83,7 +84,7 @@ class PingTransmitter(object):
 
         command_list = self.__get_base_ping_command()
 
-        if dp.is_not_empty_string(self.ping_option):
+        if typepy.is_not_null_string(self.ping_option):
             command_list.append(self.ping_option)
 
         command_list.append(self.__get_waittime_option())
@@ -97,7 +98,7 @@ class PingTransmitter(object):
         return PingResult(stdout, stderr, ping_proc.returncode)
 
     def __validate_ping_param(self):
-        if dp.is_empty_string(self.destination_host):
+        if typepy.is_null_string(self.destination_host):
             raise ValueError("required destination_host")
 
         self.__validate_waittime()
@@ -107,8 +108,9 @@ class PingTransmitter(object):
         if self.waittime is None:
             return
 
-        waittime = dp.IntegerType(self.waittime).try_convert()
-        if waittime is None:
+        try:
+            waittime = Integer(self.waittime).convert()
+        except typepy.TypeConversionError:
             raise ValueError("wait time must be an integer: actual={}".format(
                 self.waittime))
 
@@ -119,8 +121,9 @@ class PingTransmitter(object):
         if self.count is None:
             return
 
-        count = dp.IntegerType(self.count).try_convert()
-        if count is None:
+        try:
+            count = Integer(self.count).convert()
+        except typepy.TypeConversionError:
             raise ValueError("count must be an integer: actual={}".format(
                 self.count))
 
@@ -141,8 +144,9 @@ class PingTransmitter(object):
         return command_list
 
     def __get_waittime_option(self):
-        waittime = dp.IntegerType(self.waittime).try_convert()
-        if waittime is None:
+        try:
+            waittime = Integer(self.waittime).convert()
+        except typepy.TypeConversionError:
             return ""
 
         if platform.system() == "Windows":
@@ -151,8 +155,9 @@ class PingTransmitter(object):
             return "-q -w {:d}".format(waittime)
 
     def __get_count_option(self):
-        count = dp.IntegerType(self.count).try_convert()
-        if count is None:
+        try:
+            count = Integer(self.count).convert()
+        except typepy.TypeConversionError:
             return ""
 
         if platform.system() == "Windows":
