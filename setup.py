@@ -5,23 +5,24 @@
 """
 
 from __future__ import unicode_literals
+import io
 import os.path
 import sys
 
 import setuptools
 
 
-MISC_DIR = "misc"
 REQUIREMENT_DIR = "requirements"
 
 needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
 pytest_runner = ["pytest-runner"] if needs_pytest else []
 
 
-with open("README.rst") as fp:
+with io.open("README.rst", encoding="utf8") as fp:
     long_description = fp.read()
 
-with open(os.path.join(MISC_DIR, "summary.txt")) as f:
+with io.open(os.path.join(
+        "docs", "pages", "introduction", "summary.txt"), encoding="utf8") as f:
     summary = f.read()
 
 with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
