@@ -1,1 +1,0 @@
-pingparsing is a python library of parsing ping command output.
