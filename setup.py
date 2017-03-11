@@ -4,7 +4,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-from __future__ import unicode_literals
 import io
 import os.path
 import sys
@@ -33,7 +32,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 setuptools.setup(
     name="pingparsing",
-    version="0.4.1",
+    version="0.4.2",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
     url="https://github.com/thombashi/pingparsing",
