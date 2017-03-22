@@ -85,7 +85,7 @@ class PingTransmitter(object):
 
         self.__validate_ping_param()
 
-        command_list = self.__get_base_ping_command()
+        command_list = self.__get_base_ping_command_list()
 
         if typepy.is_not_null_string(self.ping_option):
             command_list.append(self.ping_option)
@@ -135,7 +135,7 @@ class PingTransmitter(object):
         if count <= 0:
             raise ValueError("count must be greater than zero")
 
-    def __get_base_ping_command(self):
+    def __get_base_ping_command_list(self):
         command_list = []
 
         if platform.system() == "Windows" and self.auto_codepage:
