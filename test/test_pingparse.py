@@ -4,7 +4,10 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-from pingparsing import *
+from pingparsing import (
+    PingParsing,
+    PingTransmitter,
+)
 import pytest
 from typepy.type import RealNumber
 

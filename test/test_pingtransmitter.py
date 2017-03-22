@@ -4,9 +4,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from pingparsing import PingTransmitter
 import pytest
-
-from pingparsing import *
 
 
 @pytest.fixture

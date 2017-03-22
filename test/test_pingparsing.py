@@ -6,10 +6,13 @@
 
 import itertools
 
+from pingparsing import (
+    EmptyPingStaticticsError,
+    PingParsing,
+    PingResult,
+)
 import pytest
 import six
-
-from pingparsing import *
 
 
 @pytest.fixture
