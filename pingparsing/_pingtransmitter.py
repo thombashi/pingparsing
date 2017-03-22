@@ -102,6 +102,9 @@ class PingTransmitter(object):
 
         return PingResult(stdout, stderr, ping_proc.returncode)
 
+    def __is_windows(self):
+        return platform.system() == "Windows"
+
     def __validate_ping_param(self):
         if typepy.is_null_string(self.destination_host):
             raise ValueError("required destination_host")
@@ -138,7 +141,7 @@ class PingTransmitter(object):
     def __get_base_ping_command_list(self):
         command_list = []
 
-        if platform.system() == "Windows" and self.auto_codepage:
+        if self.__is_windows() and self.auto_codepage:
             command_list.append("chcp 437 &")
 
         command_list.extend([
@@ -157,7 +160,7 @@ class PingTransmitter(object):
 
             waittime = DEFAULT_WAITTIME
 
-        if platform.system() == "Windows":
+        if self.__is_windows():
             return "-n {:d}".format(waittime)
         else:
             return "-q -w {:d}".format(waittime)
@@ -168,7 +171,7 @@ class PingTransmitter(object):
         except typepy.TypeConversionError:
             return ""
 
-        if platform.system() == "Windows":
+        if self.__is_windows():
             return "-n {:d}".format(count)
         else:
             return "-c {:d}".format(count)
