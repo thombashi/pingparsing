@@ -28,6 +28,8 @@ class Test_PingParse_parse:
     @pytest.mark.parametrize(["host", "value", "expected"], [
         ["localhost", None, 1],
         ["localhost", 3, 3],
+        ["127.0.0.1", 1, 1],
+        ["::1", 1, 1],
     ])
     def test_normal(
             self, transmitter, ping_parser, host, value, expected):

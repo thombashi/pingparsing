@@ -5,7 +5,9 @@
 """
 
 from __future__ import absolute_import
+
 from collections import namedtuple
+import ipaddress
 import platform
 
 import typepy
@@ -40,24 +42,30 @@ class PingTransmitter(object):
 
     .. py:attribute:: destination_host
 
-        Hostname/IP-address to sending ICMP packets.
+        Hostname or IP-address (IPv4/IPf6) to sending ICMP packets.
 
     .. py:attribute:: waittime
 
-        Time [sec] for sending packets.
-        If the value is ``None``, sending packets time will be the same as
-        built-in ``ping`` command.
-        Defaults to 1 [sec].
+        Time ``[sec]`` of sending ICMP packets. This will be ignored if
+        the value is ``None``. If both :py:attr:`~.waittime` and
+        :py:attr:`~.count` are ``None``, :py:attr:`~.waittime` will be set to
+        ``1``.
+        Defaults to ``None``.
 
     .. py:attribute:: count
 
-        Number of sending ICMP packets.
-        The value will be ignored if the value is ``None``.
-        Defaults to ``None``.
+        Number of sending ICMP packets. This will be ignored if the value is
+        ``None``. Defaults to ``None``.
 
     .. py:attribute:: ping_option
 
         Additional ``ping`` command option.
+
+    .. py:attribute:: interface
+
+        Interface name or zone-id. This will be required when
+        :py:attr:`~.destination_host` is IPv6 link-local scope address.
+        Defaults to ``None``.
 
     .. py:attribute:: auto_codepage
 
@@ -70,6 +78,7 @@ class PingTransmitter(object):
         self.waittime = None
         self.count = None
         self.ping_option = ""
+        self.interface = None
         self.auto_codepage = True
 
     def ping(self):
@@ -105,12 +114,21 @@ class PingTransmitter(object):
     def __is_windows(self):
         return platform.system() == "Windows"
 
+    def __is_ipv6(self):
+        try:
+            network = ipaddress.ip_network(self.destination_host)
+        except ValueError:
+            return False
+
+        return network.version == 6
+
     def __validate_ping_param(self):
         if typepy.is_null_string(self.destination_host):
             raise ValueError("required destination_host")
 
         self.__validate_waittime()
         self.__validate_count()
+        self.__validate_interface()
 
     def __validate_waittime(self):
         if self.waittime is None:
@@ -138,6 +156,17 @@ class PingTransmitter(object):
         if count <= 0:
             raise ValueError("count must be greater than zero")
 
+    def __validate_interface(self):
+        if not self.__is_ipv6():
+            return
+
+        if not ipaddress.ip_network(self.destination_host).is_link_local:
+            return
+
+        if typepy.is_null_string(self.interface):
+            raise ValueError(
+                "interface required to ping to IPv6 link local address")
+
     def __get_base_ping_command_list(self):
         command_list = []
 
@@ -145,11 +174,26 @@ class PingTransmitter(object):
             command_list.append("chcp 437 &")
 
         command_list.extend([
-            "ping",
-            self.destination_host,
+            self.__get_ping_command(),
+            self.__get_destination_host(),
         ])
 
         return command_list
+
+    def __get_destination_host(self):
+        if self.__is_windows() and self.__is_ipv6():
+            return "{:s}%{}".format(self.destination_host, self.interface)
+
+        return self.destination_host
+
+    def __get_ping_command(self):
+        if self.__is_windows():
+            return "ping"
+
+        if self.__is_ipv6():
+            return "ping6"
+
+        return "ping"
 
     def __get_waittime_option(self):
         try:
