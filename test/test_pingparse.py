@@ -25,8 +25,31 @@ def transmitter():
 class Test_PingParse_parse:
 
     @pytest.mark.xfail
+    @pytest.mark.parametrize(["host", "value", "expected"], [
+        ["localhost", None, 1],
+        ["localhost", 3, 3],
+    ])
+    def test_normal(
+            self, transmitter, ping_parser, host, value, expected):
+        transmitter.destination_host = host
+        transmitter.count = value
+        transmitter.waittime = value
+        result = transmitter.ping()
+
+        ping_parser.parse(result.stdout)
+
+        assert ping_parser.packet_transmit >= expected
+        assert RealNumber(ping_parser.packet_receive).is_type()
+        assert RealNumber(ping_parser.packet_loss).is_type()
+        assert RealNumber(ping_parser.rtt_min).is_type()
+        assert RealNumber(ping_parser.rtt_avg).is_type()
+        assert RealNumber(ping_parser.rtt_max).is_type()
+        assert RealNumber(ping_parser.rtt_mdev).is_type()
+
+    @pytest.mark.xfail
     @pytest.mark.parametrize(["host", "waittime", "expected"], [
-        ["localhost", 3, ValueError],
+        ["localhost", 1, 1],
+        ["localhost", 3, 3],
     ])
     def test_normal_waittime(
             self, transmitter, ping_parser, host, waittime, expected):
@@ -36,7 +59,28 @@ class Test_PingParse_parse:
 
         ping_parser.parse(result.stdout)
 
-        assert RealNumber(ping_parser.packet_transmit).is_type()
+        assert ping_parser.packet_transmit >= expected
+        assert RealNumber(ping_parser.packet_receive).is_type()
+        assert RealNumber(ping_parser.packet_loss).is_type()
+        assert RealNumber(ping_parser.rtt_min).is_type()
+        assert RealNumber(ping_parser.rtt_avg).is_type()
+        assert RealNumber(ping_parser.rtt_max).is_type()
+        assert RealNumber(ping_parser.rtt_mdev).is_type()
+
+    @pytest.mark.xfail
+    @pytest.mark.parametrize(["host", "count", "expected"], [
+        ["localhost", 1, 1],
+        ["localhost", 3, 3],
+    ])
+    def test_normal_count(
+            self, transmitter, ping_parser, host, count, expected):
+        transmitter.destination_host = host
+        transmitter.count = count
+        result = transmitter.ping()
+
+        ping_parser.parse(result.stdout)
+
+        assert ping_parser.packet_transmit == expected
         assert RealNumber(ping_parser.packet_receive).is_type()
         assert RealNumber(ping_parser.packet_loss).is_type()
         assert RealNumber(ping_parser.rtt_min).is_type()

@@ -12,6 +12,9 @@ import typepy
 from typepy.type import Integer
 
 
+DEFAULT_WAITTIME = 1
+
+
 class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
     """
     Data class to store ``ping`` command execution result.
@@ -64,7 +67,7 @@ class PingTransmitter(object):
 
     def __init__(self):
         self.destination_host = ""
-        self.waittime = 1
+        self.waittime = None
         self.count = None
         self.ping_option = ""
         self.auto_codepage = True
@@ -147,7 +150,10 @@ class PingTransmitter(object):
         try:
             waittime = Integer(self.waittime).convert()
         except typepy.TypeConversionError:
-            return ""
+            if self.count:
+                return ""
+
+            waittime = DEFAULT_WAITTIME
 
         if platform.system() == "Windows":
             return "-n {:d}".format(waittime)
