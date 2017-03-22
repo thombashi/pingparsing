@@ -90,8 +90,10 @@ class PingTransmitter(object):
         if typepy.is_not_null_string(self.ping_option):
             command_list.append(self.ping_option)
 
-        command_list.append(self.__get_waittime_option())
-        command_list.append(self.__get_count_option())
+        command_list.extend([
+            self.__get_waittime_option(),
+            self.__get_count_option(),
+        ])
 
         ping_proc = subprocess.Popen(
             " ".join(command_list), shell=True,
