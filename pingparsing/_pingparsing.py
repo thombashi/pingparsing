@@ -124,7 +124,7 @@ class PingParsing(object):
     def parse(self, ping_message):
         """
         Parse ping command output.
-        You can get parsing results by attributes:
+        You can get parsing results by following attributes:
 
             - :py:attr:`.packet_transmit`
             - :py:attr:`.packet_receive`
@@ -133,10 +133,11 @@ class PingParsing(object):
             - :py:attr:`.rtt_avg`
             - :py:attr:`.rtt_max`
             - :py:attr:`.rtt_mdev`
+            - :py:attr:`.duplicates`
 
         Or you can get as a dictionary by :py:meth:`.as_dict`
 
-        :param str ping_message: String of ping command output.
+        :param str ping_message: ping command output.
         """
 
         self.__initialize_parse_result()
