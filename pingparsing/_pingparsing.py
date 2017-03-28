@@ -95,6 +95,15 @@ class PingParsing(object):
 
         return self.__rtt_mdev
 
+    @property
+    def duplicates(self):
+        """
+        :return: Number of duplicated packet (Linux only).
+        :rtype: float
+        """
+
+        return self.__duplicates
+
     def as_dict(self):
         """
         :return: Parsed result as a dictionary.
@@ -109,6 +118,7 @@ class PingParsing(object):
             "rtt_avg": self.rtt_avg,
             "rtt_max": self.rtt_max,
             "rtt_mdev": self.rtt_mdev,
+            "duplicates": self.duplicates,
         }
 
     def parse(self, ping_message):
@@ -226,6 +236,8 @@ class PingParsing(object):
         self.__packet_receive = int(parse_list[2])
         self.__packet_loss = float(parse_list[-2])
 
+        self.__duplicates = self.__parse_duplicate(packet_line)
+
         try:
             rtt_line = body_line_list[1]
         except IndexError:
@@ -251,6 +263,21 @@ class PingParsing(object):
         self.__rtt_max = float(parse_list[5])
         self.__rtt_mdev = float(parse_list[7])
 
+    @staticmethod
+    def __parse_duplicate(line):
+        packet_pattern = (
+            pp.SkipTo(pp.Word("+" + pp.nums) + pp.Literal("duplicates,")) +
+            pp.Word("+" + pp.nums) +
+            pp.Literal("duplicates,")
+        )
+        try:
+            duplicate_parse_list = packet_pattern.parseString(
+                _to_unicode(line))
+        except pp.ParseException:
+            return None
+
+        return int(duplicate_parse_list[-2].strip("+"))
+
     def __initialize_parse_result(self):
         self.__packet_transmit = None
         self.__packet_receive = None
@@ -259,3 +286,4 @@ class PingParsing(object):
         self.__rtt_avg = None
         self.__rtt_max = None
         self.__rtt_mdev = None
+        self.__duplicates = None
