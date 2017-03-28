@@ -205,7 +205,7 @@ class PingParsing(object):
         )
         try:
             parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        except pp.ParseBaseException:
+        except pp.ParseException:
             return
 
         self.__rtt_min = float(parse_list[1])
@@ -255,7 +255,7 @@ class PingParsing(object):
         )
         try:
             parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        except pp.ParseBaseException:
+        except pp.ParseException:
             return
 
         self.__rtt_min = float(parse_list[1])
