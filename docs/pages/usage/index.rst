@@ -17,29 +17,36 @@ Sample output: Debian 8
 
 .. code:: console
 
-    ./ping_sample.py -d 192.168.0.1
+    ./ping_sample.py -d 8.8.8.8
     # returncode ---
     0
 
     # properties ---
     packet_transmit: 10 packets
     packet_receive: 10 packets
-    packet_loss: 0.0 %
-    rtt_min: 0.445
-    rtt_avg: 1.069
-    rtt_max: 4.854
-    rtt_mdev: 1.312
+    packet_loss_rate: 0.0 %
+    packet_loss_count: 0 packets
+    packet_duplicate_rate: NaN
+    packet_duplicate_count: NaN
+    rtt_min: 31.747
+    rtt_avg: 36.001
+    rtt_max: 41.727
+    rtt_mdev: 3.046
 
     # asdict ---
     {
-        "packet_loss": 0.0,
+        "rtt_min": 31.747,
+        "packet_duplicate_count": null,
+        "packet_loss_count": 0,
+        "rtt_max": 41.727,
+        "packet_loss_rate": 0.0,
         "packet_receive": 10,
+        "rtt_mdev": 3.046,
         "packet_transmit": 10,
-        "rtt_min": 0.445,
-        "rtt_max": 4.854,
-        "rtt_mdev": 1.312,
-        "rtt_avg": 1.069
+        "packet_duplicate_rate": null,
+        "rtt_avg": 36.001
     }
+
 
 Example execution result: Windows 10
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,22 +60,29 @@ Example execution result: Windows 10
     # properties ---
     packet_transmit: 10 packets
     packet_receive: 10 packets
-    packet_loss: 0.0 %
-    rtt_min: 30.0
-    rtt_avg: 37.0
-    rtt_max: 58.0
+    packet_loss_rate: 0.0 %
+    packet_loss_count: 0 packets
+    packet_duplicate_rate: NaN
+    packet_duplicate_count: NaN
+    rtt_min: 32.0
+    rtt_avg: 35.0
+    rtt_max: 39.0
     rtt_mdev: None
 
     # asdict ---
     {
-        "rtt_avg": 37.0,
-        "rtt_max": 58.0,
-        "packet_loss": 0.0,
+        "packet_receive": 10,
+        "packet_duplicate_rate": null,
         "packet_transmit": 10,
-        "rtt_min": 30.0,
+        "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "rtt_avg": 35.0,
         "rtt_mdev": null,
-        "packet_receive": 10
+        "rtt_min": 32.0,
+        "packet_duplicate_count": null,
+        "rtt_max": 39.0
     }
+
 
 Note: ``rtt_mdev`` not available with Windows
 
@@ -103,9 +117,12 @@ Output
 
     ./parse_sample.py -f ping.txt
     # properties ---
-    packet_transmit: 60
-    packet_receive: 60
-    packet_loss: 0.0
+    packet_transmit: 60 packets
+    packet_receive: 60 packets
+    packet_loss_rate: 0.0 %
+    packet_loss_count: 0 packets
+    packet_duplicate_rate: NaN
+    packet_duplicate_count: NaN
     rtt_min: 61.425
     rtt_avg: 99.731
     rtt_max: 212.597
@@ -113,14 +130,18 @@ Output
 
     # asdict ---
     {
-        "rtt_avg": 99.731,
-        "packet_transmit": 60,
-        "rtt_max": 212.597,
-        "packet_loss": 0.0,
         "rtt_min": 61.425,
+        "packet_duplicate_count": null,
+        "packet_loss_count": 0,
+        "rtt_max": 212.597,
+        "packet_loss_rate": 0.0,
+        "packet_receive": 60,
         "rtt_mdev": 27.566,
-        "packet_receive": 60
+        "packet_transmit": 60,
+        "packet_duplicate_rate": null,
+        "rtt_avg": 99.731
     }
+
 
 Example: Windows 10
 ~~~~~~~~~~~~~~~~~~~
