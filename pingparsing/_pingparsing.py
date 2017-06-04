@@ -121,13 +121,18 @@ class PingParsing(object):
         return self.__rtt_mdev
 
     @property
-    def duplicates(self):
+    def duplicate_count(self):
         """
         :return: Number of duplicated packet (Linux only).
         :rtype: int
         """
 
         return self.__duplicates
+
+    @property
+    def duplicates(self):
+        # mark as delete
+        return self.duplicate_count
 
     def as_dict(self):
         """
@@ -144,7 +149,7 @@ class PingParsing(object):
             "rtt_avg": self.rtt_avg,
             "rtt_max": self.rtt_max,
             "rtt_mdev": self.rtt_mdev,
-            "duplicates": self.duplicates,
+            "duplicate_count": self.duplicates,
         }
 
     def parse(self, ping_message):
@@ -159,7 +164,7 @@ class PingParsing(object):
             - :py:attr:`.rtt_avg`
             - :py:attr:`.rtt_max`
             - :py:attr:`.rtt_mdev`
-            - :py:attr:`.duplicates`
+            - :py:attr:`.duplicate_count`
 
         Or you can get as a dictionary by :py:meth:`.as_dict`
 
