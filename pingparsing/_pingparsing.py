@@ -73,6 +73,18 @@ class PingParsing(object):
         return self.packet_loss_rate
 
     @property
+    def packet_loss_count(self):
+        """
+        :return: Packet loss count.
+        :rtype: int
+        """
+
+        try:
+            return self.packet_transmit - self.packet_receive
+        except TypeError:
+            return None
+
+    @property
     def rtt_min(self):
         """
         :return: Minimum round trip time of transmitted ICMP packets [ms].
@@ -127,6 +139,7 @@ class PingParsing(object):
             "packet_transmit": self.packet_transmit,
             "packet_receive": self.packet_receive,
             "packet_loss_rate": self.packet_loss_rate,
+            "packet_loss_count": self.packet_loss_count,
             "rtt_min": self.rtt_min,
             "rtt_avg": self.rtt_avg,
             "rtt_max": self.rtt_max,
