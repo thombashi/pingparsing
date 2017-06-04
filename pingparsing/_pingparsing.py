@@ -124,7 +124,7 @@ class PingParsing(object):
     def duplicates(self):
         """
         :return: Number of duplicated packet (Linux only).
-        :rtype: float
+        :rtype: int
         """
 
         return self.__duplicates
