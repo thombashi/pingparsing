@@ -13,6 +13,9 @@ pingparsing
 .. image:: https://img.shields.io/appveyor/ci/thombashi/pingparsing/master.svg?label=Windows
     :target: https://ci.appveyor.com/project/thombashi/pingparsing
 
+.. image:: https://img.shields.io/github/stars/thombashi/pingparsing.svg?style=social&label=Star
+   :target: https://github.com/thombashi/pingparsing
+
 Summary
 -------
 
@@ -238,6 +241,7 @@ Dependencies
 
 Python 2.7+ or 3.3+
 
+- `logbook <http://logbook.readthedocs.io/en/stable/>`__
 - `pyparsing <https://pyparsing.wikispaces.com/>`__
 - `six <https://pypi.python.org/pypi/six/>`__
 - `typepy <https://github.com/thombashi/typepy>`__

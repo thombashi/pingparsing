@@ -11,6 +11,7 @@ Dependencies
 
 Python 2.7+ or 3.3+
 
+- `logbook <http://logbook.readthedocs.io/en/stable/>`__
 - `pyparsing <https://pyparsing.wikispaces.com/>`__
 - `six <https://pypi.python.org/pypi/six/>`__
 - `typepy <https://github.com/thombashi/typepy>`__
