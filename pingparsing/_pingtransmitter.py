@@ -10,6 +10,7 @@ from collections import namedtuple
 import ipaddress
 import platform
 
+import six
 import typepy
 from typepy.type import Integer
 
@@ -116,8 +117,9 @@ class PingTransmitter(object):
 
     def __is_ipv6(self):
         try:
-            network = ipaddress.ip_network(self.destination_host)
         except ValueError:
+            network = ipaddress.ip_address(
+                six.text_type(self.destination_host))
             return False
 
         return network.version == 6
@@ -160,7 +162,8 @@ class PingTransmitter(object):
         if not self.__is_ipv6():
             return
 
-        if not ipaddress.ip_network(self.destination_host).is_link_local:
+        if not ipaddress.ip_network(
+                six.text_type(self.destination_host)).is_link_local:
             return
 
         if typepy.is_null_string(self.interface):
