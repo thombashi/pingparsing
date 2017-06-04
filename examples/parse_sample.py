@@ -6,11 +6,13 @@
 """
 
 from __future__ import print_function
+
 import argparse
 import sys
 
-import examplecommon
 import pingparsing
+
+import examplecommon
 
 
 def parse_option():
