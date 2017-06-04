@@ -121,7 +121,7 @@ class PingParsing(object):
         return self.__rtt_mdev
 
     @property
-    def duplicate_rate(self):
+    def packet_duplicate_rate(self):
         """
         :return:
             Percentage of duplicated packets [%].
@@ -130,14 +130,14 @@ class PingParsing(object):
         """
 
         try:
-            return (self.duplicate_count / self.packet_receive) * 100
+            return (self.packet_duplicate_count / self.packet_receive) * 100
         except (TypeError, ZeroDivisionError, OverflowError):
             return None
 
         return self.__duplicates
 
     @property
-    def duplicate_count(self):
+    def packet_duplicate_count(self):
         """
         :return: Number of duplicated packet (Linux only).
         :rtype: int
@@ -148,7 +148,7 @@ class PingParsing(object):
     @property
     def duplicates(self):
         # mark as delete
-        return self.duplicate_count
+        return self.packet_duplicate_count
 
     def as_dict(self):
         """
@@ -165,8 +165,8 @@ class PingParsing(object):
             "rtt_avg": self.rtt_avg,
             "rtt_max": self.rtt_max,
             "rtt_mdev": self.rtt_mdev,
-            "duplicate_rate": self.duplicate_rate,
-            "duplicate_count": self.duplicate_count,
+            "packet_duplicate_rate": self.packet_duplicate_rate,
+            "packet_duplicate_count": self.packet_duplicate_count,
         }
 
     def parse(self, ping_message):
@@ -181,7 +181,7 @@ class PingParsing(object):
             - :py:attr:`.rtt_avg`
             - :py:attr:`.rtt_max`
             - :py:attr:`.rtt_mdev`
-            - :py:attr:`.duplicate_count`
+            - :py:attr:`.packet_duplicate_count`
 
         Or you can get as a dictionary by :py:meth:`.as_dict`
 

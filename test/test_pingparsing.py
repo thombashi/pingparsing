@@ -142,8 +142,8 @@ class Test_PingParsing_parse:
                 "rtt_avg": 99.731,
                 "rtt_max": 212.597,
                 "rtt_mdev": 27.566,
-                "duplicate_rate": None,
-                "duplicate_count": None,
+                "packet_duplicate_rate": None,
+                "packet_duplicate_count": None,
             }
         ],
         [
@@ -157,8 +157,8 @@ class Test_PingParsing_parse:
                 "rtt_max": 11.699,
                 "rtt_mdev": 0.699,
                 "rtt_avg": 0.642,
-                "duplicate_rate": 0.0643915003219575,
-                "duplicate_count": 1,
+                "packet_duplicate_rate": 0.0643915003219575,
+                "packet_duplicate_count": 1,
             }
         ],
         [
@@ -172,8 +172,8 @@ class Test_PingParsing_parse:
                 "rtt_avg": None,
                 "rtt_max": None,
                 "rtt_mdev": None,
-                "duplicate_rate": None,
-                "duplicate_count": None,
+                "packet_duplicate_rate": None,
+                "packet_duplicate_count": None,
             }
         ],
         [
@@ -187,8 +187,8 @@ class Test_PingParsing_parse:
                 "rtt_avg": 107,
                 "rtt_max": 194,
                 "rtt_mdev": None,
-                "duplicate_rate": None,
-                "duplicate_count": None,
+                "packet_duplicate_rate": None,
+                "packet_duplicate_count": None,
             }
         ],
     ] + list(itertools.product(
@@ -206,8 +206,8 @@ class Test_PingParsing_parse:
             "rtt_avg": None,
             "rtt_max": None,
             "rtt_mdev": None,
-            "duplicate_rate": None,
-            "duplicate_count": None,
+            "packet_duplicate_rate": None,
+            "packet_duplicate_count": None,
         }]
     )) + list(itertools.product(
         [
@@ -224,8 +224,8 @@ class Test_PingParsing_parse:
             "rtt_avg": None,
             "rtt_max": None,
             "rtt_mdev": None,
-            "duplicate_rate": None,
-            "duplicate_count": None,
+            "packet_duplicate_rate": None,
+            "packet_duplicate_count": None,
         }]
     ))
     )
@@ -246,8 +246,8 @@ class Test_PingParsing_parse:
                 "rtt_avg": 99.731,
                 "rtt_max": 212.597,
                 "rtt_mdev": 27.566,
-                "duplicate_rate": None,
-                "duplicate_count": None,
+                "packet_duplicate_rate": None,
+                "packet_duplicate_count": None,
             }
         ]
     ])
@@ -267,7 +267,7 @@ class Test_PingParsing_parse:
         assert ping_parser.rtt_avg is None
         assert ping_parser.rtt_max is None
         assert ping_parser.rtt_mdev is None
-        assert ping_parser.duplicate_count is None
+        assert ping_parser.packet_duplicate_count is None
 
     @pytest.mark.parametrize(["ping_text", "expected"], [
         [PING_FEDORA_EMPTY_BODY, EmptyPingStaticticsError],
