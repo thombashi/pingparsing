@@ -14,6 +14,8 @@ import six
 import typepy
 from typepy.type import Integer
 
+from ._logger import logger
+
 
 DEFAULT_WAITTIME = 1
 
@@ -104,9 +106,12 @@ class PingTransmitter(object):
             self.__get_waittime_option(),
             self.__get_count_option(),
         ])
+        command = " ".join(command_list)
+
+        logger.debug(command)
 
         ping_proc = subprocess.Popen(
-            " ".join(command_list), shell=True,
+            command, shell=True,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = ping_proc.communicate()
 
@@ -117,10 +122,14 @@ class PingTransmitter(object):
 
     def __is_ipv6(self):
         try:
-        except ValueError:
             network = ipaddress.ip_address(
                 six.text_type(self.destination_host))
+        except ValueError as e:
+            logger.debug(e)
             return False
+
+        logger.debug("IP address: version={}, address={}".format(
+            network.version, self.destination_host))
 
         return network.version == 6
 

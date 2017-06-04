@@ -6,11 +6,14 @@
 
 from __future__ import absolute_import
 
-from .error import PingStaticticsHeaderNotFoundError
-from .error import EmptyPingStaticticsError
-
+from ._logger import (
+    set_logger,
+    set_log_level,
+)
 from ._pingparsing import PingParsing
 from ._pingtransmitter import (
     PingTransmitter,
     PingResult
 )
+from .error import EmptyPingStaticticsError
+from .error import PingStaticticsHeaderNotFoundError

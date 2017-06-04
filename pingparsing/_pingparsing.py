@@ -9,8 +9,10 @@ from __future__ import absolute_import
 import re
 
 import typepy
+
 import pyparsing as pp
 
+from ._logger import logger
 from .error import EmptyPingStaticticsError
 from .error import PingStaticticsHeaderNotFoundError
 
@@ -143,7 +145,10 @@ class PingParsing(object):
         self.__initialize_parse_result()
 
         if typepy.is_null_string(ping_message):
+            logger.debug("ping_message is empty")
             return
+
+        logger.debug("parsing ping result: {}".format(ping_message))
 
         try:
             self.__parse_linux_ping(ping_message)
@@ -168,6 +173,8 @@ class PingParsing(object):
             raise EmptyPingStaticticsError("ping statistics is empty")
 
     def __parse_windows_ping(self, ping_message):
+        logger.debug("parsing as Windows ping result format")
+
         line_list = _to_unicode(ping_message).splitlines()
 
         i = self.__find_ststs_head_line_idx(
@@ -214,6 +221,8 @@ class PingParsing(object):
         self.__rtt_max = float(parse_list[3])
 
     def __parse_linux_ping(self, ping_message):
+        logger.debug("parsing as Linux ping result format")
+
         line_list = _to_unicode(ping_message).splitlines()
 
         i = self.__find_ststs_head_line_idx(
