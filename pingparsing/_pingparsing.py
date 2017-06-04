@@ -54,7 +54,7 @@ class PingParsing(object):
         return self.__packet_receive
 
     @property
-    def packet_loss(self):
+    def packet_loss_rate(self):
         """
         :return:
             Percentage of packet loss [%].
@@ -66,6 +66,11 @@ class PingParsing(object):
             return (1.0 - (self.packet_receive / self.packet_transmit)) * 100
         except (TypeError, ZeroDivisionError, OverflowError):
             return None
+
+    @property
+    def packet_loss(self):
+        # mark as delete
+        return self.packet_loss_rate
 
     @property
     def rtt_min(self):
@@ -121,7 +126,7 @@ class PingParsing(object):
         return {
             "packet_transmit": self.packet_transmit,
             "packet_receive": self.packet_receive,
-            "packet_loss": self.packet_loss,
+            "packet_loss_rate": self.packet_loss_rate,
             "rtt_min": self.rtt_min,
             "rtt_avg": self.rtt_avg,
             "rtt_max": self.rtt_max,
@@ -136,7 +141,7 @@ class PingParsing(object):
 
             - :py:attr:`.packet_transmit`
             - :py:attr:`.packet_receive`
-            - :py:attr:`.packet_loss`
+            - :py:attr:`.packet_loss_rate`
             - :py:attr:`.rtt_min`
             - :py:attr:`.rtt_avg`
             - :py:attr:`.rtt_max`

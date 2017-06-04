@@ -35,14 +35,14 @@ class Test_PingParse_parse:
             self, transmitter, ping_parser, host, value, expected):
         transmitter.destination_host = host
         transmitter.count = value
-        transmitter.waittime = value
+        #transmitter.waittime = value
         result = transmitter.ping()
 
         ping_parser.parse(result.stdout)
 
         assert ping_parser.packet_transmit >= expected
         assert RealNumber(ping_parser.packet_receive).is_type()
-        assert RealNumber(ping_parser.packet_loss).is_type()
+        assert RealNumber(ping_parser.packet_loss_rate).is_type()
         assert RealNumber(ping_parser.rtt_min).is_type()
         assert RealNumber(ping_parser.rtt_avg).is_type()
         assert RealNumber(ping_parser.rtt_max).is_type()
@@ -63,7 +63,7 @@ class Test_PingParse_parse:
 
         assert ping_parser.packet_transmit >= expected
         assert RealNumber(ping_parser.packet_receive).is_type()
-        assert RealNumber(ping_parser.packet_loss).is_type()
+        assert RealNumber(ping_parser.packet_loss_rate).is_type()
         assert RealNumber(ping_parser.rtt_min).is_type()
         assert RealNumber(ping_parser.rtt_avg).is_type()
         assert RealNumber(ping_parser.rtt_max).is_type()
@@ -84,7 +84,7 @@ class Test_PingParse_parse:
 
         assert ping_parser.packet_transmit == expected
         assert RealNumber(ping_parser.packet_receive).is_type()
-        assert RealNumber(ping_parser.packet_loss).is_type()
+        assert RealNumber(ping_parser.packet_loss_rate).is_type()
         assert RealNumber(ping_parser.rtt_min).is_type()
         assert RealNumber(ping_parser.rtt_avg).is_type()
         assert RealNumber(ping_parser.rtt_max).is_type()

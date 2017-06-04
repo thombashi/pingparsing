@@ -136,7 +136,7 @@ class Test_PingParsing_parse:
             {
                 "packet_transmit": 60,
                 "packet_receive": 60,
-                "packet_loss": 0.0,
+                "packet_loss_rate": 0.0,
                 "rtt_min": 61.425,
                 "rtt_avg": 99.731,
                 "rtt_max": 212.597,
@@ -147,7 +147,7 @@ class Test_PingParsing_parse:
         [
             PING_FEDORA_LOSS,
             {
-                'packet_loss': 7.997630331753558,
+                'packet_loss_rate': 7.997630331753558,
                 'packet_receive': 1553,
                 'packet_transmit': 1688,
                 'rtt_min': 0.282,
@@ -162,7 +162,7 @@ class Test_PingParsing_parse:
             {
                 "packet_transmit": 5,
                 "packet_receive": 0,
-                "packet_loss": 100.0,
+                "packet_loss_rate": 100.0,
                 "rtt_min": None,
                 "rtt_avg": None,
                 "rtt_max": None,
@@ -175,7 +175,7 @@ class Test_PingParsing_parse:
             {
                 "packet_transmit": 10,
                 "packet_receive": 10,
-                "packet_loss": 0.0,
+                "packet_loss_rate": 0.0,
                 "rtt_min": 56,
                 "rtt_avg": 107,
                 "rtt_max": 194,
@@ -192,7 +192,7 @@ class Test_PingParsing_parse:
         [{
             "packet_transmit": 5,
             "packet_receive": 0,
-            "packet_loss": 100.0,
+            "packet_loss_rate": 100.0,
             "rtt_min": None,
             "rtt_avg": None,
             "rtt_max": None,
@@ -208,7 +208,7 @@ class Test_PingParsing_parse:
         [{
             "packet_transmit": 4,
             "packet_receive": 0,
-            "packet_loss": 100.0,
+            "packet_loss_rate": 100.0,
             "rtt_min": None,
             "rtt_avg": None,
             "rtt_max": None,
@@ -228,7 +228,7 @@ class Test_PingParsing_parse:
             {
                 "packet_transmit": 60,
                 "packet_receive": 60,
-                "packet_loss": 0.0,
+                "packet_loss_rate": 0.0,
                 "rtt_min": 61.425,
                 "rtt_avg": 99.731,
                 "rtt_max": 212.597,
@@ -248,7 +248,7 @@ class Test_PingParsing_parse:
 
         assert ping_parser.packet_transmit is None
         assert ping_parser.packet_receive is None
-        assert ping_parser.packet_loss is None
+        assert ping_parser.packet_loss_rate is None
         assert ping_parser.rtt_min is None
         assert ping_parser.rtt_avg is None
         assert ping_parser.rtt_max is None
