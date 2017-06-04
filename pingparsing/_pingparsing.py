@@ -5,6 +5,7 @@
 """
 
 from __future__ import absolute_import
+from __future__ import division
 
 import re
 
@@ -55,11 +56,16 @@ class PingParsing(object):
     @property
     def packet_loss(self):
         """
-        :return: Percentage of packet loss [%].
+        :return:
+            Percentage of packet loss [%].
+            ``None`` if the value is not a number.
         :rtype: float
         """
 
-        return self.__packet_loss
+        try:
+            return (1.0 - (self.packet_receive / self.packet_transmit)) * 100
+        except (TypeError, ZeroDivisionError, OverflowError):
+            return None
 
     @property
     def rtt_min(self):
@@ -187,15 +193,11 @@ class PingParsing(object):
             pp.Literal("Packets: Sent = ") +
             pp.Word(pp.nums) +
             pp.Literal(", Received = ") +
-            pp.Word(pp.nums) +
-            pp.Literal(", Lost = ") +
-            pp.Word(pp.nums) + "(" +
-            pp.Word(pp.nums + ".")
+            pp.Word(pp.nums)
         )
         parse_list = packet_pattern.parseString(_to_unicode(packet_line))
         self.__packet_transmit = int(parse_list[1])
         self.__packet_receive = int(parse_list[3])
-        self.__packet_loss = float(parse_list[7])
 
         try:
             rtt_line = body_line_list[2].strip()
@@ -236,15 +238,11 @@ class PingParsing(object):
             pp.Word(pp.nums) +
             pp.Literal("packets transmitted,") +
             pp.Word(pp.nums) +
-            pp.Literal("received,") +
-            pp.SkipTo(pp.Word(pp.nums + ".%") + pp.Literal("packet loss")) +
-            pp.Word(pp.nums + ".") +
-            pp.Literal("% packet loss")
+            pp.Literal("received,")
         )
         parse_list = packet_pattern.parseString(_to_unicode(packet_line))
         self.__packet_transmit = int(parse_list[0])
         self.__packet_receive = int(parse_list[2])
-        self.__packet_loss = float(parse_list[-2])
 
         self.__duplicates = self.__parse_duplicate(packet_line)
 
@@ -291,7 +289,6 @@ class PingParsing(object):
     def __initialize_parse_result(self):
         self.__packet_transmit = None
         self.__packet_receive = None
-        self.__packet_loss = None
         self.__rtt_min = None
         self.__rtt_avg = None
         self.__rtt_max = None

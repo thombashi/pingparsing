@@ -147,7 +147,7 @@ class Test_PingParsing_parse:
         [
             PING_FEDORA_LOSS,
             {
-                'packet_loss': 7.0,
+                'packet_loss': 7.997630331753558,
                 'packet_receive': 1553,
                 'packet_transmit': 1688,
                 'rtt_min': 0.282,
