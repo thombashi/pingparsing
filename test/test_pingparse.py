@@ -35,7 +35,6 @@ class Test_PingParse_parse:
             self, transmitter, ping_parser, host, value, expected):
         transmitter.destination_host = host
         transmitter.count = value
-        #transmitter.waittime = value
         result = transmitter.ping()
 
         ping_parser.parse(result.stdout)

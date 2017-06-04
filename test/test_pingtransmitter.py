@@ -17,7 +17,9 @@ class Test_PingTransmitter_ping:
 
     @pytest.mark.xfail
     @pytest.mark.parametrize(["host", "waittime"], [
-        ["localhost", 3],
+        ["localhost", 1],
+        ["127.0.0.1", 1],
+        ["::1", 1],
     ])
     def test_normal_waittime(self, transmitter, host, waittime):
         transmitter.destination_host = host

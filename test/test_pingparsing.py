@@ -149,15 +149,15 @@ class Test_PingParsing_parse:
         [
             PING_FEDORA_LOSS,
             {
-                'packet_receive': 1553,
-                'packet_transmit': 1688,
-                'packet_loss_rate': 7.997630331753558,
+                "packet_receive": 1553,
+                "packet_transmit": 1688,
+                "packet_loss_rate": 7.997630331753558,
                 "packet_loss_count": 135,
-                'rtt_min': 0.282,
-                'rtt_max': 11.699,
-                'rtt_mdev': 0.699,
-                'rtt_avg': 0.642,
-                'duplicate_rate': 0.0643915003219575,
+                "rtt_min": 0.282,
+                "rtt_max": 11.699,
+                "rtt_mdev": 0.699,
+                "rtt_avg": 0.642,
+                "duplicate_rate": 0.0643915003219575,
                 "duplicate_count": 1,
             }
         ],
