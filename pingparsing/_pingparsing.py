@@ -134,8 +134,6 @@ class PingParsing(object):
         except (TypeError, ZeroDivisionError, OverflowError):
             return None
 
-        return self.__duplicates
-
     @property
     def packet_duplicate_count(self):
         """
