@@ -142,6 +142,7 @@ class Test_PingParsing_parse:
                 "rtt_avg": 99.731,
                 "rtt_max": 212.597,
                 "rtt_mdev": 27.566,
+                "duplicate_rate": None,
                 "duplicate_count": None,
             }
         ],
@@ -156,6 +157,7 @@ class Test_PingParsing_parse:
                 'rtt_max': 11.699,
                 'rtt_mdev': 0.699,
                 'rtt_avg': 0.642,
+                'duplicate_rate': 0.0643915003219575,
                 "duplicate_count": 1,
             }
         ],
@@ -170,6 +172,7 @@ class Test_PingParsing_parse:
                 "rtt_avg": None,
                 "rtt_max": None,
                 "rtt_mdev": None,
+                "duplicate_rate": None,
                 "duplicate_count": None,
             }
         ],
@@ -184,6 +187,7 @@ class Test_PingParsing_parse:
                 "rtt_avg": 107,
                 "rtt_max": 194,
                 "rtt_mdev": None,
+                "duplicate_rate": None,
                 "duplicate_count": None,
             }
         ],
@@ -202,6 +206,7 @@ class Test_PingParsing_parse:
             "rtt_avg": None,
             "rtt_max": None,
             "rtt_mdev": None,
+            "duplicate_rate": None,
             "duplicate_count": None,
         }]
     )) + list(itertools.product(
@@ -219,6 +224,7 @@ class Test_PingParsing_parse:
             "rtt_avg": None,
             "rtt_max": None,
             "rtt_mdev": None,
+            "duplicate_rate": None,
             "duplicate_count": None,
         }]
     ))
@@ -240,6 +246,7 @@ class Test_PingParsing_parse:
                 "rtt_avg": 99.731,
                 "rtt_max": 212.597,
                 "rtt_mdev": 27.566,
+                "duplicate_rate": None,
                 "duplicate_count": None,
             }
         ]

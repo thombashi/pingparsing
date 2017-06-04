@@ -75,7 +75,7 @@ class PingParsing(object):
     @property
     def packet_loss_count(self):
         """
-        :return: Packet loss count.
+        :return: Packet loss count. ``None`` if the value is not a number.
         :rtype: int
         """
 
@@ -121,6 +121,22 @@ class PingParsing(object):
         return self.__rtt_mdev
 
     @property
+    def duplicate_rate(self):
+        """
+        :return:
+            Percentage of duplicated packets [%].
+            ``None`` if the value is not a number.
+        :rtype: float
+        """
+
+        try:
+            return (self.duplicate_count / self.packet_receive) * 100
+        except (TypeError, ZeroDivisionError, OverflowError):
+            return None
+
+        return self.__duplicates
+
+    @property
     def duplicate_count(self):
         """
         :return: Number of duplicated packet (Linux only).
@@ -149,7 +165,8 @@ class PingParsing(object):
             "rtt_avg": self.rtt_avg,
             "rtt_max": self.rtt_max,
             "rtt_mdev": self.rtt_mdev,
-            "duplicate_count": self.duplicates,
+            "duplicate_rate": self.duplicate_rate,
+            "duplicate_count": self.duplicate_count,
         }
 
     def parse(self, ping_message):
