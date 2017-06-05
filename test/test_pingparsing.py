@@ -8,10 +8,7 @@ from __future__ import absolute_import
 
 import itertools
 
-from pingparsing import (
-    EmptyPingStaticticsError,
-    PingParsing,
-)
+from pingparsing import EmptyPingStaticticsError
 import pytest
 import six
 

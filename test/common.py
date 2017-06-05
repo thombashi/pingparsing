@@ -6,9 +6,7 @@
 
 from __future__ import absolute_import
 
-from pingparsing import (
-    PingParsing,
-)
+from pingparsing import PingParsing
 import pytest
 import six
 
