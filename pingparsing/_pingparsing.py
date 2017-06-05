@@ -175,11 +175,13 @@ class PingParsing(object):
             - :py:attr:`.packet_transmit`
             - :py:attr:`.packet_receive`
             - :py:attr:`.packet_loss_rate`
+            - :py:attr:`.packet_loss_count`
+            - :py:attr:`.packet_duplicate_rate`
+            - :py:attr:`.packet_duplicate_count`
             - :py:attr:`.rtt_min`
             - :py:attr:`.rtt_avg`
             - :py:attr:`.rtt_max`
             - :py:attr:`.rtt_mdev`
-            - :py:attr:`.packet_duplicate_count`
 
         Or you can get as a dictionary by :py:meth:`.as_dict`
 
