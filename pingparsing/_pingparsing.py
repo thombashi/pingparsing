@@ -202,6 +202,7 @@ class PingParsing(object):
         except PingStaticticsHeaderNotFoundError:
             pass
 
+        self.__initialize_parse_result()
         self.__parse_windows_ping(ping_message)
 
     def __find_ststs_head_line_idx(self, line_list, re_stats_header):
@@ -322,7 +323,7 @@ class PingParsing(object):
             duplicate_parse_list = packet_pattern.parseString(
                 _to_unicode(line))
         except pp.ParseException:
-            return None
+            return 0
 
         return int(duplicate_parse_list[-2].strip("+"))
 

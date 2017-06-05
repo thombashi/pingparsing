@@ -142,8 +142,8 @@ class Test_PingParsing_parse(object):
                 "rtt_avg": 99.731,
                 "rtt_max": 212.597,
                 "rtt_mdev": 27.566,
-                "packet_duplicate_rate": None,
-                "packet_duplicate_count": None,
+                "packet_duplicate_rate": 0,
+                "packet_duplicate_count": 0,
             }
         ],
         [
@@ -173,7 +173,7 @@ class Test_PingParsing_parse(object):
                 "rtt_max": None,
                 "rtt_mdev": None,
                 "packet_duplicate_rate": None,
-                "packet_duplicate_count": None,
+                "packet_duplicate_count": 0,
             }
         ],
         [
@@ -207,7 +207,7 @@ class Test_PingParsing_parse(object):
             "rtt_max": None,
             "rtt_mdev": None,
             "packet_duplicate_rate": None,
-            "packet_duplicate_count": None,
+            "packet_duplicate_count": 0,
         }]
     )) + list(itertools.product(
         [
@@ -246,8 +246,8 @@ class Test_PingParsing_parse(object):
                 "rtt_avg": 99.731,
                 "rtt_max": 212.597,
                 "rtt_mdev": 27.566,
-                "packet_duplicate_rate": None,
-                "packet_duplicate_count": None,
+                "packet_duplicate_rate": 0,
+                "packet_duplicate_count": 0,
             }
         ]
     ])
