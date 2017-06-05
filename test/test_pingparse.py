@@ -22,7 +22,7 @@ def transmitter():
     return PingTransmitter()
 
 
-class Test_PingParse_parse:
+class Test_PingParse_parse(object):
 
     @pytest.mark.xfail
     @pytest.mark.parametrize(["host", "value", "expected"], [

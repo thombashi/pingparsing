@@ -128,7 +128,7 @@ def ping_parser():
     return PingParsing()
 
 
-class Test_PingParsing_parse:
+class Test_PingParsing_parse(object):
 
     @pytest.mark.parametrize(["ping_text", "expected"], [
         [

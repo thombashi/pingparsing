@@ -13,7 +13,7 @@ def transmitter():
     return PingTransmitter()
 
 
-class Test_PingTransmitter_ping:
+class Test_PingTransmitter_ping(object):
 
     @pytest.mark.xfail
     @pytest.mark.parametrize(["host", "waittime"], [
