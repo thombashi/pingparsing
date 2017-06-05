@@ -6,6 +6,9 @@
 
 from pingparsing import PingTransmitter
 import pytest
+from typepy.type import RealNumber
+
+from .common import ping_parser
 
 
 @pytest.fixture
@@ -42,6 +45,29 @@ class Test_PingTransmitter_ping(object):
 
         assert result.returncode == 0
         assert len(result.stdout) > 0
+
+    @pytest.mark.xfail
+    @pytest.mark.parametrize(["host", "count"], [
+        ["localhost", 3],
+    ])
+    def test_normal_send_parse(
+            self, transmitter, ping_parser, host, count):
+        transmitter.destination_host = host
+        transmitter.count = count
+        result = transmitter.ping()
+
+        ping_parser.parse(result.stdout)
+
+        assert ping_parser.packet_transmit >= count
+        assert RealNumber(ping_parser.packet_receive).is_type()
+        assert RealNumber(ping_parser.packet_loss_rate).is_type()
+        assert RealNumber(ping_parser.packet_loss_count).is_type()
+        assert RealNumber(ping_parser.packet_duplicate_rate).is_type()
+        assert RealNumber(ping_parser.packet_duplicate_count).is_type()
+        assert RealNumber(ping_parser.rtt_min).is_type()
+        assert RealNumber(ping_parser.rtt_avg).is_type()
+        assert RealNumber(ping_parser.rtt_max).is_type()
+        assert RealNumber(ping_parser.rtt_mdev).is_type()
 
     @pytest.mark.parametrize(["host", "waittime", "expected"], [
         ["", 1, ValueError],
