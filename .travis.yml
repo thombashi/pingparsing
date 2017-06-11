@@ -36,7 +36,9 @@ deploy:
   user: vmmhypervisor
   password:
     secure: jwEpSFNp7smBtUvSe+NVRDJRtN4htwHE+aK2q12GHGaKtTwDfkpTHUjE5nJOgLNkmWQF/qaV2YOR3e6Oc8Gvuu6b8Z2VCuJza1xQQ2R29HthE/MNUOPq9nQy1wYY9vgYP5JVqhO5uY9r0s9zAidw3mH5HMxCVQWYAJVsK7SLE0r9DO1N05wOa3TCgi+F9c8tA5FoMkmeRDXMVA4N4HEVf4d60ZZlKTJYyEmhWYhx4SUv4zodd7p0/lTvNb+K3MUi1fcEtI4mTw+d1Hg1p5C3h6ATOeSXsENEnufokzWUQPPMk3L7ihyyvSXQnzgm7U74oJHYF5FUBNYHex+unwR1BTSal+WI6Flf6MnyPGZNV+br5lkuW6HvcF1IH1h4kw6+hNNadGvW4SyRdrCC5Qs0tw9fJ6CLfwUdamOrweLljFFKT9qNEdKHLdTPtOL2Q7MXZWvvofLm2mzQCAfrvxVywnNudcAncUvfScelGdwXW9I8PPhOSAwV0SI3A0pcngjrCnDHQkdl0UPW7hCmwVO/u0XI5scZW601YiP3SOKB5nGwP/W0N7TRxbV4lnKZeJ33FrzdfujKcz0TxT/jxrfZjV93MSRs7J2mPCFF9dE5fgNZ17iaj6uijL7t2KaokuC11rCfOzS+hpYjaussFd4DVRJ2gJJDWlSLW7DEzm53KvU=
+  skip_cleanup: true
   on:
-    tags: true
     repo: thombashi/pingparsing
+    tags: true
+    python: 3.6
   distributions: "sdist bdist_wheel"
