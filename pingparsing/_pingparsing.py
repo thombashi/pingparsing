@@ -185,10 +185,18 @@ class PingParsing(object):
 
         Or you can get as a dictionary by :py:meth:`.as_dict`
 
-        :param str ping_message: ping command output.
+        :param ping_message: ping command output.
+        :type ping_message: str or pingparsing.PingResult
         """
 
         self.__initialize_parse_result()
+
+        try:
+            # accept PingResult instance as an input
+            if typepy.is_not_null_string(ping_message.stdout):
+                ping_message = ping_message.stdout
+        except AttributeError:
+            pass
 
         if typepy.is_null_string(ping_message):
             logger.debug("ping_message is empty")

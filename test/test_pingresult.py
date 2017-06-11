@@ -36,5 +36,7 @@ class Test_PingResult(object):
     ])
     def test_normal_pingresult(self, ping_parser, pingresult, expected):
         ping_parser.parse(pingresult.stdout)
+        assert ping_parser.as_dict() == expected
 
+        ping_parser.parse(pingresult)
         assert ping_parser.as_dict() == expected
