@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 """
-.. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
+.. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
 import io
@@ -40,7 +40,7 @@ setuptools.setup(
     name="pingparsing",
     version="0.8.2",
     author="Tsuyoshi Hombashi",
-    author_email="gogogo.vm@gmail.com",
+    author_email="tsuyoshi.hombashi@gmail.com",
     url="https://github.com/thombashi/pingparsing",
     keywords=["ping", "parser", "transmitter"],
     license="MIT License",

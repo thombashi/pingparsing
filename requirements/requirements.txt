@@ -1,4 +1,4 @@
 logbook
 pyparsing>=2.2.0
 six
-typepy>=0.0.10
+typepy>=0.0.12
