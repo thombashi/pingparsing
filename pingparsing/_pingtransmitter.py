@@ -57,7 +57,7 @@ class PingTransmitter(object):
 
     .. py:attribute:: count
 
-        Number of sending ICMP packets. This will be ignored if the value is
+        Number of sending ICMP packets. This attribute ignored if the value is
         ``None``. Defaults to ``None``.
 
     .. py:attribute:: ping_option
@@ -72,7 +72,7 @@ class PingTransmitter(object):
 
     .. py:attribute:: auto_codepage
 
-        [Only for windows environment] Automatically change code page if
+        [Only for Windows environment] Automatically change code page if
         ``True``. Defaults to ``True``.
     """
 

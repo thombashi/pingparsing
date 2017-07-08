@@ -9,7 +9,7 @@ from __future__ import absolute_import
 
 class PingStaticticsHeaderNotFoundError(Exception):
     """
-    Exception raised when a ping statistics header is not found in
+    Exception raised when a ping statistics header not found in
     a parsing text.
     """
 

@@ -183,7 +183,7 @@ class PingParsing(object):
             - :py:attr:`.rtt_max`
             - :py:attr:`.rtt_mdev`
 
-        Or you can get as a dictionary by :py:meth:`.as_dict`
+        Alternatively, you can get data as a dictionary by :py:meth:`.as_dict`
 
         :param ping_message: ping command output.
         :type ping_message: str or pingparsing.PingResult
