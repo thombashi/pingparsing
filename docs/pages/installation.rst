@@ -8,7 +8,6 @@ Installation
 
 Dependencies
 ============
-
 Python 2.7+ or 3.3+
 
 - `logbook <http://logbook.readthedocs.io/en/stable/>`__
@@ -18,7 +17,6 @@ Python 2.7+ or 3.3+
 
 Test dependencies
 -----------------
-
 - `pytest <https://pypi.python.org/pypi/pytest>`__
 - `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
 - `tox <https://pypi.python.org/pypi/tox>`__

@@ -1,4 +1,4 @@
-Parser class
+Parser classes
 ----------------------------
 
 .. autoclass:: pingparsing.PingParsing

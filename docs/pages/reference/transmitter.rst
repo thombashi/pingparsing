@@ -1,4 +1,4 @@
-Transmitter class
+Transmitter classes
 ----------------------------
 
 .. autoclass:: pingparsing.PingTransmitter
