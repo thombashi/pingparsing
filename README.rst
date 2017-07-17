@@ -19,7 +19,7 @@ pingparsing
 Summary
 -------
 
-pingparsing is a python library of parsing ping command output.
+pingparsing is a Python library for parsing ping command output.
 
 Usage
 =====
@@ -275,11 +275,9 @@ Tested Environment
 
 Premise
 =======
-
-This library expects locale setup to English. Parsing the ``ping``
-command output with any other locale may fail. This is because the
-output of the ``ping`` command is changed depending on the locale
-setting.
+This library expects the locale setup to English.
+Parsing the ``ping`` command output with any other locale may fail.
+This is because the output of the ``ping`` command is changed depending on the locale setting.
 
 Documentation
 =============
