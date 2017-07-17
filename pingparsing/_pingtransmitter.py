@@ -49,10 +49,9 @@ class PingTransmitter(object):
 
     .. py:attribute:: waittime
 
-        Time ``[sec]`` of sending ICMP packets. This will be ignored if
+        Time ``[sec]`` of sending ICMP packets. The attribute ignored if
         the value is ``None``. If both :py:attr:`~.waittime` and
-        :py:attr:`~.count` are ``None``, :py:attr:`~.waittime` will be set to
-        ``1``.
+        :py:attr:`~.count` are ``None``, :py:attr:`~.waittime` set to ``1``.
         Defaults to ``None``.
 
     .. py:attribute:: count
@@ -66,7 +65,7 @@ class PingTransmitter(object):
 
     .. py:attribute:: interface
 
-        Interface name or zone-id. This will be required when
+        Interface name or zone-id. The attribute required when
         :py:attr:`~.destination_host` is IPv6 link-local scope address.
         Defaults to ``None``.
 
