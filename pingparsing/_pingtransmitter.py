@@ -116,7 +116,8 @@ class PingTransmitter(object):
 
         return PingResult(stdout, stderr, ping_proc.returncode)
 
-    def __is_windows(self):
+    @staticmethod
+    def __is_windows():
         return platform.system() == "Windows"
 
     def __is_ipv6(self):
@@ -217,8 +218,8 @@ class PingTransmitter(object):
 
         if self.__is_windows():
             return "-n {:d}".format(waittime)
-        else:
-            return "-q -w {:d}".format(waittime)
+
+        return "-q -w {:d}".format(waittime)
 
     def __get_count_option(self):
         try:
@@ -228,5 +229,5 @@ class PingTransmitter(object):
 
         if self.__is_windows():
             return "-n {:d}".format(count)
-        else:
-            return "-c {:d}".format(count)
+
+        return "-c {:d}".format(count)
