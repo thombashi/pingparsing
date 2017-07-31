@@ -4,9 +4,6 @@ pingparsing
 .. image:: https://badge.fury.io/py/pingparsing.svg
     :target: https://badge.fury.io/py/pingparsing
 
-.. image:: https://img.shields.io/pypi/pyversions/pingparsing.svg
-   :target: https://pypi.python.org/pypi/pingparsing
-
 .. image:: https://img.shields.io/travis/thombashi/pingparsing/master.svg?label=Linux
     :target: https://travis-ci.org/thombashi/pingparsing
 
