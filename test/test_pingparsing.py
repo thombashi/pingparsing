@@ -214,8 +214,7 @@ class Test_PingParsing_parse(object):
             "packet_duplicate_rate": None,
             "packet_duplicate_count": None,
         }]
-    ))
-    )
+    )))
     def test_normal_text(self, ping_parser, ping_text, expected):
         ping_parser.parse(ping_text)
 
