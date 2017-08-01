@@ -13,9 +13,6 @@ import setuptools
 
 REQUIREMENT_DIR = "requirements"
 
-needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
-pytest_runner = ["pytest-runner"] if needs_pytest else []
-
 
 with io.open("README.rst", encoding="utf8") as fp:
     long_description = fp.read()
@@ -33,20 +30,27 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 with open(os.path.join(REQUIREMENT_DIR, "docs_requirements.txt")) as f:
     docs_requires = [line.strip() for line in f if line.strip()]
 
+MODULE_NAME = "pingparsing"
+setuptools_require = ["setuptools>=20.2.2"]
+needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
+pytest_runner_require = ["pytest-runner"] if needs_pytest else []
+
 setuptools.setup(
-    name="pingparsing",
+    name=MODULE_NAME,
     version="0.8.4",
+    url="https://github.com/thombashi/{:s}".format(MODULE_NAME),
+
     author="Tsuyoshi Hombashi",
     author_email="tsuyoshi.hombashi@gmail.com",
-    url="https://github.com/thombashi/pingparsing",
-    keywords=["ping", "parser", "transmitter"],
-    license="MIT License",
     description=summary,
-    long_description=long_description,
     include_package_data=True,
-    install_requires=install_requires,
+    keywords=["network", "ping", "parser", "transmitter"],
+    license="MIT License",
+    long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
-    setup_requires=pytest_runner,
+
+    install_requires=setuptools_require + install_requires,
+    setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
     extras_require={
         "test": tests_requires,
@@ -70,5 +74,4 @@ setuptools.setup(
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: System :: Networking",
-    ],
-)
+    ])
