@@ -105,6 +105,19 @@ Request timed out.
 Ping statistics for 192.168.207.100:
 """
 
+PING_OSX_SUCCESS = """
+PING google.com (172.217.6.238): 56 data bytes
+64 bytes from 172.217.6.238: icmp_seq=0 ttl=53 time=20.482 ms
+64 bytes from 172.217.6.238: icmp_seq=1 ttl=53 time=32.550 ms
+64 bytes from 172.217.6.238: icmp_seq=2 ttl=53 time=32.013 ms
+64 bytes from 172.217.6.238: icmp_seq=3 ttl=53 time=28.498 ms
+64 bytes from 172.217.6.238: icmp_seq=4 ttl=53 time=46.093 ms
+
+--- google.com ping statistics ---
+5 packets transmitted, 5 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 20.482/31.927/46.093/8.292 ms
+"""
+
 
 class Test_PingParsing_parse(object):
 
@@ -164,6 +177,20 @@ class Test_PingParsing_parse(object):
                 "rtt_mdev": None,
                 "packet_duplicate_rate": None,
                 "packet_duplicate_count": None,
+            }
+        ], [
+            PING_OSX_SUCCESS,
+            {
+                "packet_duplicate_count": None,
+                "packet_duplicate_rate": None,
+                "packet_loss_count": 0,
+                "packet_loss_rate": 0.0,
+                "packet_receive": 5,
+                "packet_transmit": 5,
+                "rtt_avg": 31.927,
+                "rtt_max": 46.093,
+                "rtt_mdev": 8.292,
+                "rtt_min": 20.482,
             }
         ],
     ] + list(itertools.product(

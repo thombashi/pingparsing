@@ -18,6 +18,7 @@ from ._parser import (
     NullPingParser,
     LinuxPingParser,
     WindowsPingParser,
+    OsxPingParser,
 )
 from .error import PingStatisticsHeaderNotFoundError
 
@@ -211,6 +212,13 @@ class PingParsing(PingParserInterface):
             pass
 
         self.__parser = WindowsPingParser()
+        try:
+            self.__parser.parse(line_list)
+            return
+        except (PingStatisticsHeaderNotFoundError, pp.ParseException):
+            pass
+
+        self.__parser = OsxPingParser()
         try:
             self.__parser.parse(line_list)
             return
