@@ -189,8 +189,6 @@ class PingParsing(object):
         :type ping_message: str or pingparsing.PingResult
         """
 
-        self.__initialize_parse_result()
-
         try:
             # accept PingResult instance as an input
             if typepy.is_not_null_string(ping_message.stdout):
@@ -199,6 +197,8 @@ class PingParsing(object):
             pass
 
         logger.debug("parsing ping result: {}".format(ping_message))
+
+        self.__initialize_parse_result()
 
         if typepy.is_null_string(ping_message):
             logger.debug("ping_message is empty")
