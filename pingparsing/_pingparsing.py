@@ -7,14 +7,17 @@
 from __future__ import absolute_import
 from __future__ import division
 
-import re
-
 import typepy
 
 import pyparsing as pp
 
+from ._interface import PingParserInterface
 from ._logger import logger
-from .error import EmptyPingStaticticsError
+from ._parser import (
+    NullPingParser,
+    LinuxPingParser,
+    WindowsPingParser,
+)
 from .error import PingStaticticsHeaderNotFoundError
 
 
@@ -25,7 +28,7 @@ def _to_unicode(text):
         return text
 
 
-class PingParsing(object):
+class PingParsing(PingParserInterface):
     """
     Parser class to parsing ping command output.
     """
@@ -33,7 +36,7 @@ class PingParsing(object):
     def __init__(self):
         self.ping_option = ""
 
-        self.__initialize_parse_result()
+        self.__parser = NullPingParser()
 
     @property
     def packet_transmit(self):
@@ -42,7 +45,7 @@ class PingParsing(object):
         :rtype: int
         """
 
-        return self.__packet_transmit
+        return self.__parser.packet_transmit
 
     @property
     def packet_receive(self):
@@ -51,7 +54,7 @@ class PingParsing(object):
         :rtype: int
         """
 
-        return self.__packet_receive
+        return self.__parser.packet_receive
 
     @property
     def packet_loss_rate(self):
@@ -91,7 +94,7 @@ class PingParsing(object):
         :rtype: float
         """
 
-        return self.__rtt_min
+        return self.__parser.rtt_min
 
     @property
     def rtt_avg(self):
@@ -100,7 +103,7 @@ class PingParsing(object):
         :rtype: float
         """
 
-        return self.__rtt_avg
+        return self.__parser.rtt_avg
 
     @property
     def rtt_max(self):
@@ -109,7 +112,7 @@ class PingParsing(object):
         :rtype: float
         """
 
-        return self.__rtt_max
+        return self.__parser.rtt_max
 
     @property
     def rtt_mdev(self):
@@ -118,7 +121,7 @@ class PingParsing(object):
         :rtype: float
         """
 
-        return self.__rtt_mdev
+        return self.__parser.rtt_mdev
 
     @property
     def packet_duplicate_rate(self):
@@ -141,7 +144,7 @@ class PingParsing(object):
         :rtype: int
         """
 
-        return self.__duplicates
+        return self.__parser.packet_duplicate_count
 
     @property
     def duplicates(self):
@@ -198,148 +201,24 @@ class PingParsing(object):
 
         logger.debug("parsing ping result: {}".format(ping_message))
 
-        self.__initialize_parse_result()
+        self.__parser = NullPingParser()
 
         if typepy.is_null_string(ping_message):
             logger.debug("ping_message is empty")
             return
 
+        self.__parser = LinuxPingParser()
         try:
-            self.__parse_linux_ping(ping_message)
+            self.__parser.parse(ping_message)
             return
-        except PingStaticticsHeaderNotFoundError:
+        except (PingStaticticsHeaderNotFoundError, pp.ParseException):
             pass
 
-        self.__initialize_parse_result()
-        self.__parse_windows_ping(ping_message)
-
-    def __find_ststs_head_line_idx(self, line_list, re_stats_header):
-        for i, line in enumerate(line_list):
-            if re_stats_header.search(line):
-                break
-        else:
-            raise PingStaticticsHeaderNotFoundError(
-                "ping statistics not found")
-
-        return i
-
-    def __validate_stats_body(self, body_line_list):
-        if typepy.is_empty_sequence(body_line_list):
-            raise EmptyPingStaticticsError("ping statistics is empty")
-
-    def __parse_windows_ping(self, ping_message):
-        logger.debug("parsing as Windows ping result format")
-
-        line_list = _to_unicode(ping_message).splitlines()
-
-        i = self.__find_ststs_head_line_idx(
-            line_list, re.compile("^Ping statistics for "))
-
-        body_line_list = line_list[i + 1:]
-        self.__validate_stats_body(body_line_list)
-        packet_line = body_line_list[0].strip()
-        packet_pattern = (
-            pp.Literal("Packets: Sent = ") +
-            pp.Word(pp.nums) +
-            pp.Literal(", Received = ") +
-            pp.Word(pp.nums)
-        )
-        parse_list = packet_pattern.parseString(_to_unicode(packet_line))
-        self.__packet_transmit = int(parse_list[1])
-        self.__packet_receive = int(parse_list[3])
-
+        self.__parser = WindowsPingParser()
         try:
-            rtt_line = body_line_list[2].strip()
-        except IndexError:
+            self.__parser.parse(ping_message)
             return
-        if typepy.is_null_string(rtt_line):
-            return
-        rtt_pattern = (
-            pp.Literal("Minimum = ") +
-            pp.Word(pp.nums) +
-            pp.Literal("ms, Maximum = ") +
-            pp.Word(pp.nums) +
-            pp.Literal("ms, Average = ") +
-            pp.Word(pp.nums)
-        )
-        try:
-            parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        except pp.ParseException:
-            return
+        except (PingStaticticsHeaderNotFoundError, pp.ParseException):
+            pass
 
-        self.__rtt_min = float(parse_list[1])
-        self.__rtt_avg = float(parse_list[5])
-        self.__rtt_max = float(parse_list[3])
-
-    def __parse_linux_ping(self, ping_message):
-        logger.debug("parsing as Linux ping result format")
-
-        line_list = _to_unicode(ping_message).splitlines()
-
-        i = self.__find_ststs_head_line_idx(
-            line_list, re.compile("--- .* ping statistics ---"))
-
-        body_line_list = line_list[i + 1:]
-        self.__validate_stats_body(body_line_list)
-
-        packet_line = body_line_list[0]
-        packet_pattern = (
-            pp.Word(pp.nums) +
-            pp.Literal("packets transmitted,") +
-            pp.Word(pp.nums) +
-            pp.Literal("received,")
-        )
-        parse_list = packet_pattern.parseString(_to_unicode(packet_line))
-        self.__packet_transmit = int(parse_list[0])
-        self.__packet_receive = int(parse_list[2])
-
-        self.__duplicates = self.__parse_duplicate(packet_line)
-
-        try:
-            rtt_line = body_line_list[1]
-        except IndexError:
-            return
-        if typepy.is_null_string(rtt_line):
-            return
-
-        rtt_pattern = (
-            pp.Literal("rtt min/avg/max/mdev =") +
-            pp.Word(pp.nums + ".") + "/" +
-            pp.Word(pp.nums + ".") + "/" +
-            pp.Word(pp.nums + ".") + "/" +
-            pp.Word(pp.nums + ".") +
-            pp.Word(pp.nums + "ms")
-        )
-        try:
-            parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        except pp.ParseException:
-            return
-
-        self.__rtt_min = float(parse_list[1])
-        self.__rtt_avg = float(parse_list[3])
-        self.__rtt_max = float(parse_list[5])
-        self.__rtt_mdev = float(parse_list[7])
-
-    @staticmethod
-    def __parse_duplicate(line):
-        packet_pattern = (
-            pp.SkipTo(pp.Word("+" + pp.nums) + pp.Literal("duplicates,")) +
-            pp.Word("+" + pp.nums) +
-            pp.Literal("duplicates,")
-        )
-        try:
-            duplicate_parse_list = packet_pattern.parseString(
-                _to_unicode(line))
-        except pp.ParseException:
-            return 0
-
-        return int(duplicate_parse_list[-2].strip("+"))
-
-    def __initialize_parse_result(self):
-        self.__packet_transmit = None
-        self.__packet_receive = None
-        self.__rtt_min = None
-        self.__rtt_avg = None
-        self.__rtt_max = None
-        self.__rtt_mdev = None
-        self.__duplicates = None
+        self.__parser = NullPingParser()
