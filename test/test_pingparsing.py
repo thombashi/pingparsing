@@ -8,7 +8,7 @@ from __future__ import absolute_import
 
 import itertools
 
-from pingparsing import EmptyPingStaticticsError
+from pingparsing import EmptyPingStatisticsError
 import pytest
 import six
 
@@ -234,8 +234,8 @@ class Test_PingParsing_parse(object):
         assert ping_parser.packet_duplicate_count is None
 
     @pytest.mark.parametrize(["ping_text", "expected"], [
-        [PING_FEDORA_EMPTY_BODY, EmptyPingStaticticsError],
-        [PING_WINDOWS_INVALID, EmptyPingStaticticsError],
+        [PING_FEDORA_EMPTY_BODY, EmptyPingStatisticsError],
+        [PING_WINDOWS_INVALID, EmptyPingStatisticsError],
     ])
     def test_exception(self, ping_parser, ping_text, expected):
         with pytest.raises(expected):
