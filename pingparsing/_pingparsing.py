@@ -11,6 +11,7 @@ import typepy
 
 import pyparsing as pp
 
+from ._common import _to_unicode
 from ._interface import PingParserInterface
 from ._logger import logger
 from ._parser import (
@@ -19,13 +20,6 @@ from ._parser import (
     WindowsPingParser,
 )
 from .error import PingStatisticsHeaderNotFoundError
-
-
-def _to_unicode(text):
-    try:
-        return text.decode("ascii")
-    except AttributeError:
-        return text
 
 
 class PingParsing(PingParserInterface):
