@@ -14,7 +14,7 @@ class PingStatisticsHeaderNotFoundError(Exception):
     """
 
 
-class EmptyPingStaticticsError(Exception):
+class EmptyPingStatisticsError(Exception):
     """
     Exception raised when a ping statistics is empty in a parsing text.
     """

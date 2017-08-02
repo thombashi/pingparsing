@@ -16,7 +16,7 @@ import pyparsing as pp
 
 from ._interface import PingParserInterface
 from ._logger import logger
-from .error import EmptyPingStaticticsError
+from .error import EmptyPingStatisticsError
 from .error import PingStatisticsHeaderNotFoundError
 
 
@@ -118,7 +118,7 @@ class PingParser(PingParserInterface):
 
     def __validate_stats_body(self, body_line_list):
         if typepy.is_empty_sequence(body_line_list):
-            raise EmptyPingStaticticsError("ping statistics is empty")
+            raise EmptyPingStatisticsError("ping statistics is empty")
 
     def __initialize_parse_result(self):
         self._packet_transmit = None
