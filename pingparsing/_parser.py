@@ -32,7 +32,7 @@ class PingParser(PingParserInterface):
     def __init__(self):
         self.ping_option = ""
 
-        self._initialize_parse_result()
+        self.__initialize_parse_result()
 
     @property
     def packet_transmit(self):
@@ -95,18 +95,18 @@ class PingParser(PingParserInterface):
         logger.debug(
             "parsing as {:s} ping result format".format(self._system_name))
 
-        self._initialize_parse_result()
+        self.__initialize_parse_result()
 
-        i = self._find_stats_headline_idx(
+        i = self.__find_stats_headline_idx(
             line_list, re.compile(self._stats_headline_pattern))
         body_line_list = line_list[i + 1:]
-        self._validate_stats_body(body_line_list)
+        self.__validate_stats_body(body_line_list)
 
         packet_line = body_line_list[0]
 
         return (packet_line, body_line_list)
 
-    def _find_stats_headline_idx(self, line_list, re_stats_header):
+    def __find_stats_headline_idx(self, line_list, re_stats_header):
         for i, line in enumerate(line_list):
             if re_stats_header.search(line):
                 break
@@ -116,11 +116,11 @@ class PingParser(PingParserInterface):
 
         return i
 
-    def _validate_stats_body(self, body_line_list):
+    def __validate_stats_body(self, body_line_list):
         if typepy.is_empty_sequence(body_line_list):
             raise EmptyPingStaticticsError("ping statistics is empty")
 
-    def _initialize_parse_result(self):
+    def __initialize_parse_result(self):
         self._packet_transmit = None
         self._packet_receive = None
         self._rtt_min = None
