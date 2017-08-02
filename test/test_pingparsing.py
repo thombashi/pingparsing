@@ -46,7 +46,6 @@ PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 1688 packets transmitted, 1553 received, +1 duplicates, 7% packet loss, time 2987ms
 rtt min/avg/max/mdev = 0.282/0.642/11.699/0.699 ms, pipe 2, ipg/ewma 1.770/0.782 ms
 """)
-
 PING_FEDORA_UNREACHABLE = """
 PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
 From 192.168.207.128 icmp_seq=1 Destination Host Unreachable
@@ -58,13 +57,11 @@ From 192.168.207.128 icmp_seq=5 Destination Host Unreachable
 --- 192.168.207.100 ping statistics ---
 5 packets transmitted, 0 received, +5 errors, 100% packet loss, time 4003ms
 """
-
 PING_FEDORA_EMPTY_BODY = six.b("""
 PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 
 --- 192.168.0.1 ping statistics ---
 """)
-
 
 # ping google.com -n 10:
 #   Windows 7 SP1
@@ -86,10 +83,7 @@ Ping statistics for 216.58.196.238:
 Approximate round trip times in milli-seconds:
     Minimum = 56ms, Maximum = 194ms, Average = 107ms
 """)
-
-
 PING_WINDOWS_UNREACHABLE_0 = """
-
 Pinging 192.168.207.100 with 32 bytes of data:
 Request timed out.
 Request timed out.
@@ -101,10 +95,7 @@ Ping statistics for 192.168.207.100:
 """
 PING_WINDOWS_UNREACHABLE_1 = PING_WINDOWS_UNREACHABLE_0 + "\n"
 PING_WINDOWS_UNREACHABLE_2 = PING_WINDOWS_UNREACHABLE_1 + "\n"
-
-
 PING_WINDOWS_INVALID = """
-
 Pinging 192.168.207.100 with 32 bytes of data:
 Request timed out.
 Request timed out.
@@ -132,8 +123,7 @@ class Test_PingParsing_parse(object):
                 "packet_duplicate_rate": 0,
                 "packet_duplicate_count": 0,
             }
-        ],
-        [
+        ], [
             PING_FEDORA_LOSS,
             {
                 "packet_receive": 1553,
@@ -147,8 +137,7 @@ class Test_PingParsing_parse(object):
                 "packet_duplicate_rate": 0.0643915003219575,
                 "packet_duplicate_count": 1,
             }
-        ],
-        [
+        ], [
             PING_FEDORA_UNREACHABLE,
             {
                 "packet_transmit": 5,
@@ -162,8 +151,7 @@ class Test_PingParsing_parse(object):
                 "packet_duplicate_rate": None,
                 "packet_duplicate_count": 0,
             }
-        ],
-        [
+        ], [
             PING_WINDOWS_SUCCESS,
             {
                 "packet_transmit": 10,
