@@ -17,7 +17,7 @@ import pyparsing as pp
 from ._interface import PingParserInterface
 from ._logger import logger
 from .error import EmptyPingStaticticsError
-from .error import PingStaticticsHeaderNotFoundError
+from .error import PingStatisticsHeaderNotFoundError
 
 
 def _to_unicode(text):
@@ -111,7 +111,7 @@ class PingParser(PingParserInterface):
             if re_stats_header.search(line):
                 break
         else:
-            raise PingStaticticsHeaderNotFoundError(
+            raise PingStatisticsHeaderNotFoundError(
                 "ping statistics not found")
 
         return i

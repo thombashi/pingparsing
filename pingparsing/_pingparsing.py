@@ -18,7 +18,7 @@ from ._parser import (
     LinuxPingParser,
     WindowsPingParser,
 )
-from .error import PingStaticticsHeaderNotFoundError
+from .error import PingStatisticsHeaderNotFoundError
 
 
 def _to_unicode(text):
@@ -213,14 +213,14 @@ class PingParsing(PingParserInterface):
         try:
             self.__parser.parse(line_list)
             return
-        except (PingStaticticsHeaderNotFoundError, pp.ParseException):
+        except (PingStatisticsHeaderNotFoundError, pp.ParseException):
             pass
 
         self.__parser = WindowsPingParser()
         try:
             self.__parser.parse(line_list)
             return
-        except (PingStaticticsHeaderNotFoundError, pp.ParseException):
+        except (PingStatisticsHeaderNotFoundError, pp.ParseException):
             pass
 
         self.__parser = NullPingParser()

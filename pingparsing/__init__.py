@@ -16,4 +16,4 @@ from ._pingtransmitter import (
     PingResult
 )
 from .error import EmptyPingStaticticsError
-from .error import PingStaticticsHeaderNotFoundError
+from .error import PingStatisticsHeaderNotFoundError
