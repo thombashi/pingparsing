@@ -7,6 +7,7 @@
 from __future__ import absolute_import
 from __future__ import division
 
+import abc
 import re
 
 import typepy
@@ -82,6 +83,29 @@ class PingParser(PingParserInterface):
     def packet_duplicate_count(self):
         return self._duplicates
 
+    @abc.abstractproperty
+    def _system_name(self):  # pragma: no cover
+        pass
+
+    @abc.abstractproperty
+    def _stats_headline_pattern(self):  # pragma: no cover
+        pass
+
+    def _preprocess_parse(self, line_list):
+        logger.debug(
+            "parsing as {:s} ping result format".format(self._system_name))
+
+        self._initialize_parse_result()
+
+        i = self._find_stats_headline_idx(
+            line_list, re.compile(self._stats_headline_pattern))
+        body_line_list = line_list[i + 1:]
+        self._validate_stats_body(body_line_list)
+
+        packet_line = body_line_list[0]
+
+        return (packet_line, body_line_list)
+
     def _find_stats_headline_idx(self, line_list, re_stats_header):
         for i, line in enumerate(line_list):
             if re_stats_header.search(line):
@@ -108,25 +132,34 @@ class PingParser(PingParserInterface):
 
 class NullPingParser(PingParser):
 
+    @property
+    def _system_name(self):
+        return "null"
+
+    @property
+    def _stats_headline_pattern(self):
+        return ""
+
     def parse(self, ping_message):  # pragma: no cover
+        pass
+
+    def _preprocess_parse(self):  # pragma: no cover
         pass
 
 
 class LinuxPingParser(PingParser):
 
+    @property
+    def _system_name(self):
+        return "Linux"
+
+    @property
+    def _stats_headline_pattern(self):
+        return "--- .* ping statistics ---"
+
     def parse(self, ping_message):
-        logger.debug("parsing as Linux ping result format")
-
-        self._initialize_parse_result()
-        line_list = _to_unicode(ping_message).splitlines()
-
-        i = self._find_stats_headline_idx(
-            line_list, re.compile("--- .* ping statistics ---"))
-
-        body_line_list = line_list[i + 1:]
-        self._validate_stats_body(body_line_list)
-
-        packet_line = body_line_list[0]
+        packet_line, body_line_list = self._preprocess_parse(
+            line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
             pp.Literal("packets transmitted,") +
@@ -182,18 +215,17 @@ class LinuxPingParser(PingParser):
 
 class WindowsPingParser(PingParser):
 
+    @property
+    def _system_name(self):
+        return "Windows"
+
+    @property
+    def _stats_headline_pattern(self):
+        return "^Ping statistics for "
+
     def parse(self, ping_message):
-        logger.debug("parsing as Windows ping result format")
-
-        self._initialize_parse_result()
-        line_list = _to_unicode(ping_message).splitlines()
-
-        i = self._find_stats_headline_idx(
-            line_list, re.compile("^Ping statistics for "))
-
-        body_line_list = line_list[i + 1:]
-        self._validate_stats_body(body_line_list)
-        packet_line = body_line_list[0].strip()
+        packet_line, body_line_list = self._preprocess_parse(
+            line_list=ping_message)
         packet_pattern = (
             pp.Literal("Packets: Sent = ") +
             pp.Word(pp.nums) +

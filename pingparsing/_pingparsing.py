@@ -207,16 +207,18 @@ class PingParsing(PingParserInterface):
             logger.debug("ping_message is empty")
             return
 
+        line_list = _to_unicode(ping_message).splitlines()
+
         self.__parser = LinuxPingParser()
         try:
-            self.__parser.parse(ping_message)
+            self.__parser.parse(line_list)
             return
         except (PingStaticticsHeaderNotFoundError, pp.ParseException):
             pass
 
         self.__parser = WindowsPingParser()
         try:
-            self.__parser.parse(ping_message)
+            self.__parser.parse(line_list)
             return
         except (PingStaticticsHeaderNotFoundError, pp.ParseException):
             pass
