@@ -198,11 +198,11 @@ class PingParsing(object):
         except AttributeError:
             pass
 
+        logger.debug("parsing ping result: {}".format(ping_message))
+
         if typepy.is_null_string(ping_message):
             logger.debug("ping_message is empty")
             return
-
-        logger.debug("parsing ping result: {}".format(ping_message))
 
         try:
             self.__parse_linux_ping(ping_message)
