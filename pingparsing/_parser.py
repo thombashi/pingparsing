@@ -82,7 +82,7 @@ class PingParser(PingParserInterface):
     def packet_duplicate_count(self):
         return self._duplicates
 
-    def _find_stats_head_line_idx(self, line_list, re_stats_header):
+    def _find_stats_headline_idx(self, line_list, re_stats_header):
         for i, line in enumerate(line_list):
             if re_stats_header.search(line):
                 break
@@ -120,7 +120,7 @@ class LinuxPingParser(PingParser):
         self._initialize_parse_result()
         line_list = _to_unicode(ping_message).splitlines()
 
-        i = self._find_stats_head_line_idx(
+        i = self._find_stats_headline_idx(
             line_list, re.compile("--- .* ping statistics ---"))
 
         body_line_list = line_list[i + 1:]
@@ -188,7 +188,7 @@ class WindowsPingParser(PingParser):
         self._initialize_parse_result()
         line_list = _to_unicode(ping_message).splitlines()
 
-        i = self._find_stats_head_line_idx(
+        i = self._find_stats_headline_idx(
             line_list, re.compile("^Ping statistics for "))
 
         body_line_list = line_list[i + 1:]
