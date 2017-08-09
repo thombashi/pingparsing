@@ -9,7 +9,10 @@ from __future__ import division
 
 import abc
 
+import six
 
+
+@six.add_metaclass(abc.ABCMeta)
 class PingParserInterface(object):
 
     @abc.abstractproperty
