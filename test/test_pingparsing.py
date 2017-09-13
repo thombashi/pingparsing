@@ -118,6 +118,14 @@ PING google.com (172.217.6.238): 56 data bytes
 round-trip min/avg/max/stddev = 20.482/31.927/46.093/8.292 ms
 """
 
+PING_ALPINE_LINUX_SUCCESS = """
+PING heise.de (193.99.144.80): 56 data bytes
+
+--- heise.de ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max = 0.638/0.683/0.746 ms
+"""
+
 
 class Test_PingParsing_parse(object):
 
@@ -191,6 +199,20 @@ class Test_PingParsing_parse(object):
                 "rtt_max": 46.093,
                 "rtt_mdev": 8.292,
                 "rtt_min": 20.482,
+            }
+        ], [
+            PING_ALPINE_LINUX_SUCCESS,
+            {
+                "packet_duplicate_count": None,
+                "packet_duplicate_rate": None,
+                "packet_loss_count": 0,
+                "packet_loss_rate": 0.0,
+                "packet_receive": 5,
+                "packet_transmit": 5,
+                "rtt_avg": 0.683,
+                "rtt_max": 0.746,
+                "rtt_mdev": None,
+                "rtt_min": 0.638,
             }
         ],
     ] + list(itertools.product(
