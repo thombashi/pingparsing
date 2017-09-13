@@ -293,3 +293,43 @@ class OsxPingParser(PingParser):
         self._rtt_avg = float(parse_list[3])
         self._rtt_max = float(parse_list[5])
         self._rtt_mdev = float(parse_list[7])
+
+
+class AlpineLinuxPingParser(LinuxPingParser):
+
+    @property
+    def _system_name(self):
+        return "AlpineLinux"
+
+    def parse(self, ping_message):
+        packet_line, body_line_list = self._preprocess_parse(
+            line_list=ping_message)
+        packet_pattern = (
+            pp.Word(pp.nums) +
+            pp.Literal("packets transmitted,") +
+            pp.Word(pp.nums) +
+            pp.Literal("packets received,")
+        )
+        parse_list = packet_pattern.parseString(_to_unicode(packet_line))
+        self._packet_transmit = int(parse_list[0])
+        self._packet_receive = int(parse_list[2])
+
+        try:
+            rtt_line = body_line_list[1]
+        except IndexError:
+            return
+
+        if typepy.is_null_string(rtt_line):
+            return
+
+        rtt_pattern = (
+            pp.Literal("round-trip min/avg/max =") +
+            pp.Word(pp.nums + ".") + "/" +
+            pp.Word(pp.nums + ".") + "/" +
+            pp.Word(pp.nums + ".") +
+            pp.Word(pp.nums + "ms")
+        )
+        parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
+        self._rtt_min = float(parse_list[1])
+        self._rtt_avg = float(parse_list[3])
+        self._rtt_max = float(parse_list[5])
