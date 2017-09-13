@@ -203,26 +203,14 @@ class PingParsing(PingParserInterface):
             return
 
         line_list = _to_unicode(ping_message).splitlines()
+        parser_class_list = (LinuxPingParser, WindowsPingParser, OsxPingParser)
 
-        self.__parser = LinuxPingParser()
-        try:
-            self.__parser.parse(line_list)
-            return
-        except (PingStatisticsHeaderNotFoundError, pp.ParseException):
-            pass
-
-        self.__parser = WindowsPingParser()
-        try:
-            self.__parser.parse(line_list)
-            return
-        except (PingStatisticsHeaderNotFoundError, pp.ParseException):
-            pass
-
-        self.__parser = OsxPingParser()
-        try:
-            self.__parser.parse(line_list)
-            return
-        except (PingStatisticsHeaderNotFoundError, pp.ParseException):
-            pass
+        for parser_class in parser_class_list:
+            self.__parser = parser_class()
+            try:
+                self.__parser.parse(line_list)
+                return
+            except (PingStatisticsHeaderNotFoundError, pp.ParseException):
+                pass
 
         self.__parser = NullPingParser()
