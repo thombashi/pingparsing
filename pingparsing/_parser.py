@@ -170,6 +170,7 @@ class LinuxPingParser(PingParser):
             rtt_line = body_line_list[1]
         except IndexError:
             return
+
         if typepy.is_null_string(rtt_line):
             return
 
@@ -234,8 +235,10 @@ class WindowsPingParser(PingParser):
             rtt_line = body_line_list[2].strip()
         except IndexError:
             return
+
         if typepy.is_null_string(rtt_line):
             return
+
         rtt_pattern = (
             pp.Literal("Minimum = ") +
             pp.Word(pp.nums) +
@@ -281,6 +284,7 @@ class OsxPingParser(PingParser):
             rtt_line = body_line_list[1]
         except IndexError:
             return
+
         if typepy.is_null_string(rtt_line):
             return
 
