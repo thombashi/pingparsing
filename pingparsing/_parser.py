@@ -182,11 +182,7 @@ class LinuxPingParser(PingParser):
             pp.Word(pp.nums + ".") +
             pp.Word(pp.nums + "ms")
         )
-        try:
-            parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        except pp.ParseException:
-            return
-
+        parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
         self._rtt_min = float(parse_list[1])
         self._rtt_avg = float(parse_list[3])
         self._rtt_max = float(parse_list[5])
@@ -247,11 +243,7 @@ class WindowsPingParser(PingParser):
             pp.Literal("ms, Average = ") +
             pp.Word(pp.nums)
         )
-        try:
-            parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        except pp.ParseException:
-            return
-
+        parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
         self._rtt_min = float(parse_list[1])
         self._rtt_avg = float(parse_list[5])
         self._rtt_max = float(parse_list[3])
@@ -296,11 +288,7 @@ class OsxPingParser(PingParser):
             pp.Word(pp.nums + ".") +
             pp.Word(pp.nums + "ms")
         )
-        try:
-            parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        except pp.ParseException:
-            return
-
+        parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
         self._rtt_min = float(parse_list[1])
         self._rtt_avg = float(parse_list[3])
         self._rtt_max = float(parse_list[5])
