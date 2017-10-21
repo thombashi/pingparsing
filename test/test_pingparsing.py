@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 
+from collections import namedtuple
 import itertools
 
 from pingparsing import EmptyPingStatisticsError
@@ -29,24 +30,84 @@ rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
 """)
 
 
-PING_DEBIAN_UNREACHABLE_0 = """
+PING_FEDORA_EMPTY_BODY = six.b("""
+PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
+
+--- 192.168.0.1 ping statistics ---
+""")
+PING_WINDOWS_INVALID = """
+Pinging 192.168.207.100 with 32 bytes of data:
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 192.168.207.100:
+"""
+
+PingTestData = namedtuple("PingTestData", "value expected")
+
+DEBIAN_SUCCESS = PingTestData(
+    PING_DEBIAN_SUCCESS,
+    {
+        "packet_transmit": 60,
+        "packet_receive": 60,
+        "packet_loss_rate": 0.0,
+        "packet_loss_count": 0,
+        "rtt_min": 61.425,
+        "rtt_avg": 99.731,
+        "rtt_max": 212.597,
+        "rtt_mdev": 27.566,
+        "packet_duplicate_rate": 0,
+        "packet_duplicate_count": 0,
+    })
+DEBIAN_UNREACHABLE_0 = PingTestData(
+    """
 PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
 
 --- 192.168.207.100 ping statistics ---
 5 packets transmitted, 0 received, 100% packet loss, time 4009ms
-"""
-PING_DEBIAN_UNREACHABLE_1 = PING_DEBIAN_UNREACHABLE_0 + "\n"
-PING_DEBIAN_UNREACHABLE_2 = PING_DEBIAN_UNREACHABLE_1 + "\n"
-PING_DEBIAN_UNREACHABLE_3 = PING_DEBIAN_UNREACHABLE_0 + "\npipe 4\n"
+""",
+    {
+        "packet_transmit": 5,
+        "packet_receive": 0,
+        "packet_loss_rate": 100.0,
+        "packet_loss_count": 5,
+        "rtt_min": None,
+        "rtt_avg": None,
+        "rtt_max": None,
+        "rtt_mdev": None,
+        "packet_duplicate_rate": None,
+        "packet_duplicate_count": 0,
+    })
+DEBIAN_UNREACHABLE_1 = PingTestData(
+    DEBIAN_UNREACHABLE_0.value + "\n", DEBIAN_UNREACHABLE_0.expected)
+DEBIAN_UNREACHABLE_2 = PingTestData(
+    DEBIAN_UNREACHABLE_1.value + "\n", DEBIAN_UNREACHABLE_0.expected)
 
-PING_FEDORA_LOSS = six.b("""
+FEDORA_LOSS_SUCCESS = PingTestData(
+    """
 PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 
 --- 192.168.0.1 ping statistics ---
 1688 packets transmitted, 1553 received, +1 duplicates, 7% packet loss, time 2987ms
 rtt min/avg/max/mdev = 0.282/0.642/11.699/0.699 ms, pipe 2, ipg/ewma 1.770/0.782 ms
-""")
-PING_FEDORA_UNREACHABLE = """
+""",
+    {
+        "packet_receive": 1553,
+        "packet_transmit": 1688,
+        "packet_loss_rate": 7.997630331753558,
+        "packet_loss_count": 135,
+        "rtt_min": 0.282,
+        "rtt_max": 11.699,
+        "rtt_mdev": 0.699,
+        "rtt_avg": 0.642,
+        "packet_duplicate_rate": 0.0643915003219575,
+        "packet_duplicate_count": 1,
+    })
+
+FEDORA_UNREACHABLE = PingTestData(
+    """
 PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
 From 192.168.207.128 icmp_seq=1 Destination Host Unreachable
 From 192.168.207.128 icmp_seq=2 Destination Host Unreachable
@@ -56,16 +117,124 @@ From 192.168.207.128 icmp_seq=5 Destination Host Unreachable
 
 --- 192.168.207.100 ping statistics ---
 5 packets transmitted, 0 received, +5 errors, 100% packet loss, time 4003ms
-"""
-PING_FEDORA_EMPTY_BODY = six.b("""
-PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
+""",
+    {
+        "packet_transmit": 5,
+        "packet_receive": 0,
+        "packet_loss_rate": 100.0,
+        "packet_loss_count": 5,
+        "rtt_min": None,
+        "rtt_avg": None,
+        "rtt_max": None,
+        "rtt_mdev": None,
+        "packet_duplicate_rate": None,
+        "packet_duplicate_count": 0,
+    })
 
---- 192.168.0.1 ping statistics ---
-""")
+OSX_SUCCESS_0 = PingTestData(
+    """PING google.com (172.217.6.238): 56 data bytes
+64 bytes from 172.217.6.238: icmp_seq=0 ttl=53 time=20.482 ms
+64 bytes from 172.217.6.238: icmp_seq=1 ttl=53 time=32.550 ms
+64 bytes from 172.217.6.238: icmp_seq=2 ttl=53 time=32.013 ms
+64 bytes from 172.217.6.238: icmp_seq=3 ttl=53 time=28.498 ms
+64 bytes from 172.217.6.238: icmp_seq=4 ttl=53 time=46.093 ms
 
-# ping google.com -n 10:
-#   Windows 7 SP1
-PING_WINDOWS_SUCCESS = six.b("""
+--- google.com ping statistics ---
+5 packets transmitted, 5 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 20.482/31.927/46.093/8.292 ms
+""",
+    {
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
+        "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "packet_receive": 5,
+        "packet_transmit": 5,
+        "rtt_avg": 31.927,
+        "rtt_max": 46.093,
+        "rtt_mdev": 8.292,
+        "rtt_min": 20.482,
+    })
+OSX_SUCCESS_1 = PingTestData(
+    """PING github.com (192.30.255.113): 56 data bytes
+
+--- github.com ping statistics ---
+10 packets transmitted, 10 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 218.391/283.477/405.879/70.170 ms
+""",
+    {
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
+        "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "packet_receive": 10,
+        "packet_transmit": 10,
+        "rtt_avg": 283.477,
+        "rtt_max": 405.879,
+        "rtt_mdev": 70.170,
+        "rtt_min": 218.391,
+    })
+OSX_UNREACHABLE_0 = PingTestData(
+    """PING twitter.com (59.24.3.173): 56 data bytes
+^C
+--- twitter.com ping statistics ---
+59 packets transmitted, 0 packets received, 100.0% packet los
+""",
+    {
+        "packet_transmit": 59,
+        "packet_receive": 0,
+        "packet_loss_rate": 100.0,
+        "packet_loss_count": 59,
+        "rtt_min": None,
+        "rtt_avg": None,
+        "rtt_max": None,
+        "rtt_mdev": None,
+        "packet_duplicate_rate": None,
+        "packet_duplicate_count": None,
+    })
+OSX_UNREACHABLE_1 = PingTestData(
+    """PING twitter.com (31.13.78.66): 56 data bytes
+
+--- twitter.com ping statistics ---
+10 packets transmitted, 0 packets received, 100.0% packet loss
+""",
+    {
+        "packet_transmit": 10,
+        "packet_receive": 0,
+        "packet_loss_rate": 100.0,
+        "packet_loss_count": 10,
+        "rtt_min": None,
+        "rtt_avg": None,
+        "rtt_max": None,
+        "rtt_mdev": None,
+        "packet_duplicate_rate": None,
+        "packet_duplicate_count": None,
+    })
+
+
+ALPINE_LINUX_SUCCESS = PingTestData(
+    """
+PING heise.de (193.99.144.80): 56 data bytes
+
+--- heise.de ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max = 0.638/0.683/0.746 ms
+""",
+    {
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
+        "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "packet_receive": 5,
+        "packet_transmit": 5,
+        "rtt_avg": 0.683,
+        "rtt_max": 0.746,
+        "rtt_mdev": None,
+        "rtt_min": 0.638,
+    })
+
+WINDOWS_SUCCESS = PingTestData(
+    """
 Pinging google.com [216.58.196.238] with 32 bytes of data:
 Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
 Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
@@ -82,8 +251,21 @@ Ping statistics for 216.58.196.238:
     Packets: Sent = 10, Received = 10, Lost = 0 (0% loss),
 Approximate round trip times in milli-seconds:
     Minimum = 56ms, Maximum = 194ms, Average = 107ms
-""")
-PING_WINDOWS_UNREACHABLE_0 = """
+""",
+    {
+        "packet_transmit": 10,
+        "packet_receive": 10,
+        "packet_loss_rate": 0.0,
+        "packet_loss_count": 0,
+        "rtt_min": 56,
+        "rtt_avg": 107,
+        "rtt_max": 194,
+        "rtt_mdev": None,
+        "packet_duplicate_rate": None,
+        "packet_duplicate_count": None,
+    })
+WINDOWS_UNREACHABLE_0 = PingTestData(
+    """
 Pinging 192.168.207.100 with 32 bytes of data:
 Request timed out.
 Request timed out.
@@ -92,215 +274,50 @@ Request timed out.
 
 Ping statistics for 192.168.207.100:
     Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
-"""
-PING_WINDOWS_UNREACHABLE_1 = PING_WINDOWS_UNREACHABLE_0 + "\n"
-PING_WINDOWS_UNREACHABLE_2 = PING_WINDOWS_UNREACHABLE_1 + "\n"
-PING_WINDOWS_INVALID = """
-Pinging 192.168.207.100 with 32 bytes of data:
-Request timed out.
-Request timed out.
-Request timed out.
-Request timed out.
-
-Ping statistics for 192.168.207.100:
-"""
-
-PING_OSX_SUCCESS_0 = """PING google.com (172.217.6.238): 56 data bytes
-64 bytes from 172.217.6.238: icmp_seq=0 ttl=53 time=20.482 ms
-64 bytes from 172.217.6.238: icmp_seq=1 ttl=53 time=32.550 ms
-64 bytes from 172.217.6.238: icmp_seq=2 ttl=53 time=32.013 ms
-64 bytes from 172.217.6.238: icmp_seq=3 ttl=53 time=28.498 ms
-64 bytes from 172.217.6.238: icmp_seq=4 ttl=53 time=46.093 ms
-
---- google.com ping statistics ---
-5 packets transmitted, 5 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 20.482/31.927/46.093/8.292 ms
-"""
-PING_OSX_SUCCESS_1 = """PING github.com (192.30.255.113): 56 data bytes
-
---- github.com ping statistics ---
-10 packets transmitted, 10 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 218.391/283.477/405.879/70.170 ms
-"""
-PING_OSX_UNREACHABLE_0 = """PING twitter.com (59.24.3.173): 56 data bytes
-^C
---- twitter.com ping statistics ---
-59 packets transmitted, 0 packets received, 100.0% packet los
-"""
-PING_OSX_UNREACHABLE_1 = """PING twitter.com (31.13.78.66): 56 data bytes
-
---- twitter.com ping statistics ---
-10 packets transmitted, 0 packets received, 100.0% packet loss
-"""
-
-PING_ALPINE_LINUX_SUCCESS = """
-PING heise.de (193.99.144.80): 56 data bytes
-
---- heise.de ping statistics ---
-5 packets transmitted, 5 packets received, 0% packet loss
-round-trip min/avg/max = 0.638/0.683/0.746 ms
-"""
+""",
+    {
+        "packet_transmit": 4,
+        "packet_receive": 0,
+        "packet_loss_rate": 100.0,
+        "packet_loss_count": 4,
+        "rtt_min": None,
+        "rtt_avg": None,
+        "rtt_max": None,
+        "rtt_mdev": None,
+        "packet_duplicate_rate": None,
+        "packet_duplicate_count": None,
+    })
+WINDOWS_UNREACHABLE_1 = PingTestData(
+    WINDOWS_UNREACHABLE_0.value + "\n", WINDOWS_UNREACHABLE_0.expected)
+WINDOWS_UNREACHABLE_2 = PingTestData(
+    WINDOWS_UNREACHABLE_1.value + "\n", WINDOWS_UNREACHABLE_0.expected)
 
 
 class Test_PingParsing_parse(object):
 
-    @pytest.mark.parametrize(["ping_text", "expected"], [
-        [
-            PING_DEBIAN_SUCCESS,
-            {
-                "packet_transmit": 60,
-                "packet_receive": 60,
-                "packet_loss_rate": 0.0,
-                "packet_loss_count": 0,
-                "rtt_min": 61.425,
-                "rtt_avg": 99.731,
-                "rtt_max": 212.597,
-                "rtt_mdev": 27.566,
-                "packet_duplicate_rate": 0,
-                "packet_duplicate_count": 0,
-            }
-        ], [
-            PING_FEDORA_LOSS,
-            {
-                "packet_receive": 1553,
-                "packet_transmit": 1688,
-                "packet_loss_rate": 7.997630331753558,
-                "packet_loss_count": 135,
-                "rtt_min": 0.282,
-                "rtt_max": 11.699,
-                "rtt_mdev": 0.699,
-                "rtt_avg": 0.642,
-                "packet_duplicate_rate": 0.0643915003219575,
-                "packet_duplicate_count": 1,
-            }
-        ], [
-            PING_FEDORA_UNREACHABLE,
-            {
-                "packet_transmit": 5,
-                "packet_receive": 0,
-                "packet_loss_rate": 100.0,
-                "packet_loss_count": 5,
-                "rtt_min": None,
-                "rtt_avg": None,
-                "rtt_max": None,
-                "rtt_mdev": None,
-                "packet_duplicate_rate": None,
-                "packet_duplicate_count": 0,
-            }
-        ], [
-            PING_WINDOWS_SUCCESS,
-            {
-                "packet_transmit": 10,
-                "packet_receive": 10,
-                "packet_loss_rate": 0.0,
-                "packet_loss_count": 0,
-                "rtt_min": 56,
-                "rtt_avg": 107,
-                "rtt_max": 194,
-                "rtt_mdev": None,
-                "packet_duplicate_rate": None,
-                "packet_duplicate_count": None,
-            }
-        ], [
-            PING_OSX_SUCCESS_0,
-            {
-                "packet_duplicate_count": None,
-                "packet_duplicate_rate": None,
-                "packet_loss_count": 0,
-                "packet_loss_rate": 0.0,
-                "packet_receive": 5,
-                "packet_transmit": 5,
-                "rtt_avg": 31.927,
-                "rtt_max": 46.093,
-                "rtt_mdev": 8.292,
-                "rtt_min": 20.482,
-            }
-        ], [
-            PING_OSX_SUCCESS_1,
-            {
-                "packet_duplicate_count": None,
-                "packet_duplicate_rate": None,
-                "packet_loss_count": 0,
-                "packet_loss_rate": 0.0,
-                "packet_receive": 10,
-                "packet_transmit": 10,
-                "rtt_avg": 283.477,
-                "rtt_max": 405.879,
-                "rtt_mdev": 70.170,
-                "rtt_min": 218.391,
-            }
-        ], [
-            PING_OSX_UNREACHABLE_0,
-            {
-                "packet_transmit": 59,
-                "packet_receive": 0,
-                "packet_loss_rate": 100.0,
-                "packet_loss_count": 59,
-                "rtt_min": None,
-                "rtt_avg": None,
-                "rtt_max": None,
-                "rtt_mdev": None,
-                "packet_duplicate_rate": None,
-                "packet_duplicate_count": None,
-            }
-        ], [
-            PING_ALPINE_LINUX_SUCCESS,
-            {
-                "packet_duplicate_count": None,
-                "packet_duplicate_rate": None,
-                "packet_loss_count": 0,
-                "packet_loss_rate": 0.0,
-                "packet_receive": 5,
-                "packet_transmit": 5,
-                "rtt_avg": 0.683,
-                "rtt_max": 0.746,
-                "rtt_mdev": None,
-                "rtt_min": 0.638,
-            }
-        ],
-    ] + list(itertools.product(
-        [
-            PING_DEBIAN_UNREACHABLE_0,
-            PING_DEBIAN_UNREACHABLE_1,
-            PING_DEBIAN_UNREACHABLE_2,
-        ],
-        [{
-            "packet_transmit": 5,
-            "packet_receive": 0,
-            "packet_loss_rate": 100.0,
-            "packet_loss_count": 5,
-            "rtt_min": None,
-            "rtt_avg": None,
-            "rtt_max": None,
-            "rtt_mdev": None,
-            "packet_duplicate_rate": None,
-            "packet_duplicate_count": 0,
-        }]
-    )) + list(itertools.product(
-        [
-            PING_WINDOWS_UNREACHABLE_0,
-            PING_WINDOWS_UNREACHABLE_1,
-            PING_WINDOWS_UNREACHABLE_2,
-        ],
-        [{
-            "packet_transmit": 4,
-            "packet_receive": 0,
-            "packet_loss_rate": 100.0,
-            "packet_loss_count": 4,
-            "rtt_min": None,
-            "rtt_avg": None,
-            "rtt_max": None,
-            "rtt_mdev": None,
-            "packet_duplicate_rate": None,
-            "packet_duplicate_count": None,
-        }]
-    )))
-    def test_normal_text(self, ping_parser, ping_text, expected):
-        ping_parser.parse(ping_text)
+    @pytest.mark.parametrize(["test_data"], [
+        [DEBIAN_SUCCESS],
+        [DEBIAN_UNREACHABLE_0],
+        [DEBIAN_UNREACHABLE_1],
+        [DEBIAN_UNREACHABLE_2],
+        [FEDORA_LOSS_SUCCESS],
+        [FEDORA_UNREACHABLE],
+        [OSX_SUCCESS_0],
+        [OSX_SUCCESS_1],
+        [OSX_UNREACHABLE_0],
+        [OSX_UNREACHABLE_1],
+        [ALPINE_LINUX_SUCCESS],
+        [WINDOWS_SUCCESS],
+        [WINDOWS_UNREACHABLE_0],
+        [WINDOWS_UNREACHABLE_1],
+        [WINDOWS_UNREACHABLE_2],
+    ])
+    def test_normal_text(self, ping_parser, test_data):
+        ping_parser.parse(test_data.value)
 
-        print("[input text]\n{}".format(ping_text))
+        print("[input text]\n{}".format(test_data.value))
 
-        assert ping_parser.as_dict() == expected
+        assert ping_parser.as_dict() == test_data.expected
 
     def test_empty(self, ping_parser, ping_text):
         ping_parser.parse(ping_text)
