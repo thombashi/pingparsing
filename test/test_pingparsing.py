@@ -73,7 +73,7 @@ DEBIAN_UNREACHABLE_1 = PingTestData(
 DEBIAN_UNREACHABLE_2 = PingTestData(
     DEBIAN_UNREACHABLE_1.value + "\n", DEBIAN_UNREACHABLE_0.expected)
 
-FEDORA_LOSS_SUCCESS = PingTestData(
+FEDORA_DUP_LOSS = PingTestData(
     """PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 
 --- 192.168.0.1 ping statistics ---
@@ -313,7 +313,7 @@ class Test_PingParsing_parse(object):
         [DEBIAN_UNREACHABLE_0],
         [DEBIAN_UNREACHABLE_1],
         [DEBIAN_UNREACHABLE_2],
-        [FEDORA_LOSS_SUCCESS],
+        [FEDORA_DUP_LOSS],
         [FEDORA_UNREACHABLE],
         [OSX_SUCCESS_0],
         [OSX_SUCCESS_1],
