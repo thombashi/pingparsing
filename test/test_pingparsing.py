@@ -39,6 +39,7 @@ PingTestData = namedtuple("PingTestData", "value expected")
 DEBIAN_SUCCESS = PingTestData(
     PING_DEBIAN_SUCCESS,
     {
+        "destination": "google.com",
         "packet_transmit": 60,
         "packet_receive": 60,
         "packet_loss_count": 0,
@@ -57,6 +58,7 @@ DEBIAN_UNREACHABLE_0 = PingTestData(
 5 packets transmitted, 0 received, 100% packet loss, time 4009ms
 """,
     {
+        "destination": "192.168.207.100",
         "packet_transmit": 5,
         "packet_receive": 0,
         "packet_duplicate_count": 0,
@@ -81,6 +83,7 @@ FEDORA_DUP_LOSS = PingTestData(
 rtt min/avg/max/mdev = 0.282/0.642/11.699/0.699 ms, pipe 2, ipg/ewma 1.770/0.782 ms
 """,
     {
+        "destination": "192.168.0.1",
         "packet_transmit": 1688,
         "packet_receive": 1553,
         "packet_duplicate_count": 1,
@@ -104,6 +107,7 @@ From 192.168.207.128 icmp_seq=5 Destination Host Unreachable
 5 packets transmitted, 0 received, +5 errors, 100% packet loss, time 4003ms
 """,
     {
+        "destination": "192.168.207.100",
         "packet_transmit": 5,
         "packet_receive": 0,
         "packet_loss_count": 5,
@@ -129,6 +133,7 @@ OSX_SUCCESS_0 = PingTestData(
 round-trip min/avg/max/stddev = 20.482/31.927/46.093/8.292 ms
 """,
     {
+        "destination": "google.com",
         "packet_transmit": 5,
         "packet_receive": 5,
         "packet_loss_count": 0,
@@ -148,6 +153,7 @@ OSX_SUCCESS_1 = PingTestData(
 round-trip min/avg/max/stddev = 218.391/283.477/405.879/70.170 ms
 """,
     {
+        "destination": "github.com",
         "packet_transmit": 10,
         "packet_receive": 10,
         "packet_loss_count": 0,
@@ -166,6 +172,7 @@ OSX_UNREACHABLE_0 = PingTestData(
 59 packets transmitted, 0 packets received, 100.0% packet loss
 """,
     {
+        "destination": "twitter.com",
         "packet_transmit": 59,
         "packet_receive": 0,
         "packet_loss_rate": 100.0,
@@ -184,6 +191,7 @@ OSX_UNREACHABLE_1 = PingTestData(
 10 packets transmitted, 0 packets received, 100.0% packet loss
 """,
     {
+        "destination": "twitter.com",
         "packet_transmit": 10,
         "packet_receive": 0,
         "packet_loss_count": 10,
@@ -204,6 +212,7 @@ ALPINE_LINUX_SUCCESS = PingTestData(
 round-trip min/avg/max = 0.638/0.683/0.746 ms
 """,
     {
+        "destination": "heise.de",
         "packet_transmit": 5,
         "packet_receive": 5,
         "packet_loss_count": 0,
@@ -234,6 +243,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
 round-trip min/avg/max = 0.613/0.930/1.219 ms
 """,
     {
+        "destination": "192.168.2.106",
         "packet_transmit": 10,
         "packet_receive": 9,
         "packet_duplicate_count": 2,
@@ -268,6 +278,7 @@ Approximate round trip times in milli-seconds:
     Minimum = 56ms, Maximum = 194ms, Average = 107ms
 """,
     {
+        "destination": "216.58.196.238",
         "packet_transmit": 10,
         "packet_receive": 10,
         "packet_loss_count": 0,
@@ -299,6 +310,7 @@ Approximate round trip times in milli-seconds:
     Minimum = 0ms, Maximum = 33ms, Average = 14ms
 """,
     {
+        "destination": "192.168.2.106",
         "packet_transmit": 10,
         "packet_receive": 9,
         "packet_loss_count": 1,
@@ -322,6 +334,7 @@ Ping statistics for 192.168.207.100:
     Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
 """,
     {
+        "destination": "192.168.207.100",
         "packet_transmit": 4,
         "packet_receive": 0,
         "packet_loss_count": 4,
@@ -377,6 +390,7 @@ rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
 """)
         ping_parser.parse("")
 
+        assert ping_parser.destination is None
         assert ping_parser.packet_transmit is None
         assert ping_parser.packet_receive is None
         assert ping_parser.packet_loss_count is None

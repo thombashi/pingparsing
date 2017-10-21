@@ -29,6 +29,10 @@ class PingParser(PingParserInterface):
         self.__initialize_parse_result()
 
     @property
+    def destination(self):
+        return self._destination
+
+    @property
     def packet_transmit(self):
         return self._packet_transmit
 
@@ -98,7 +102,10 @@ class PingParser(PingParserInterface):
 
         packet_info_line = body_line_list[0]
 
-        return (packet_info_line, body_line_list)
+        return (line_list[headline_idx], packet_info_line, body_line_list)
+
+    def _parse_destination(self, headline):
+        return headline.lstrip("--- ").rstrip(" ping statistics ---")
 
     def __find_stats_headline_idx(self, line_list, re_stats_header):
         for i, line in enumerate(line_list):
@@ -115,6 +122,7 @@ class PingParser(PingParserInterface):
             raise EmptyPingStatisticsError("ping statistics is empty")
 
     def __initialize_parse_result(self):
+        self._destination = None
         self._packet_transmit = None
         self._packet_receive = None
         self._rtt_min = None
@@ -152,7 +160,7 @@ class LinuxPingParser(PingParser):
         return "--- .* ping statistics ---"
 
     def parse(self, ping_message):
-        packet_info_line, body_line_list = self._preprocess_parse(
+        headline, packet_info_line, body_line_list = self._preprocess_parse(
             line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
@@ -160,10 +168,12 @@ class LinuxPingParser(PingParser):
             pp.Word(pp.nums) +
             pp.Literal("received,")
         )
+
+        self._destination = self._parse_destination(headline)
+
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
         self._packet_transmit = int(parse_list[0])
         self._packet_receive = int(parse_list[2])
-
         self._duplicates = self.__parse_duplicate(packet_info_line)
 
         try:
@@ -215,7 +225,7 @@ class WindowsPingParser(PingParser):
         return "^Ping statistics for "
 
     def parse(self, ping_message):
-        packet_info_line, body_line_list = self._preprocess_parse(
+        headline, packet_info_line, body_line_list = self._preprocess_parse(
             line_list=ping_message)
         packet_pattern = (
             pp.Literal("Packets: Sent = ") +
@@ -223,6 +233,9 @@ class WindowsPingParser(PingParser):
             pp.Literal(", Received = ") +
             pp.Word(pp.nums)
         )
+
+        self._destination = self._parse_destination(headline)
+
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
         self._packet_transmit = int(parse_list[1])
         self._packet_receive = int(parse_list[3])
@@ -248,6 +261,9 @@ class WindowsPingParser(PingParser):
         self._rtt_avg = float(parse_list[5])
         self._rtt_max = float(parse_list[3])
 
+    def _parse_destination(self, headline):
+        return headline.lstrip("Ping statistics for ").rstrip(":")
+
 
 class OsxPingParser(PingParser):
 
@@ -260,7 +276,7 @@ class OsxPingParser(PingParser):
         return "--- .* ping statistics ---"
 
     def parse(self, ping_message):
-        packet_info_line, body_line_list = self._preprocess_parse(
+        headline, packet_info_line, body_line_list = self._preprocess_parse(
             line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
@@ -268,6 +284,9 @@ class OsxPingParser(PingParser):
             pp.Word(pp.nums) +
             pp.Literal("packets received,")
         )
+
+        self._destination = self._parse_destination(headline)
+
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
         self._packet_transmit = int(parse_list[0])
         self._packet_receive = int(parse_list[2])
@@ -302,7 +321,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
         return "AlpineLinux"
 
     def parse(self, ping_message):
-        packet_info_line, body_line_list = self._preprocess_parse(
+        headline, packet_info_line, body_line_list = self._preprocess_parse(
             line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
@@ -310,6 +329,9 @@ class AlpineLinuxPingParser(LinuxPingParser):
             pp.Word(pp.nums) +
             pp.Literal("packets received,")
         )
+
+        self._destination = self._parse_destination(headline)
+
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
         self._packet_transmit = int(parse_list[0])
         self._packet_receive = int(parse_list[2])

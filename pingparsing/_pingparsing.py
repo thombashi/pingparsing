@@ -35,6 +35,10 @@ class PingParsing(PingParserInterface):
         self.__parser = NullPingParser()
 
     @property
+    def destination(self):
+        return self.__parser.destination
+
+    @property
     def packet_transmit(self):
         """
         :return: Number of packets transmitted.
@@ -154,6 +158,7 @@ class PingParsing(PingParserInterface):
         """
 
         return {
+            "destination": self.destination,
             "packet_transmit": self.packet_transmit,
             "packet_receive": self.packet_receive,
             "packet_loss_rate": self.packet_loss_rate,
