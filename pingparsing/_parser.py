@@ -313,6 +313,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
         self._packet_transmit = int(parse_list[0])
         self._packet_receive = int(parse_list[2])
+        self._duplicates = self.__parse_duplicate(packet_info_line)
 
         try:
             rtt_line = body_line_list[1]
@@ -333,3 +334,18 @@ class AlpineLinuxPingParser(LinuxPingParser):
         self._rtt_min = float(parse_list[1])
         self._rtt_avg = float(parse_list[3])
         self._rtt_max = float(parse_list[5])
+
+    @staticmethod
+    def __parse_duplicate(line):
+        packet_pattern = (
+            pp.SkipTo(pp.Word(pp.nums) + pp.Literal("duplicates,")) +
+            pp.Word(pp.nums) +
+            pp.Literal("duplicates,")
+        )
+        try:
+            duplicate_parse_list = packet_pattern.parseString(
+                _to_unicode(line))
+        except pp.ParseException:
+            return 0
+
+        return int(duplicate_parse_list[-2])

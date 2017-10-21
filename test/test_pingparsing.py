@@ -204,8 +204,8 @@ ALPINE_LINUX_SUCCESS = PingTestData(
 round-trip min/avg/max = 0.638/0.683/0.746 ms
 """,
     {
-        "packet_duplicate_count": None,
-        "packet_duplicate_rate": None,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": 0,
         "packet_loss_count": 0,
         "packet_loss_rate": 0.0,
         "packet_receive": 5,
@@ -214,6 +214,36 @@ round-trip min/avg/max = 0.638/0.683/0.746 ms
         "rtt_max": 0.746,
         "rtt_mdev": None,
         "rtt_min": 0.638,
+    })
+ALPINE_LINUX_DUP_LOSS = PingTestData(
+    """PING 192.168.2.106 (192.168.2.106): 56 data bytes
+64 bytes from 192.168.2.106: seq=0 ttl=64 time=0.936 ms
+64 bytes from 192.168.2.106: seq=0 ttl=64 time=1.003 ms (DUP!)
+64 bytes from 192.168.2.106: seq=1 ttl=64 time=0.802 ms
+64 bytes from 192.168.2.106: seq=2 ttl=64 time=0.696 ms
+64 bytes from 192.168.2.106: seq=3 ttl=64 time=0.664 ms
+64 bytes from 192.168.2.106: seq=4 ttl=64 time=1.194 ms
+64 bytes from 192.168.2.106: seq=5 ttl=64 time=0.613 ms
+64 bytes from 192.168.2.106: seq=6 ttl=64 time=0.898 ms
+64 bytes from 192.168.2.106: seq=8 ttl=64 time=1.066 ms
+64 bytes from 192.168.2.106: seq=9 ttl=64 time=1.144 ms
+64 bytes from 192.168.2.106: seq=9 ttl=64 time=1.219 ms (DUP!)
+
+--- 192.168.2.106 ping statistics ---
+10 packets transmitted, 9 packets received, 2 duplicates, 10% packet loss
+round-trip min/avg/max = 0.613/0.930/1.219 ms
+""",
+    {
+        "packet_duplicate_count": 2,
+        "packet_duplicate_rate": 22.22222222222222,
+        "packet_loss_count": 1,
+        "packet_loss_rate": 9.999999999999998,
+        "packet_receive": 9,
+        "packet_transmit": 10,
+        "rtt_min": 0.613,
+        "rtt_avg": 0.93,
+        "rtt_max": 1.219,
+        "rtt_mdev": None,
     })
 
 WINDOWS_SUCCESS = PingTestData(
@@ -290,6 +320,7 @@ class Test_PingParsing_parse(object):
         [OSX_UNREACHABLE_0],
         [OSX_UNREACHABLE_1],
         [ALPINE_LINUX_SUCCESS],
+        [ALPINE_LINUX_DUP_LOSS],
         [WINDOWS_SUCCESS],
         [WINDOWS_UNREACHABLE_0],
         [WINDOWS_UNREACHABLE_1],
