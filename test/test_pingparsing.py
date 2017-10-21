@@ -217,6 +217,8 @@ round-trip min/avg/max = 0.638/0.683/0.746 ms
     })
 
 WINDOWS_SUCCESS = PingTestData(
+    # ping google.com -n 10:
+    #   Windows 7 SP1
     """Pinging google.com [216.58.196.238] with 32 bytes of data:
 Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
 Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
