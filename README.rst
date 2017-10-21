@@ -1,6 +1,6 @@
-pingparsing
-===========
 
+pingparsing
+=============
 .. image:: https://badge.fury.io/py/pingparsing.svg
     :target: https://badge.fury.io/py/pingparsing
 
@@ -13,9 +13,9 @@ pingparsing
 .. image:: https://img.shields.io/github/stars/thombashi/pingparsing.svg?style=social&label=Star
    :target: https://github.com/thombashi/pingparsing
 
-Summary
--------
 
+Summary
+---------
 pingparsing is a Python library for parsing ping command output.
 
 Usage
@@ -30,11 +30,11 @@ Sample code
 ~~~~~~~~~~~
 https://github.com/thombashi/pingparsing/blob/master/examples/ping_sample.py
 
-Example execution result at Debian 8
+Example: Linux environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code:: console
 
-    ./ping_sample.py -d 8.8.8.8
+    ./ping_sample.py google.com
     # returncode ---
     0
 
@@ -45,27 +45,28 @@ Example execution result at Debian 8
     packet_loss_count: 0 packets
     packet_duplicate_rate: NaN
     packet_duplicate_count: NaN
-    rtt_min: 31.747
-    rtt_avg: 36.001
-    rtt_max: 41.727
-    rtt_mdev: 3.046
+    rtt_min: 39.087
+    rtt_avg: 48.312
+    rtt_max: 76.458
+    rtt_mdev: 10.551
 
-    # asdict ---
+    # as_dict ---
     {
-        "rtt_min": 31.747,
-        "packet_duplicate_count": null,
-        "packet_loss_count": 0,
-        "rtt_max": 41.727,
-        "packet_loss_rate": 0.0,
-        "packet_receive": 10,
-        "rtt_mdev": 3.046,
+        "destination": "google.com",
         "packet_transmit": 10,
-        "packet_duplicate_rate": null,
-        "rtt_avg": 36.001
+        "packet_receive": 10,
+        "packet_loss_rate": 0.0,
+        "packet_loss_count": 0,
+        "rtt_min": 39.087,
+        "rtt_avg": 48.312,
+        "rtt_max": 76.458,
+        "rtt_mdev": 10.551,
+        "packet_duplicate_rate": 0.0,
+        "packet_duplicate_count": 0
     }
 
 
-Example execution result at Windows 10
+Example: Windows environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code:: console
 
@@ -80,27 +81,27 @@ Example execution result at Windows 10
     packet_loss_count: 0 packets
     packet_duplicate_rate: NaN
     packet_duplicate_count: NaN
-    rtt_min: 32.0
-    rtt_avg: 35.0
-    rtt_max: 39.0
+    rtt_min: 41.0
+    rtt_avg: 49.0
+    rtt_max: 58.0
     rtt_mdev: None
 
-    # asdict ---
+    # as_dict ---
     {
+        "packet_transmit": 10,
+        "rtt_max": 58.0,
+        "packet_duplicate_count": null,
+        "rtt_avg": 49.0,
+        "destination": "172.217.27.174",
         "packet_receive": 10,
         "packet_duplicate_rate": null,
-        "packet_transmit": 10,
         "packet_loss_count": 0,
+        "rtt_min": 41.0,
         "packet_loss_rate": 0.0,
-        "rtt_avg": 35.0,
-        "rtt_mdev": null,
-        "rtt_min": 32.0,
-        "packet_duplicate_count": null,
-        "rtt_max": 39.0
+        "rtt_mdev": null
     }
 
-
-Note: ``rtt_mdev`` not available with Windows
+Note: ``rtt_mdev`` not available with Windows environment
 
 
 Parsing ``ping`` command output
@@ -111,7 +112,7 @@ Sample code
 https://github.com/thombashi/pingparsing/blob/master/examples/parse_sample.py
 
 
-Example: Execute at Debian 8
+Example: Linux environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 :Input:
     ::
@@ -155,7 +156,7 @@ Example: Execute at Debian 8
         }
 
 
-Example: Execute at Windows 10
+Example: Windows environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 :Input:
     .. code:: console
@@ -230,8 +231,7 @@ Windows
     > chcp <XXX>    # restore code page
 
 -  Reference
-   -  https://technet.microsoft.com/en-us/library/cc733037
-
+    - https://technet.microsoft.com/en-us/library/cc733037
 
 Installation
 ============
@@ -263,21 +263,20 @@ Tested Environment
 +--------------+-----------------------------------+
 | OS           | ping version                      |
 +==============+===================================+
-| Debian 8.6   | iputils-ping 20121221-5+b2        |
+| Debian 8.6   | ``iputils-ping 20121221-5+b2``    |
 +--------------+-----------------------------------+
-| Fedora 24    | iputils-20160308-3.fc24.x86\_64   |
+| Fedora 25    | ``iputils-20161105-1.fc25.x86_64``|
 +--------------+-----------------------------------+
 | Windows 10   | ``-``                             |
 +--------------+-----------------------------------+
 
 Premise
 =======
-This library expects the locale setup to English.
+``pingparsing`` expects the locale at the ping command execution environment with English.
 Parsing the ``ping`` command output with any other locale may fail.
-This is because the output of the ``ping`` command is changed depending on the locale setting.
+This is because the output of the ``ping`` command will change depending on the locale setting.
+
 
 Documentation
-=============
-
+===============
 http://pingparsing.rtfd.io/
-
