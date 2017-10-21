@@ -324,10 +324,10 @@ class Test_PingParsing_parse(object):
         assert ping_parser.rtt_mdev is None
         assert ping_parser.packet_duplicate_count is None
 
-    @pytest.mark.parametrize(["ping_text", "expected"], [
+    @pytest.mark.parametrize(["value", "expected"], [
         [PING_FEDORA_EMPTY_BODY, EmptyPingStatisticsError],
         [PING_WINDOWS_INVALID, EmptyPingStatisticsError],
     ])
-    def test_exception(self, ping_parser, ping_text, expected):
+    def test_exception(self, ping_parser, value, expected):
         with pytest.raises(expected):
-            ping_parser.parse(ping_text)
+            ping_parser.parse(value)
