@@ -137,7 +137,7 @@ class NullPingParser(PingParser):
     def parse(self, ping_message):  # pragma: no cover
         pass
 
-    def _preprocess_parse(self):  # pragma: no cover
+    def _preprocess_parse(self, line_list):  # pragma: no cover
         pass
 
 
