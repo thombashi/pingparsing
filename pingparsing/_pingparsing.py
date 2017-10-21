@@ -36,6 +36,11 @@ class PingParsing(PingParserInterface):
 
     @property
     def destination(self):
+        """
+        :return: The ping destination.
+        :rtype: str
+        """
+
         return self.__parser.destination
 
     @property
