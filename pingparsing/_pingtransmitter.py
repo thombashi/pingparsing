@@ -186,7 +186,7 @@ class PingTransmitter(object):
             command_list.append("chcp 437 &")
 
         command_list.extend([
-            self.__get_ping_command(),
+            self.__get_builtin_ping_command(),
             self.__get_destination_host(),
         ])
 
@@ -198,7 +198,7 @@ class PingTransmitter(object):
 
         return self.destination_host
 
-    def __get_ping_command(self):
+    def __get_builtin_ping_command(self):
         if self.__is_windows():
             return "ping"
 
