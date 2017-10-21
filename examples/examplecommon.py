@@ -37,5 +37,5 @@ def print_ping_parser(ping_parser):
     print("rtt_max:", ping_parser.rtt_max)
     print("rtt_mdev:", ping_parser.rtt_mdev)
     print()
-    print("# asdict ---")
+    print("# as_dict ---")
     print(json.dumps(ping_parser.as_dict(), indent=4))

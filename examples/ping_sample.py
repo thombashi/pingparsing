@@ -17,8 +17,7 @@ import examplecommon
 
 def parse_option():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-d", "--destination", required=True, help="destination host")
+    parser.add_argument("destination")
     parser.add_argument(
         "-I", dest="interface", help="interface")
 
