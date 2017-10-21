@@ -125,12 +125,16 @@ class PingTransmitter(object):
         return PingResult(stdout, stderr, ping_proc.returncode)
 
     @staticmethod
-    def __is_windows():
-        return platform.system() == "Windows"
+    def __is_linux():
+        return platform.system() == "Linux"
 
     @staticmethod
     def __is_osx():
         return platform.system() == "Darwin"
+
+    @staticmethod
+    def __is_windows():
+        return platform.system() == "Windows"
 
     def __is_ipv6(self):
         try:
@@ -203,6 +207,9 @@ class PingTransmitter(object):
             self.__get_count_option(),
             self.__get_quiet_option(),
         ])
+
+        if self.__is_linux() and typepy.is_not_null_string(self.interface):
+            command_list.append("-I {}".format(self.interface))
 
         if typepy.is_not_null_string(self.ping_option):
             command_list.append(self.ping_option)
