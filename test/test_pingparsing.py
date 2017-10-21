@@ -19,17 +19,6 @@ from .data import (
 )
 
 
-@pytest.fixture
-def ping_text():
-    return six.b("""
-PING google.com (216.58.196.238) 56(84) bytes of data.
-
---- google.com ping statistics ---
-60 packets transmitted, 60 received, 0% packet loss, time 59153ms
-rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
-""")
-
-
 PING_FEDORA_EMPTY_BODY = six.b("""
 PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 
@@ -311,8 +300,14 @@ class Test_PingParsing_parse(object):
 
         assert ping_parser.as_dict() == test_data.expected
 
-    def test_empty(self, ping_parser, ping_text):
-        ping_parser.parse(ping_text)
+    def test_empty(self, ping_parser):
+        ping_parser.parse("""
+PING google.com (216.58.196.238) 56(84) bytes of data.
+
+--- google.com ping statistics ---
+60 packets transmitted, 60 received, 0% packet loss, time 59153ms
+rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
+""")
         ping_parser.parse("")
 
         assert ping_parser.packet_transmit is None
