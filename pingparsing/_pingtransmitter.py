@@ -96,7 +96,7 @@ class PingTransmitter(object):
 
         self.__validate_ping_param()
 
-        command = " ".join(self.__get_base_ping_command_list())
+        command = self.__get_base_ping_command_list()
 
         logger.debug(command)
 
@@ -189,7 +189,7 @@ class PingTransmitter(object):
             self.__get_count_option(),
         ])
 
-        return command_list
+        return " ".join(command_list)
 
     def __get_destination_host(self):
         if self.__is_windows() and self.__is_ipv6():
