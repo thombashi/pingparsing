@@ -96,7 +96,7 @@ class PingTransmitter(object):
 
         self.__validate_ping_param()
 
-        command = self.__get_base_ping_command_list()
+        command = self.__get_ping_command()
 
         logger.debug(command)
 
@@ -170,7 +170,7 @@ class PingTransmitter(object):
             raise ValueError(
                 "interface required to ping to IPv6 link local address")
 
-    def __get_base_ping_command_list(self):
+    def __get_ping_command(self):
         command_list = []
 
         if self.__is_windows() and self.auto_codepage:
