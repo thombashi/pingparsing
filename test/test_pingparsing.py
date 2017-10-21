@@ -12,9 +12,9 @@ from pingparsing import EmptyPingStatisticsError
 import pytest
 import six
 
-from .common import (
+from .common import ping_parser
+from .data import (
     PING_DEBIAN_SUCCESS,
-    ping_parser,
 )
 
 

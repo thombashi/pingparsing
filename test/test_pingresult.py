@@ -9,9 +9,9 @@ from __future__ import absolute_import
 from pingparsing import PingResult
 import pytest
 
-from .common import (
+from .common import ping_parser
+from .data import (
     PING_DEBIAN_SUCCESS,
-    ping_parser,
 )
 
 
