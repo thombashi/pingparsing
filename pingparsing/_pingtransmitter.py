@@ -178,16 +178,14 @@ class PingTransmitter(object):
 
         command_list.extend([
             self.__get_builtin_ping_command(),
-            self.__get_destination_host(),
+            self.__get_waittime_option(),
+            self.__get_count_option(),
         ])
 
         if typepy.is_not_null_string(self.ping_option):
             command_list.append(self.ping_option)
 
-        command_list.extend([
-            self.__get_waittime_option(),
-            self.__get_count_option(),
-        ])
+        command_list.append(self.__get_destination_host())
 
         return " ".join(command_list)
 
