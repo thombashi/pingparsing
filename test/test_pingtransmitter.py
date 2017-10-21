@@ -19,27 +19,27 @@ def transmitter():
 class Test_PingTransmitter_ping(object):
 
     @pytest.mark.xfail
-    @pytest.mark.parametrize(["host", "waittime"], [
+    @pytest.mark.parametrize(["host", "deadline"], [
         ["localhost", 1],
         ["127.0.0.1", 1],
         ["::1", 1],
     ])
-    def test_normal_waittime(self, transmitter, host, waittime):
+    def test_normal_deadline(self, transmitter, host, deadline):
         transmitter.destination_host = host
-        transmitter.waittime = waittime
+        transmitter.deadline = deadline
         result = transmitter.ping()
 
         assert result.returncode == 0
         assert len(result.stdout) > 0
 
     @pytest.mark.xfail
-    @pytest.mark.parametrize(["host", "count", "waittime"], [
+    @pytest.mark.parametrize(["host", "count", "deadline"], [
         ["localhost", 1, None],
         ["localhost", 1, 1000],
     ])
-    def test_normal_count(self, transmitter, host, count, waittime):
+    def test_normal_count(self, transmitter, host, count, deadline):
         transmitter.destination_host = host
-        transmitter.waittime = waittime
+        transmitter.deadline = deadline
         transmitter.count = count
         result = transmitter.ping()
 
@@ -69,16 +69,16 @@ class Test_PingTransmitter_ping(object):
         assert RealNumber(ping_parser.rtt_max).is_type()
         assert RealNumber(ping_parser.rtt_mdev).is_type()
 
-    @pytest.mark.parametrize(["host", "waittime", "expected"], [
+    @pytest.mark.parametrize(["host", "deadline", "expected"], [
         ["", 1, ValueError],
         ["localhost", 0, ValueError],
         ["localhost", -1, ValueError],
         ["localhost", "a", ValueError],
         [None, 1, ValueError],
     ])
-    def test_except_waittime(self,  transmitter, host, waittime, expected):
+    def test_except_deadline(self,  transmitter, host, deadline, expected):
         transmitter.destination_host = host
-        transmitter.waittime = waittime
+        transmitter.deadline = deadline
         with pytest.raises(expected):
             transmitter.ping()
 

@@ -9,6 +9,7 @@ from __future__ import absolute_import
 from collections import namedtuple
 import ipaddress
 import platform
+import warnings
 
 import six
 import typepy
@@ -47,11 +48,11 @@ class PingTransmitter(object):
 
         Hostname or IP-address (IPv4/IPf6) to sending ICMP packets.
 
-    .. py:attribute:: waittime
+    .. py:attribute:: deadline
 
         Time ``[sec]`` of sending ICMP packets. The attribute ignored if
-        the value is ``None``. If both :py:attr:`~.waittime` and
-        :py:attr:`~.count` are ``None``, :py:attr:`~.waittime` set to ``1``.
+        the value is ``None``. If both :py:attr:`~.deadline` and
+        :py:attr:`~.count` are ``None``, :py:attr:`~.deadline` set to ``1``.
         Defaults to ``None``.
 
     .. py:attribute:: count
@@ -75,9 +76,25 @@ class PingTransmitter(object):
         ``True``. Defaults to ``True``.
     """
 
+    @property
+    def waittime(self):
+        warnings.warn(
+            "waittime will be deleted in the future, use deadline instead.",
+            DeprecationWarning)
+
+        return self.deadline
+
+    @waittime.setter
+    def waittime(self, value):
+        warnings.warn(
+            "waittime will be deleted in the future, use deadline instead.",
+            DeprecationWarning)
+
+        self.deadline = value
+
     def __init__(self):
         self.destination_host = ""
-        self.waittime = None
+        self.deadline = None
         self.count = None
         self.ping_option = ""
         self.interface = None
@@ -137,16 +154,16 @@ class PingTransmitter(object):
         self.__validate_interface()
 
     def __validate_waittime(self):
-        if self.waittime is None:
+        if self.deadline is None:
             return
 
         try:
-            waittime = Integer(self.waittime).convert()
+            deadline = Integer(self.deadline).convert()
         except typepy.TypeConversionError:
             raise ValueError("wait time must be an integer: actual={}".format(
-                self.waittime))
+                self.deadline))
 
-        if waittime <= 0:
+        if deadline <= 0:
             raise ValueError("wait time must be greater than zero")
 
     def __validate_count(self):
@@ -217,19 +234,19 @@ class PingTransmitter(object):
 
     def __get_waittime_option(self):
         try:
-            waittime = Integer(self.waittime).convert()
+            deadline = Integer(self.deadline).convert()
         except typepy.TypeConversionError:
             if self.count:
                 return ""
 
-            waittime = DEFAULT_WAITTIME
+            deadline = DEFAULT_WAITTIME
 
         if self.__is_windows():
-            return "-n {:d}".format(waittime)
+            return "-n {:d}".format(deadline)
         elif self.__is_osx():
-            return "-t {:d}".format(waittime)
+            return "-t {:d}".format(deadline)
 
-        return "-w {:d}".format(waittime)
+        return "-w {:d}".format(deadline)
 
     def __get_count_option(self):
         try:
