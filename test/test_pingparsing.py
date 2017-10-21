@@ -41,14 +41,14 @@ DEBIAN_SUCCESS = PingTestData(
     {
         "packet_transmit": 60,
         "packet_receive": 60,
-        "packet_loss_rate": 0.0,
         "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "packet_duplicate_rate": 0,
+        "packet_duplicate_count": 0,
         "rtt_min": 61.425,
         "rtt_avg": 99.731,
         "rtt_max": 212.597,
         "rtt_mdev": 27.566,
-        "packet_duplicate_rate": 0,
-        "packet_duplicate_count": 0,
     })
 DEBIAN_UNREACHABLE_0 = PingTestData(
     """PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
@@ -59,14 +59,14 @@ DEBIAN_UNREACHABLE_0 = PingTestData(
     {
         "packet_transmit": 5,
         "packet_receive": 0,
-        "packet_loss_rate": 100.0,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": None,
         "packet_loss_count": 5,
+        "packet_loss_rate": 100.0,
         "rtt_min": None,
         "rtt_avg": None,
         "rtt_max": None,
         "rtt_mdev": None,
-        "packet_duplicate_rate": None,
-        "packet_duplicate_count": 0,
     })
 DEBIAN_UNREACHABLE_1 = PingTestData(
     DEBIAN_UNREACHABLE_0.value + "\n", DEBIAN_UNREACHABLE_0.expected)
@@ -81,16 +81,16 @@ FEDORA_DUP_LOSS = PingTestData(
 rtt min/avg/max/mdev = 0.282/0.642/11.699/0.699 ms, pipe 2, ipg/ewma 1.770/0.782 ms
 """,
     {
-        "packet_receive": 1553,
         "packet_transmit": 1688,
-        "packet_loss_rate": 7.997630331753558,
+        "packet_receive": 1553,
+        "packet_duplicate_count": 1,
+        "packet_duplicate_rate": 0.0643915003219575,
         "packet_loss_count": 135,
+        "packet_loss_rate": 7.997630331753558,
         "rtt_min": 0.282,
         "rtt_max": 11.699,
         "rtt_mdev": 0.699,
         "rtt_avg": 0.642,
-        "packet_duplicate_rate": 0.0643915003219575,
-        "packet_duplicate_count": 1,
     })
 FEDORA_UNREACHABLE = PingTestData(
     """PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
@@ -106,14 +106,14 @@ From 192.168.207.128 icmp_seq=5 Destination Host Unreachable
     {
         "packet_transmit": 5,
         "packet_receive": 0,
-        "packet_loss_rate": 100.0,
         "packet_loss_count": 5,
+        "packet_loss_rate": 100.0,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": None,
         "rtt_min": None,
         "rtt_avg": None,
         "rtt_max": None,
         "rtt_mdev": None,
-        "packet_duplicate_rate": None,
-        "packet_duplicate_count": 0,
     })
 
 OSX_SUCCESS_0 = PingTestData(
@@ -129,16 +129,16 @@ OSX_SUCCESS_0 = PingTestData(
 round-trip min/avg/max/stddev = 20.482/31.927/46.093/8.292 ms
 """,
     {
-        "packet_duplicate_count": None,
-        "packet_duplicate_rate": None,
+        "packet_transmit": 5,
+        "packet_receive": 5,
         "packet_loss_count": 0,
         "packet_loss_rate": 0.0,
-        "packet_receive": 5,
-        "packet_transmit": 5,
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
+        "rtt_min": 20.482,
         "rtt_avg": 31.927,
         "rtt_max": 46.093,
         "rtt_mdev": 8.292,
-        "rtt_min": 20.482,
     })
 OSX_SUCCESS_1 = PingTestData(
     """PING github.com (192.30.255.113): 56 data bytes
@@ -148,22 +148,22 @@ OSX_SUCCESS_1 = PingTestData(
 round-trip min/avg/max/stddev = 218.391/283.477/405.879/70.170 ms
 """,
     {
-        "packet_duplicate_count": None,
-        "packet_duplicate_rate": None,
+        "packet_transmit": 10,
+        "packet_receive": 10,
         "packet_loss_count": 0,
         "packet_loss_rate": 0.0,
-        "packet_receive": 10,
-        "packet_transmit": 10,
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
+        "rtt_min": 218.391,
         "rtt_avg": 283.477,
         "rtt_max": 405.879,
         "rtt_mdev": 70.170,
-        "rtt_min": 218.391,
     })
 OSX_UNREACHABLE_0 = PingTestData(
     """PING twitter.com (59.24.3.173): 56 data bytes
 ^C
 --- twitter.com ping statistics ---
-59 packets transmitted, 0 packets received, 100.0% packet los
+59 packets transmitted, 0 packets received, 100.0% packet loss
 """,
     {
         "packet_transmit": 59,
@@ -186,14 +186,14 @@ OSX_UNREACHABLE_1 = PingTestData(
     {
         "packet_transmit": 10,
         "packet_receive": 0,
-        "packet_loss_rate": 100.0,
         "packet_loss_count": 10,
+        "packet_loss_rate": 100.0,
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
         "rtt_min": None,
         "rtt_avg": None,
         "rtt_max": None,
         "rtt_mdev": None,
-        "packet_duplicate_rate": None,
-        "packet_duplicate_count": None,
     })
 
 ALPINE_LINUX_SUCCESS = PingTestData(
@@ -204,16 +204,16 @@ ALPINE_LINUX_SUCCESS = PingTestData(
 round-trip min/avg/max = 0.638/0.683/0.746 ms
 """,
     {
-        "packet_duplicate_count": 0,
-        "packet_duplicate_rate": 0,
+        "packet_transmit": 5,
+        "packet_receive": 5,
         "packet_loss_count": 0,
         "packet_loss_rate": 0.0,
-        "packet_receive": 5,
-        "packet_transmit": 5,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": 0,
+        "rtt_min": 0.638,
         "rtt_avg": 0.683,
         "rtt_max": 0.746,
         "rtt_mdev": None,
-        "rtt_min": 0.638,
     })
 ALPINE_LINUX_DUP_LOSS = PingTestData(
     """PING 192.168.2.106 (192.168.2.106): 56 data bytes
@@ -234,12 +234,12 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
 round-trip min/avg/max = 0.613/0.930/1.219 ms
 """,
     {
+        "packet_transmit": 10,
+        "packet_receive": 9,
         "packet_duplicate_count": 2,
         "packet_duplicate_rate": 22.22222222222222,
         "packet_loss_count": 1,
         "packet_loss_rate": 9.999999999999998,
-        "packet_receive": 9,
-        "packet_transmit": 10,
         "rtt_min": 0.613,
         "rtt_avg": 0.93,
         "rtt_max": 1.219,
@@ -270,14 +270,14 @@ Approximate round trip times in milli-seconds:
     {
         "packet_transmit": 10,
         "packet_receive": 10,
-        "packet_loss_rate": 0.0,
         "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
         "rtt_min": 56,
         "rtt_avg": 107,
         "rtt_max": 194,
         "rtt_mdev": None,
-        "packet_duplicate_rate": None,
-        "packet_duplicate_count": None,
     })
 WINDOWS10_LOSS = PingTestData(
     """
@@ -301,14 +301,14 @@ Approximate round trip times in milli-seconds:
     {
         "packet_transmit": 10,
         "packet_receive": 9,
-        "packet_loss_rate": 9.999999999999998,
         "packet_loss_count": 1,
+        "packet_loss_rate": 9.999999999999998,
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
         "rtt_min": 0.0,
         "rtt_avg": 14.0,
         "rtt_max": 33.0,
         "rtt_mdev": None,
-        "packet_duplicate_rate": None,
-        "packet_duplicate_count": None,
     })
 WINDOWS_UNREACHABLE_0 = PingTestData(
     """
@@ -324,14 +324,14 @@ Ping statistics for 192.168.207.100:
     {
         "packet_transmit": 4,
         "packet_receive": 0,
-        "packet_loss_rate": 100.0,
         "packet_loss_count": 4,
+        "packet_loss_rate": 100.0,
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
         "rtt_min": None,
         "rtt_avg": None,
         "rtt_max": None,
         "rtt_mdev": None,
-        "packet_duplicate_rate": None,
-        "packet_duplicate_count": None,
     })
 WINDOWS_UNREACHABLE_1 = PingTestData(
     WINDOWS_UNREACHABLE_0.value + "\n", WINDOWS_UNREACHABLE_0.expected)
@@ -379,12 +379,14 @@ rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
 
         assert ping_parser.packet_transmit is None
         assert ping_parser.packet_receive is None
+        assert ping_parser.packet_loss_count is None
         assert ping_parser.packet_loss_rate is None
+        assert ping_parser.packet_duplicate_count is None
+        assert ping_parser.packet_duplicate_rate is None
         assert ping_parser.rtt_min is None
         assert ping_parser.rtt_avg is None
         assert ping_parser.rtt_max is None
         assert ping_parser.rtt_mdev is None
-        assert ping_parser.packet_duplicate_count is None
 
     @pytest.mark.parametrize(["value", "expected"], [
         [PING_FEDORA_EMPTY_BODY, EmptyPingStatisticsError],
