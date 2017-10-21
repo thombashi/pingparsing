@@ -111,6 +111,10 @@ class PingTransmitter(object):
     def __is_windows():
         return platform.system() == "Windows"
 
+    @staticmethod
+    def __is_osx():
+        return platform.system() == "Darwin"
+
     def __is_ipv6(self):
         try:
             network = ipaddress.ip_address(
@@ -222,6 +226,8 @@ class PingTransmitter(object):
 
         if self.__is_windows():
             return "-n {:d}".format(waittime)
+        elif self.__is_osx():
+            return "-t {:d}".format(waittime)
 
         return "-w {:d}".format(waittime)
 
