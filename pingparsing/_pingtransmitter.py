@@ -180,6 +180,7 @@ class PingTransmitter(object):
             self.__get_builtin_ping_command(),
             self.__get_waittime_option(),
             self.__get_count_option(),
+            self.__get_quiet_option(),
         ])
 
         if typepy.is_not_null_string(self.ping_option):
@@ -204,6 +205,12 @@ class PingTransmitter(object):
 
         return "ping"
 
+    def __get_quiet_option(self):
+        if self.__is_windows():
+            return ""
+
+        return "-q"
+
     def __get_waittime_option(self):
         try:
             waittime = Integer(self.waittime).convert()
@@ -216,7 +223,7 @@ class PingTransmitter(object):
         if self.__is_windows():
             return "-n {:d}".format(waittime)
 
-        return "-q -w {:d}".format(waittime)
+        return "-w {:d}".format(waittime)
 
     def __get_count_option(self):
         try:
