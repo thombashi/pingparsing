@@ -62,8 +62,7 @@ DEBIAN_SUCCESS = PingTestData(
         "packet_duplicate_count": 0,
     })
 DEBIAN_UNREACHABLE_0 = PingTestData(
-    """
-PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
+    """PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
 
 --- 192.168.207.100 ping statistics ---
 5 packets transmitted, 0 received, 100% packet loss, time 4009ms
@@ -86,8 +85,7 @@ DEBIAN_UNREACHABLE_2 = PingTestData(
     DEBIAN_UNREACHABLE_1.value + "\n", DEBIAN_UNREACHABLE_0.expected)
 
 FEDORA_LOSS_SUCCESS = PingTestData(
-    """
-PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
+    """PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 
 --- 192.168.0.1 ping statistics ---
 1688 packets transmitted, 1553 received, +1 duplicates, 7% packet loss, time 2987ms
@@ -105,10 +103,8 @@ rtt min/avg/max/mdev = 0.282/0.642/11.699/0.699 ms, pipe 2, ipg/ewma 1.770/0.782
         "packet_duplicate_rate": 0.0643915003219575,
         "packet_duplicate_count": 1,
     })
-
 FEDORA_UNREACHABLE = PingTestData(
-    """
-PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
+    """PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
 From 192.168.207.128 icmp_seq=1 Destination Host Unreachable
 From 192.168.207.128 icmp_seq=2 Destination Host Unreachable
 From 192.168.207.128 icmp_seq=3 Destination Host Unreachable
@@ -211,10 +207,8 @@ OSX_UNREACHABLE_1 = PingTestData(
         "packet_duplicate_count": None,
     })
 
-
 ALPINE_LINUX_SUCCESS = PingTestData(
-    """
-PING heise.de (193.99.144.80): 56 data bytes
+    """PING heise.de (193.99.144.80): 56 data bytes
 
 --- heise.de ping statistics ---
 5 packets transmitted, 5 packets received, 0% packet loss
@@ -234,8 +228,7 @@ round-trip min/avg/max = 0.638/0.683/0.746 ms
     })
 
 WINDOWS_SUCCESS = PingTestData(
-    """
-Pinging google.com [216.58.196.238] with 32 bytes of data:
+    """Pinging google.com [216.58.196.238] with 32 bytes of data:
 Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
 Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
 Reply from 216.58.196.238: bytes=32 time=56ms TTL=51
@@ -265,8 +258,7 @@ Approximate round trip times in milli-seconds:
         "packet_duplicate_count": None,
     })
 WINDOWS_UNREACHABLE_0 = PingTestData(
-    """
-Pinging 192.168.207.100 with 32 bytes of data:
+    """Pinging 192.168.207.100 with 32 bytes of data:
 Request timed out.
 Request timed out.
 Request timed out.
