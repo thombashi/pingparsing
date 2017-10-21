@@ -246,10 +246,11 @@ round-trip min/avg/max = 0.613/0.930/1.219 ms
         "rtt_mdev": None,
     })
 
-WINDOWS_SUCCESS = PingTestData(
+
+WINDOWS7SP1_SUCCESS = PingTestData(
     # ping google.com -n 10:
-    #   Windows 7 SP1
-    """Pinging google.com [216.58.196.238] with 32 bytes of data:
+    """
+Pinging google.com [216.58.196.238] with 32 bytes of data:
 Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
 Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
 Reply from 216.58.196.238: bytes=32 time=56ms TTL=51
@@ -278,8 +279,40 @@ Approximate round trip times in milli-seconds:
         "packet_duplicate_rate": None,
         "packet_duplicate_count": None,
     })
+WINDOWS10_LOSS = PingTestData(
+    """
+Pinging 192.168.2.106 with 32 bytes of data:
+Reply from 192.168.2.106: bytes=32 time=16ms TTL=64
+Reply from 192.168.2.106: bytes=32 time=6ms TTL=64
+Reply from 192.168.2.106: bytes=32 time=12ms TTL=64
+Reply from 192.168.2.106: bytes=32 time=16ms TTL=64
+Request timed out.
+Reply from 192.168.2.106: bytes=32 time=8ms TTL=64
+Reply from 192.168.2.106: bytes=32 time=33ms TTL=64
+Reply from 192.168.2.106: bytes=32 time=13ms TTL=64
+Reply from 192.168.2.106: bytes=32 time=23ms TTL=64
+Reply from 192.168.2.106: bytes=32 time<1ms TTL=64
+
+Ping statistics for 192.168.2.106:
+    Packets: Sent = 10, Received = 9, Lost = 1 (10% los
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 33ms, Average = 14ms
+""",
+    {
+        "packet_transmit": 10,
+        "packet_receive": 9,
+        "packet_loss_rate": 9.999999999999998,
+        "packet_loss_count": 1,
+        "rtt_min": 0.0,
+        "rtt_avg": 14.0,
+        "rtt_max": 33.0,
+        "rtt_mdev": None,
+        "packet_duplicate_rate": None,
+        "packet_duplicate_count": None,
+    })
 WINDOWS_UNREACHABLE_0 = PingTestData(
-    """Pinging 192.168.207.100 with 32 bytes of data:
+    """
+Pinging 192.168.207.100 with 32 bytes of data:
 Request timed out.
 Request timed out.
 Request timed out.
@@ -321,7 +354,8 @@ class Test_PingParsing_parse(object):
         [OSX_UNREACHABLE_1],
         [ALPINE_LINUX_SUCCESS],
         [ALPINE_LINUX_DUP_LOSS],
-        [WINDOWS_SUCCESS],
+        [WINDOWS7SP1_SUCCESS],
+        [WINDOWS10_LOSS],
         [WINDOWS_UNREACHABLE_0],
         [WINDOWS_UNREACHABLE_1],
         [WINDOWS_UNREACHABLE_2],
