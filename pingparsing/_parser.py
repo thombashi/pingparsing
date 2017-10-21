@@ -91,9 +91,9 @@ class PingParser(PingParserInterface):
 
         self.__initialize_parse_result()
 
-        i = self.__find_stats_headline_idx(
+        headline_idx = self.__find_stats_headline_idx(
             line_list, re.compile(self._stats_headline_pattern))
-        body_line_list = line_list[i + 1:]
+        body_line_list = line_list[headline_idx + 1:]
         self.__validate_stats_body(body_line_list)
 
         packet_info_line = body_line_list[0]
