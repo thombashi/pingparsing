@@ -96,16 +96,7 @@ class PingTransmitter(object):
 
         self.__validate_ping_param()
 
-        command_list = self.__get_base_ping_command_list()
-
-        if typepy.is_not_null_string(self.ping_option):
-            command_list.append(self.ping_option)
-
-        command_list.extend([
-            self.__get_waittime_option(),
-            self.__get_count_option(),
-        ])
-        command = " ".join(command_list)
+        command = " ".join(self.__get_base_ping_command_list())
 
         logger.debug(command)
 
@@ -188,6 +179,14 @@ class PingTransmitter(object):
         command_list.extend([
             self.__get_builtin_ping_command(),
             self.__get_destination_host(),
+        ])
+
+        if typepy.is_not_null_string(self.ping_option):
+            command_list.append(self.ping_option)
+
+        command_list.extend([
+            self.__get_waittime_option(),
+            self.__get_count_option(),
         ])
 
         return command_list
