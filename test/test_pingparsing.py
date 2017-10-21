@@ -105,8 +105,7 @@ Request timed out.
 Ping statistics for 192.168.207.100:
 """
 
-PING_OSX_SUCCESS = """
-PING google.com (172.217.6.238): 56 data bytes
+PING_OSX_SUCCESS_0 = """PING google.com (172.217.6.238): 56 data bytes
 64 bytes from 172.217.6.238: icmp_seq=0 ttl=53 time=20.482 ms
 64 bytes from 172.217.6.238: icmp_seq=1 ttl=53 time=32.550 ms
 64 bytes from 172.217.6.238: icmp_seq=2 ttl=53 time=32.013 ms
@@ -116,6 +115,22 @@ PING google.com (172.217.6.238): 56 data bytes
 --- google.com ping statistics ---
 5 packets transmitted, 5 packets received, 0.0% packet loss
 round-trip min/avg/max/stddev = 20.482/31.927/46.093/8.292 ms
+"""
+PING_OSX_SUCCESS_1 = """PING github.com (192.30.255.113): 56 data bytes
+
+--- github.com ping statistics ---
+10 packets transmitted, 10 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 218.391/283.477/405.879/70.170 ms
+"""
+PING_OSX_UNREACHABLE_0 = """PING twitter.com (59.24.3.173): 56 data bytes
+^C
+--- twitter.com ping statistics ---
+59 packets transmitted, 0 packets received, 100.0% packet los
+"""
+PING_OSX_UNREACHABLE_1 = """PING twitter.com (31.13.78.66): 56 data bytes
+
+--- twitter.com ping statistics ---
+10 packets transmitted, 0 packets received, 100.0% packet loss
 """
 
 PING_ALPINE_LINUX_SUCCESS = """
@@ -187,7 +202,7 @@ class Test_PingParsing_parse(object):
                 "packet_duplicate_count": None,
             }
         ], [
-            PING_OSX_SUCCESS,
+            PING_OSX_SUCCESS_0,
             {
                 "packet_duplicate_count": None,
                 "packet_duplicate_rate": None,
@@ -199,6 +214,34 @@ class Test_PingParsing_parse(object):
                 "rtt_max": 46.093,
                 "rtt_mdev": 8.292,
                 "rtt_min": 20.482,
+            }
+        ], [
+            PING_OSX_SUCCESS_1,
+            {
+                "packet_duplicate_count": None,
+                "packet_duplicate_rate": None,
+                "packet_loss_count": 0,
+                "packet_loss_rate": 0.0,
+                "packet_receive": 10,
+                "packet_transmit": 10,
+                "rtt_avg": 283.477,
+                "rtt_max": 405.879,
+                "rtt_mdev": 70.170,
+                "rtt_min": 218.391,
+            }
+        ], [
+            PING_OSX_UNREACHABLE_0,
+            {
+                "packet_transmit": 59,
+                "packet_receive": 0,
+                "packet_loss_rate": 100.0,
+                "packet_loss_count": 59,
+                "rtt_min": None,
+                "rtt_avg": None,
+                "rtt_max": None,
+                "rtt_mdev": None,
+                "packet_duplicate_rate": None,
+                "packet_duplicate_count": None,
             }
         ], [
             PING_ALPINE_LINUX_SUCCESS,
@@ -254,6 +297,8 @@ class Test_PingParsing_parse(object):
     )))
     def test_normal_text(self, ping_parser, ping_text, expected):
         ping_parser.parse(ping_text)
+
+        print("[input text]\n{}".format(ping_text))
 
         assert ping_parser.as_dict() == expected
 
