@@ -203,7 +203,7 @@ class PingTransmitter(object):
 
         command_list.extend([
             self.__get_builtin_ping_command(),
-            self.__get_waittime_option(),
+            self.__get_deadline_option(),
             self.__get_count_option(),
             self.__get_quiet_option(),
         ])
@@ -239,7 +239,7 @@ class PingTransmitter(object):
 
         return "-q"
 
-    def __get_waittime_option(self):
+    def __get_deadline_option(self):
         try:
             deadline = Integer(self.deadline).convert()
         except typepy.TypeConversionError:
