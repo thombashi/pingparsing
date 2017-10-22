@@ -188,8 +188,8 @@ Example: Windows environment
 
 Recommended ping command execution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following methods are recommended to execute ``ping`` command for parsing.
-These commands include an operation that the locale setting change to English temporarily.
+The following methods are recommended to execute ``ping`` command to get the output for parsing.
+These commands include an operation that changes the locale setting to English temporarily.
 
 Linux
 ^^^^^

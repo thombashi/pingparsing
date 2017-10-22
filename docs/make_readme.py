@@ -38,6 +38,7 @@ def main():
 
     maker.write_file(
         maker.doc_page_root_dir_path.joinpath("installation.rst"))
+    maker.write_introduction_file("supported_environment.txt")
     maker.write_file(
         maker.doc_page_root_dir_path.joinpath("introduction/premise.txt"))
 
