@@ -249,6 +249,8 @@ class PingTransmitter(object):
             deadline = DEFAULT_WAITTIME
 
         if self.__is_windows():
+            # ping for Windows not have the option with equals to the deadline
+            # option.
             return "-n {:d}".format(deadline)
         elif self.__is_osx():
             return "-t {:d}".format(deadline)
