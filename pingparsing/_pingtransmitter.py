@@ -164,11 +164,13 @@ class PingTransmitter(object):
         try:
             deadline = Integer(self.deadline).convert()
         except typepy.TypeConversionError:
-            raise ValueError("wait time must be an integer: actual={}".format(
+            raise ValueError("deadline must be an integer: actual={}".format(
                 self.deadline))
 
         if deadline <= 0:
-            raise ValueError("wait time must be greater than zero")
+            raise ValueError(
+                "deadline must be greater than zero: actual={}".format(
+                    self.deadline))
 
     def __validate_count(self):
         if self.count is None:
