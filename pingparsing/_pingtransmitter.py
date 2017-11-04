@@ -153,11 +153,11 @@ class PingTransmitter(object):
         if typepy.is_null_string(self.destination_host):
             raise ValueError("required destination_host")
 
-        self.__validate_waittime()
+        self.__validate_deadline()
         self.__validate_count()
         self.__validate_interface()
 
-    def __validate_waittime(self):
+    def __validate_deadline(self):
         if self.deadline is None:
             return
 
