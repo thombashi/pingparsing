@@ -18,7 +18,7 @@ from typepy.type import Integer
 from ._logger import logger
 
 
-DEFAULT_WAITTIME = 1
+DEFAULT_DEADLINE = 1
 
 
 class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
@@ -246,7 +246,7 @@ class PingTransmitter(object):
             if self.count:
                 return ""
 
-            deadline = DEFAULT_WAITTIME
+            deadline = DEFAULT_DEADLINE
 
         if self.__is_windows():
             # ping for Windows not have the option with equals to the deadline
