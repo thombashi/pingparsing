@@ -141,7 +141,7 @@ class PingTransmitter(object):
             network = ipaddress.ip_address(
                 six.text_type(self.destination_host))
         except ValueError as e:
-            logger.debug(e)
+            logger.debug("{:s}: {}".format(e.__class__.__name__, e))
             return False
 
         logger.debug("IP address: version={}, address={}".format(
