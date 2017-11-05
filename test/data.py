@@ -36,3 +36,37 @@ DEBIAN_SUCCESS = PingTestData(
         "rtt_max": 212.597,
         "rtt_mdev": 27.566,
     })
+
+WINDOWS7SP1_SUCCESS = PingTestData(
+    # ping google.com -n 10:
+    """
+Pinging google.com [216.58.196.238] with 32 bytes of data:
+Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=56ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=95ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=194ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=98ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=93ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=96ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=96ms TTL=51
+Reply from 216.58.196.238: bytes=32 time=165ms TTL=51
+
+Ping statistics for 216.58.196.238:
+    Packets: Sent = 10, Received = 10, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 56ms, Maximum = 194ms, Average = 107ms
+""",
+    {
+        "destination": "216.58.196.238",
+        "packet_transmit": 10,
+        "packet_receive": 10,
+        "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "packet_duplicate_count": None,
+        "packet_duplicate_rate": None,
+        "rtt_min": 56,
+        "rtt_avg": 107,
+        "rtt_max": 194,
+        "rtt_mdev": None,
+    })
