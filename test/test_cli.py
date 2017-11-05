@@ -17,6 +17,7 @@ from .data import (
 )
 
 
+@pytest.mark.xfail
 class Test_cli_file(object):
 
     def test_normal_single(self, tmpdir):
@@ -58,6 +59,7 @@ class Test_cli_file(object):
         assert parsed_result[tmp_ping_path_win] == WINDOWS7SP1_SUCCESS.expected
 
 
+@pytest.mark.xfail
 class Test_cli_pipe(object):
 
     def test_normal_single(self, tmpdir):
@@ -71,9 +73,9 @@ class Test_cli_pipe(object):
         assert json.loads(runner.stdout) == DEBIAN_SUCCESS.expected
 
 
+@pytest.mark.xfail
 class Test_PingParsing_ping(object):
 
-    @pytest.mark.xfail
     def test_normal_single(self):
         count = 1
         dest = "localhost"
@@ -91,7 +93,6 @@ class Test_PingParsing_ping(object):
         assert parsed_result[dest]["packet_transmit"] == count
         assert parsed_result[dest]["rtt_max"] > 0
 
-    @pytest.mark.xfail
     def test_normal_multi(self):
         count = 1
         dest_list = ["google.com", "twitter.com"]
