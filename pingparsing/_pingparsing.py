@@ -234,7 +234,7 @@ class PingParsing(PingParserInterface):
 
         if typepy.is_null_string(ping_message):
             logger.debug("ping_message is empty")
-            return
+            return self.as_tuple()
 
         line_list = _to_unicode(ping_message).splitlines()
         parser_class_list = (
@@ -246,8 +246,10 @@ class PingParsing(PingParserInterface):
             self.__parser = parser_class()
             try:
                 self.__parser.parse(line_list)
-                return
+                return self.as_tuple()
             except (PingStatisticsHeaderNotFoundError, pp.ParseException):
                 pass
 
         self.__parser = NullPingParser()
+
+        return self.as_tuple()
