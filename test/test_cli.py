@@ -26,11 +26,12 @@ class Test_cli_file(object):
 
         runner = SubprocessRunner(
             "pingparsing {}".format(tmp_ping_path))
-        assert runner.run() == 0
+        runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
         print("[stderr]\n{}".format(runner.stderr))
 
+        assert runner.returncode == 0
         assert json.loads(runner.stdout)[
             tmp_ping_path] == DEBIAN_SUCCESS.expected
 
@@ -45,10 +46,12 @@ class Test_cli_file(object):
 
         runner = SubprocessRunner(
             "pingparsing {} {}".format(tmp_ping_path_deb, tmp_ping_path_win))
-        assert runner.run() == 0
+        runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
         print("[stderr]\n{}".format(runner.stderr))
+
+        assert runner.returncode == 0
 
         parsed_result = json.loads(runner.stdout)
         assert parsed_result[tmp_ping_path_deb] == DEBIAN_SUCCESS.expected
@@ -59,11 +62,12 @@ class Test_cli_pipe(object):
 
     def test_normal_single(self, tmpdir):
         runner = SubprocessRunner("pingparsing")
-        assert runner.run(input=DEBIAN_SUCCESS.value) == 0
+        runner.run(input=DEBIAN_SUCCESS.value)
 
         print("[stdout]\n{}".format(runner.stdout))
         print("[stderr]\n{}".format(runner.stderr))
 
+        assert runner.returncode == 0
         assert json.loads(runner.stdout) == DEBIAN_SUCCESS.expected
 
 
@@ -75,10 +79,12 @@ class Test_PingParsing_ping(object):
         dest = "localhost"
         runner = SubprocessRunner(
             "pingparsing {:s} -c {:d}".format(dest, count))
-        assert runner.run() == 0
+        runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
         print("[stderr]\n{}".format(runner.stderr))
+
+        assert runner.returncode == 0
 
         parsed_result = json.loads(runner.stdout)
 
@@ -91,13 +97,14 @@ class Test_PingParsing_ping(object):
         dest_list = ["google.com", "twitter.com"]
         runner = SubprocessRunner(
             "pingparsing {:s} -c {:d}".format(" ".join(dest_list), count))
-        assert runner.run() == 0
+        runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
         print("[stderr]\n{}".format(runner.stderr))
 
-        parsed_result = json.loads(runner.stdout)
+        assert runner.returncode == 0
 
+        parsed_result = json.loads(runner.stdout)
         for dest in dest_list:
             assert parsed_result[dest]["packet_transmit"] == count
             assert parsed_result[dest]["rtt_max"] > 0
