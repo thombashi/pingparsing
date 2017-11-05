@@ -21,7 +21,8 @@ def write_examples(maker):
 
     usage_root = Path("pages").joinpath("usage")
 
-    maker.write_file(usage_root.joinpath("index.rst"))
+    maker.write_file(usage_root.joinpath("cli_usage.txt"))
+    maker.write_file(usage_root.joinpath("library.rst"))
 
 
 def main():
@@ -29,6 +30,7 @@ def main():
     maker.examples_dir_name = "usage"
 
     maker.write_introduction_file("badges.txt")
+    maker.write_toc()
 
     maker.inc_indent_level()
     maker.write_chapter("Summary")

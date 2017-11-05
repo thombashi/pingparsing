@@ -13,197 +13,227 @@ pingparsing
 .. image:: https://img.shields.io/github/stars/thombashi/pingparsing.svg?style=social&label=Star
    :target: https://github.com/thombashi/pingparsing
 
+.. contents:: Table of Contents
+   :depth: 2
 
 Summary
 ---------
 pingparsing is a Python library for parsing ping command output.
 
-Usage
-=====
+CLI Usage
+====================
+CLI included in the ``pingparsing`` packaged. The ``pingparsing`` command could do the followings:
+
+- Execute ping and parse the result
+- Parse ping result file(s)
+- Parse from the standard input
+
+Execute ping and parse the result
+--------------------------------------------
+If you specify destination(s) to the ``pingparsing`` command as positional arguments,
+the command executes ping for each destination(s) and parses the result.
+The parsed result output with JSON format.
+
+.. code-block:: console
+
+    $ pingparsing google.com
+    {
+        "google.com": {
+            "destination": "google.com",
+            "packet_transmit": 10,
+            "packet_receive": 10,
+            "packet_loss_rate": 0.0,
+            "packet_loss_count": 0,
+            "rtt_min": 34.189,
+            "rtt_avg": 46.054,
+            "rtt_max": 63.246,
+            "rtt_mdev": 9.122,
+            "packet_duplicate_rate": 0.0,
+            "packet_duplicate_count": 0
+        }
+    }
+
+.. code-block:: console
+
+    $ pingparsing google.com twitter.com
+    {
+        "google.com": {
+            "destination": "google.com",
+            "packet_transmit": 10,
+            "packet_receive": 10,
+            "packet_loss_rate": 0.0,
+            "packet_loss_count": 0,
+            "rtt_min": 37.341,
+            "rtt_avg": 44.538,
+            "rtt_max": 53.997,
+            "rtt_mdev": 5.827,
+            "packet_duplicate_rate": 0.0,
+            "packet_duplicate_count": 0
+        },
+        "twitter.com": {
+            "destination": "twitter.com",
+            "packet_transmit": 10,
+            "packet_receive": 10,
+            "packet_loss_rate": 0.0,
+            "packet_loss_count": 0,
+            "rtt_min": 45.377,
+            "rtt_avg": 68.819,
+            "rtt_max": 78.581,
+            "rtt_mdev": 9.769,
+            "packet_duplicate_rate": 0.0,
+            "packet_duplicate_count": 0
+        }
+    }
+
+
+Parse ping result file
+--------------------------------------------
+:Input:
+    .. code-block:: console
+
+        $ cat ping.txt
+        PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
+
+        --- 192.168.0.1 ping statistics ---
+        1688 packets transmitted, 1553 received, +1 duplicates, 7% packet loss, time 2987ms
+        rtt min/avg/max/mdev = 0.282/0.642/11.699/0.699 ms, pipe 2, ipg/ewma 1.770/0.782 ms
+        $ cat osx.txt
+        PING google.com (172.217.6.238): 56 data bytes
+        64 bytes from 172.217.6.238: icmp_seq=0 ttl=53 time=20.482 ms
+        64 bytes from 172.217.6.238: icmp_seq=1 ttl=53 time=32.550 ms
+        64 bytes from 172.217.6.238: icmp_seq=2 ttl=53 time=32.013 ms
+        64 bytes from 172.217.6.238: icmp_seq=3 ttl=53 time=28.498 ms
+        64 bytes from 172.217.6.238: icmp_seq=4 ttl=53 time=46.093 ms
+
+        --- google.com ping statistics ---
+        5 packets transmitted, 5 packets received, 0.0% packet loss
+        round-trip min/avg/max/stddev = 20.482/31.927/46.093/8.292 ms
+
+:Output:
+    .. code-block:: console
+
+        $ pingparsing ping.txt osx.txt
+        {
+            "osx.txt": {
+                "destination": "google.com",
+                "packet_transmit": 5,
+                "packet_receive": 5,
+                "packet_loss_rate": 0.0,
+                "packet_loss_count": 0,
+                "rtt_min": 20.482,
+                "rtt_avg": 31.927,
+                "rtt_max": 46.093,
+                "rtt_mdev": 8.292,
+                "packet_duplicate_rate": null,
+                "packet_duplicate_count": null
+            },
+            "ping.txt": {
+                "destination": "192.168.0.1",
+                "packet_transmit": 1688,
+                "packet_receive": 1553,
+                "packet_loss_rate": 7.997630331753558,
+                "packet_loss_count": 135,
+                "rtt_min": 0.282,
+                "rtt_avg": 0.642,
+                "rtt_max": 11.699,
+                "rtt_mdev": 0.699,
+                "packet_duplicate_rate": 0.0643915003219575,
+                "packet_duplicate_count": 1
+            }
+        }
+
+
+Parse from the standard input
+--------------------------------------------
+.. code-block:: console
+
+    $ ping -f -w 10 192.168.2.100 | pingparsing
+    {
+        "destination": "192.168.2.100",
+        "packet_transmit": 1302,
+        "packet_receive": 1156,
+        "packet_loss_rate": 11.213517665130567,
+        "packet_loss_count": 146,
+        "rtt_min": 0.142,
+        "rtt_avg": 44.569,
+        "rtt_max": 314.637,
+        "rtt_mdev": 60.714,
+        "packet_duplicate_rate": 5.190311418685121,
+        "packet_duplicate_count": 60
+    }
+
+Library Usage
+====================
 
 Execute ping and parse the result
 --------------------------------------------
 ``PingTransmitter`` class can execute ``ping`` command and obtain the
 ping output as a string.
 
-Sample code
-~~~~~~~~~~~
-https://github.com/thombashi/pingparsing/blob/master/examples/ping_sample.py
+:Sample Code:
+    .. code-block:: python
 
-Example: Linux environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. code:: console
+        import json
+        import pingparsing
 
-    ./ping_sample.py google.com
-    # returncode ---
-    0
+        ping_parser = pingparsing.PingParsing()
+        transmitter = pingparsing.PingTransmitter()
+        transmitter.destination_host = "google.com"
+        transmitter.count = 10
+        result = transmitter.ping()
+        ping_parser.parse(result)
+        print(json.dumps(ping_parser.as_dict(), indent=4))
 
-    # properties ---
-    packet_transmit: 10 packets
-    packet_receive: 10 packets
-    packet_loss_rate: 0.0 %
-    packet_loss_count: 0 packets
-    packet_duplicate_rate: NaN
-    packet_duplicate_count: NaN
-    rtt_min: 39.087
-    rtt_avg: 48.312
-    rtt_max: 76.458
-    rtt_mdev: 10.551
+:Output:
+    .. code-block:: json
 
-    # as_dict ---
-    {
-        "destination": "google.com",
-        "packet_transmit": 10,
-        "packet_receive": 10,
-        "packet_loss_rate": 0.0,
-        "packet_loss_count": 0,
-        "rtt_min": 39.087,
-        "rtt_avg": 48.312,
-        "rtt_max": 76.458,
-        "rtt_mdev": 10.551,
-        "packet_duplicate_rate": 0.0,
-        "packet_duplicate_count": 0
-    }
-
-
-Example: Windows environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.. code:: console
-
-    >ping_sample.py -d google.com
-    # returncode ---
-    0
-
-    # properties ---
-    packet_transmit: 10 packets
-    packet_receive: 10 packets
-    packet_loss_rate: 0.0 %
-    packet_loss_count: 0 packets
-    packet_duplicate_rate: NaN
-    packet_duplicate_count: NaN
-    rtt_min: 41.0
-    rtt_avg: 49.0
-    rtt_max: 58.0
-    rtt_mdev: None
-
-    # as_dict ---
-    {
-        "packet_transmit": 10,
-        "rtt_max": 58.0,
-        "packet_duplicate_count": null,
-        "rtt_avg": 49.0,
-        "destination": "172.217.27.174",
-        "packet_receive": 10,
-        "packet_duplicate_rate": null,
-        "packet_loss_count": 0,
-        "rtt_min": 41.0,
-        "packet_loss_rate": 0.0,
-        "rtt_mdev": null
-    }
-
-Note: ``rtt_mdev`` not available with Windows environment
+        {
+            "destination": "google.com",
+            "packet_transmit": 10,
+            "packet_receive": 10,
+            "packet_loss_rate": 0.0,
+            "packet_loss_count": 0,
+            "rtt_min": 34.458,
+            "rtt_avg": 51.062,
+            "rtt_max": 62.943,
+            "rtt_mdev": 8.678,
+            "packet_duplicate_rate": 0.0,
+            "packet_duplicate_count": 0
+        }
 
 
 Parsing ``ping`` command output
 -------------------------------
+:Sample Code:
+    .. code-block:: python
 
-Sample code
-~~~~~~~~~~~
-https://github.com/thombashi/pingparsing/blob/master/examples/parse_sample.py
+        import json
+        import pingparsing
 
-
-Example: Linux environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-:Input:
-    ::
-
-        # LC_ALL=C ping google.com -q -c 60 > ping.txt
-        # cat ping.txt
-        PING google.com (216.58.196.238) 56(84) bytes of data.
+        parser = pingparsing.PingParsing()
+        parser.parse("""PING google.com (216.58.196.238) 56(84) bytes of data.
 
         --- google.com ping statistics ---
         60 packets transmitted, 60 received, 0% packet loss, time 59153ms
         rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
+        """)
+        print(json.dumps(parser.as_dict(), indent=4))
 
 :Output:
-    .. code:: console
+    .. code-block:: json
 
-        ./parse_sample.py -f ping.txt
-        # properties ---
-        packet_transmit: 60 packets
-        packet_receive: 60 packets
-        packet_loss_rate: 0.0 %
-        packet_loss_count: 0 packets
-        packet_duplicate_rate: NaN
-        packet_duplicate_count: NaN
-        rtt_min: 61.425
-        rtt_avg: 99.731
-        rtt_max: 212.597
-        rtt_mdev: 27.566
-
-        # asdict ---
         {
-            "rtt_min": 61.425,
-            "packet_duplicate_count": null,
-            "packet_loss_count": 0,
-            "rtt_max": 212.597,
-            "packet_loss_rate": 0.0,
-            "packet_receive": 60,
-            "rtt_mdev": 27.566,
+            "destination": "google.com",
             "packet_transmit": 60,
-            "packet_duplicate_rate": null,
-            "rtt_avg": 99.731
-        }
-
-
-Example: Windows environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-:Input:
-    .. code:: console
-
-        >ping google.com -n 10 > ping_win.txt
-
-        >type ping_win.txt
-
-        Pinging google.com [216.58.196.238] with 32 bytes of data:
-        Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
-        Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
-        Reply from 216.58.196.238: bytes=32 time=56ms TTL=51
-        Reply from 216.58.196.238: bytes=32 time=95ms TTL=51
-        Reply from 216.58.196.238: bytes=32 time=194ms TTL=51
-        Reply from 216.58.196.238: bytes=32 time=98ms TTL=51
-        Reply from 216.58.196.238: bytes=32 time=93ms TTL=51
-        Reply from 216.58.196.238: bytes=32 time=96ms TTL=51
-        Reply from 216.58.196.238: bytes=32 time=96ms TTL=51
-        Reply from 216.58.196.238: bytes=32 time=165ms TTL=51
-
-        Ping statistics for 216.58.196.238:
-            Packets: Sent = 10, Received = 10, Lost = 0 (0% loss),
-        Approximate round trip times in milli-seconds:
-            Minimum = 56ms, Maximum = 194ms, Average = 107ms
-
-:Output:
-    .. code:: console
-
-        parse_sample.py -f ping_win.txt
-        # properties ---
-        packet_transmit: 10
-        packet_receive: 10
-        packet_loss: 0.0
-        rtt_min: 56.0
-        rtt_avg: 107.0
-        rtt_max: 194.0
-        rtt_mdev: None
-
-        # asdict ---
-        {
-            "packet_loss": 0.0,
-            "packet_transmit": 10,
-            "rtt_min": 56.0,
-            "rtt_avg": 107.0,
-            "packet_receive": 10,
-            "rtt_max": 194.0,
-            "rtt_mdev": null
+            "packet_receive": 60,
+            "packet_loss_rate": 0.0,
+            "packet_loss_count": 0,
+            "rtt_min": 61.425,
+            "rtt_avg": 99.731,
+            "rtt_max": 212.597,
+            "rtt_mdev": 27.566,
+            "packet_duplicate_rate": 0.0,
+            "packet_duplicate_count": 0
         }
 
 Recommended ping command execution
@@ -213,14 +243,12 @@ These commands include an operation that changes the locale setting to English t
 
 Linux
 ^^^^^
-
 .. code:: console
 
     LC_ALL=C ping <host or IP address> -w <seconds> [option] > <output.file>
 
 Windows
 ^^^^^^^
-
 .. code:: console
 
     > chcp
@@ -235,7 +263,6 @@ Windows
 
 Installation
 ============
-
 ::
 
     pip install pingparsing
@@ -243,7 +270,7 @@ Installation
 
 Dependencies
 ============
-Python 2.7+ or 3.3+
+Python 2.7+ or 3.4+
 
 - `logbook <http://logbook.readthedocs.io/en/stable/>`__
 - `pyparsing <https://pyparsing.wikispaces.com/>`__
