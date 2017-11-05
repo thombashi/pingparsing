@@ -37,14 +37,14 @@ pytest_runner_require = ["pytest-runner"] if needs_pytest else []
 
 setuptools.setup(
     name=MODULE_NAME,
-    version="0.11.0",
+    version="0.12.0",
     url="https://github.com/thombashi/{:s}".format(MODULE_NAME),
 
     author="Tsuyoshi Hombashi",
     author_email="tsuyoshi.hombashi@gmail.com",
     description=summary,
     include_package_data=True,
-    keywords=["network", "ping", "parser", "transmitter"],
+    keywords=["cli-app", "network", "ping", "parser", "transmitter"],
     license="MIT License",
     long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
