@@ -6,16 +6,13 @@
 
 from __future__ import absolute_import
 
-from collections import namedtuple
-import itertools
-
 from pingparsing import EmptyPingStatisticsError
 import pytest
 import six
 
-from .common import ping_parser
+from .common import (ping_parser, PingTestData)
 from .data import (
-    PING_DEBIAN_SUCCESS,
+    DEBIAN_SUCCESS,
 )
 
 
@@ -34,23 +31,6 @@ Request timed out.
 Ping statistics for 192.168.207.100:
 """
 
-PingTestData = namedtuple("PingTestData", "value expected")
-
-DEBIAN_SUCCESS = PingTestData(
-    PING_DEBIAN_SUCCESS,
-    {
-        "destination": "google.com",
-        "packet_transmit": 60,
-        "packet_receive": 60,
-        "packet_loss_count": 0,
-        "packet_loss_rate": 0.0,
-        "packet_duplicate_rate": 0,
-        "packet_duplicate_count": 0,
-        "rtt_min": 61.425,
-        "rtt_avg": 99.731,
-        "rtt_max": 212.597,
-        "rtt_mdev": 27.566,
-    })
 DEBIAN_UNREACHABLE_0 = PingTestData(
     """PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
 
