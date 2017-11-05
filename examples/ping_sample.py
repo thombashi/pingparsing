@@ -7,40 +7,22 @@
 
 from __future__ import print_function
 
-import argparse
+import json
 import sys
 
 import pingparsing
 
-import examplecommon
-
-
-def parse_option():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("destination")
-    parser.add_argument(
-        "-I", dest="interface", help="interface")
-
-    return parser.parse_args()
-
 
 def main():
-    options = parse_option()
-
     ping_parser = pingparsing.PingParsing()
     transmitter = pingparsing.PingTransmitter()
-    transmitter.destination_host = options.destination
-    transmitter.interface = options.interface
-    transmitter.waittime = 10
+    transmitter.destination_host = "google.com"
+    transmitter.count = 10
     result = transmitter.ping()
-    ping_parser.parse(result.stdout)
+    ping_parser.parse(result)
+    print(json.dumps(ping_parser.as_dict(), indent=4))
 
-    print("# returncode ---")
-    print(result.returncode)
-    print()
-    examplecommon.print_ping_parser(ping_parser)
-
-    return 0
+    return result.returncode
 
 
 if __name__ == "__main__":

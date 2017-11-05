@@ -7,30 +7,22 @@
 
 from __future__ import print_function
 
-import argparse
+import json
 import sys
 
 import pingparsing
 
-import examplecommon
-
-
-def parse_option():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-f", "--file", required=True, help="input file path")
-
-    return parser.parse_args()
-
 
 def main():
-    options = parse_option()
+    parser = pingparsing.PingParsing()
+    parser.parse("""PING google.com (216.58.196.238) 56(84) bytes of data.
 
-    ping_parser = pingparsing.PingParsing()
-    with open(options.file) as f:
-        ping_parser.parse(f.read())
+--- google.com ping statistics ---
+60 packets transmitted, 60 received, 0% packet loss, time 59153ms
+rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
+""")
 
-    examplecommon.print_ping_parser(ping_parser)
+    print(json.dumps(parser.as_dict(), indent=4))
 
     return 0
 
