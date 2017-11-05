@@ -1,6 +1,5 @@
 Installation
 ============
-
 ::
 
     pip install pingparsing
@@ -8,7 +7,7 @@ Installation
 
 Dependencies
 ============
-Python 2.7+ or 3.3+
+Python 2.7+ or 3.4+
 
 - `logbook <http://logbook.readthedocs.io/en/stable/>`__
 - `pyparsing <https://pyparsing.wikispaces.com/>`__

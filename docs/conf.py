@@ -44,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pingparsing'
-copyright = u'2016, Tsuyoshi Hombashi'
+copyright = u'2016-2017, Tsuyoshi Hombashi'
 author = u'Tsuyoshi Hombashi'
 
 # The version info for the project you're documenting, acts as replacement for

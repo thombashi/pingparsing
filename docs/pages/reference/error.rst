@@ -1,8 +1,8 @@
 Errors
 ----------------------------
 
-.. autoexception:: pingparsing.PingStaticticsHeaderNotFoundError
+.. autoexception:: pingparsing.PingStatisticsHeaderNotFoundError
     :show-inheritance:
 
-.. autoexception:: pingparsing.EmptyPingStaticticsError
+.. autoexception:: pingparsing.EmptyPingStatisticsError
     :show-inheritance:
