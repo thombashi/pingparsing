@@ -30,14 +30,12 @@ def parse_option():
 
     parser.add_argument(
         "--max-workers", type=int,
-        help="""
-        a number of threads for when multiple destination/file specified.
-        defaults to equals to two times number of cores.
+        help="""a number of threads for when multiple destination/file
+        specified. defaults to equals to two times number of cores.
         """)
     parser.add_argument(
         "--indent", type=int, default=4,
-        help="""
-        JSON output will be pretty-printed with the indent level.
+        help="""JSON output will be pretty-printed with the indent level.
         (default= %(default)s)
         """)
 
@@ -55,10 +53,14 @@ def parse_option():
     group = parser.add_argument_group("Ping Options")
     group.add_argument(
         "-c", "--count", type=int,
-        help="default=%(default)s")
+        help="""stop after sending the count.
+        see also ping(8) [-c count] option description.
+        """)
     group.add_argument(
         "-w", "--deadline", type=float,
-        help="[second] default=%(default)s")
+        help="""timeout in seconds.
+        see also ping(8) [-w deadline] option description.
+        """)
     group.add_argument(
         "-I", "--interface", dest="interface",
         help="network interface")
