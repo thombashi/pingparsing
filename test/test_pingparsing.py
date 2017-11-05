@@ -409,3 +409,21 @@ rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
     def test_exception(self, ping_parser, value, expected):
         with pytest.raises(expected):
             ping_parser.parse(value)
+
+
+class Test_PingParsing_as_tuple(object):
+    def test_normal(self, ping_parser):
+        ping_parser.parse(DEBIAN_SUCCESS.value)
+        result = ping_parser.as_tuple()
+
+        assert result.destination == "google.com"
+        assert result.packet_transmit == 60
+        assert result.packet_receive == 60
+        assert result.packet_loss_count == 0
+        assert result.packet_loss_rate == 0.0
+        assert result.packet_duplicate_rate == 0
+        assert result.packet_duplicate_count == 0
+        assert result.rtt_min == 61.425
+        assert result.rtt_avg == 99.731
+        assert result.rtt_max == 212.597
+        assert result.rtt_mdev == 27.566

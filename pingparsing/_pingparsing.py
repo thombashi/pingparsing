@@ -180,6 +180,25 @@ class PingParsing(PingParserInterface):
             "packet_duplicate_count": self.packet_duplicate_count,
         }
 
+    def as_tuple(self):
+        """
+        :return: Parsed result as a tuple.
+        :rtype: collections.namedtuple
+
+        :Examples:
+            >>> import pingparsing
+            >>> ping_parser = pingparsing.PingParsing()
+            >>> ping_parser.parse(ping_result)
+            >>> ping_parser.as_tuple()
+            PingResult(destination='google.com', packet_transmit=60, packet_receive=60, packet_loss_rate=0.0, packet_loss_count=0, rtt_min=61.425, rtt_avg=99.731, rtt_max=212.597, rtt_mdev=27.566, packet_duplicate_rate=0.0, packet_duplicate_count=0)
+        """
+
+        from collections import namedtuple
+
+        ping_result = self.as_dict()
+
+        return namedtuple("PingResult", ping_result.keys())(**ping_result)
+
     def parse(self, ping_message):
         """
         Parse ping command output.
