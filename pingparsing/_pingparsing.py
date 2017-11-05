@@ -122,7 +122,9 @@ class PingParsing(PingParserInterface):
     @property
     def rtt_mdev(self):
         """
-        :return: Standard deviation of transmitted ICMP packets (Linux only).
+        :return:
+            Standard deviation of transmitted ICMP packets. The attribute
+            returns always |None| when parsing Windows ping result.
         :rtype: float
         """
 
@@ -145,7 +147,9 @@ class PingParsing(PingParserInterface):
     @property
     def packet_duplicate_count(self):
         """
-        :return: Number of duplicated packet (Linux only).
+        :return:
+            Number of duplicated packet. The attribute
+            returns always |None| when parsing Windows ping result.
         :rtype: int
         """
 
