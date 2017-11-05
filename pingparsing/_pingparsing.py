@@ -65,7 +65,7 @@ class PingParsing(PingParserInterface):
     def packet_loss_rate(self):
         """
         :return:
-            Percentage of packet loss [%].
+            Percentage of packet loss ``[%]``.
             ``None`` if the value is not a number.
         :rtype: float
         """
@@ -95,7 +95,8 @@ class PingParsing(PingParserInterface):
     @property
     def rtt_min(self):
         """
-        :return: Minimum round trip time of transmitted ICMP packets [ms].
+        :return:
+            Minimum round trip time of transmitted ICMP packets ``[msec]``.
         :rtype: float
         """
 
@@ -104,7 +105,8 @@ class PingParsing(PingParserInterface):
     @property
     def rtt_avg(self):
         """
-        :return: Average round trip time of transmitted ICMP packets [ms].
+        :return:
+            Average round trip time of transmitted ICMP packets ``[msec]``.
         :rtype: float
         """
 
@@ -113,7 +115,8 @@ class PingParsing(PingParserInterface):
     @property
     def rtt_max(self):
         """
-        :return: Maximum round trip time of transmitted ICMP packets [ms].
+        :return:
+            Maximum round trip time of transmitted ICMP packets ``[msec]``.
         :rtype: float
         """
 
@@ -124,7 +127,7 @@ class PingParsing(PingParserInterface):
         """
         :return:
             Standard deviation of transmitted ICMP packets. The attribute
-            returns always |None| when parsing Windows ping result.
+            returns always ``None`` when parsing Windows ping result.
         :rtype: float
         """
 
@@ -134,7 +137,7 @@ class PingParsing(PingParserInterface):
     def packet_duplicate_rate(self):
         """
         :return:
-            Percentage of duplicated packets [%].
+            Percentage of duplicated packets ``[%]``.
             ``None`` if the value is not a number.
         :rtype: float
         """
@@ -149,7 +152,7 @@ class PingParsing(PingParserInterface):
         """
         :return:
             Number of duplicated packet. The attribute
-            returns always |None| when parsing Windows ping result.
+            returns always ``None`` when parsing Windows ping result.
         :rtype: int
         """
 
@@ -164,6 +167,25 @@ class PingParsing(PingParserInterface):
         """
         :return: Parsed result as a dictionary.
         :rtype: dict
+
+        :Examples:
+            >>> import pingparsing
+            >>> parser = pingparsing.PingParsing()
+            >>> parser.parse(ping_result)
+            >>> parser.as_dict()
+            {
+                "destination": "google.com",
+                "packet_transmit": 60,
+                "packet_receive": 60,
+                "packet_loss_rate": 0.0,
+                "packet_loss_count": 0,
+                "rtt_min": 61.425,
+                "rtt_avg": 99.731,
+                "rtt_max": 212.597,
+                "rtt_mdev": 27.566,
+                "packet_duplicate_rate": 0.0,
+                "packet_duplicate_count": 0
+            }
         """
 
         return {
@@ -187,9 +209,9 @@ class PingParsing(PingParserInterface):
 
         :Examples:
             >>> import pingparsing
-            >>> ping_parser = pingparsing.PingParsing()
-            >>> ping_parser.parse(ping_result)
-            >>> ping_parser.as_tuple()
+            >>> parser = pingparsing.PingParsing()
+            >>> parser.parse(ping_result)
+            >>> parser.as_tuple()
             PingResult(destination='google.com', packet_transmit=60, packet_receive=60, packet_loss_rate=0.0, packet_loss_count=0, rtt_min=61.425, rtt_avg=99.731, rtt_max=212.597, rtt_mdev=27.566, packet_duplicate_rate=0.0, packet_duplicate_count=0)
         """
 
@@ -215,10 +237,17 @@ class PingParsing(PingParserInterface):
             - :py:attr:`.rtt_max`
             - :py:attr:`.rtt_mdev`
 
-        Alternatively, you can get data as a dictionary by :py:meth:`.as_dict`
+        Alternatively, you can get the results as:
+
+            - a dictionary by :py:meth:`.as_dict`
+            - a tuple by by :py:meth:`.as_tuple`
 
         :param ping_message: ping command output.
         :type ping_message: str or pingparsing.PingResult
+        :return: Parsed result.
+
+            .. seealso:: :py:meth:`.as_tuple`
+        :rtype: collections.namedtuple
         """
 
         try:
