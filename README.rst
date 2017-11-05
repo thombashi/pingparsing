@@ -18,7 +18,7 @@ pingparsing
 
 Summary
 ---------
-pingparsing is a Python library for parsing ping command output.
+pingparsing is a CLI-tool/Python-library for parsing ping command output.
 
 CLI Usage
 ====================
