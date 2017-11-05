@@ -73,4 +73,9 @@ setuptools.setup(
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: System :: Networking",
-    ])
+    ],
+    entry_points={
+        "console_scripts": [
+            "pingparsing=pingparsing.cli:main",
+        ],
+    })

@@ -1,3 +1,4 @@
+futures;python_version<"3.2"
 ipaddress;python_version<"3.3"
 logbook
 pyparsing>=2.2.0
