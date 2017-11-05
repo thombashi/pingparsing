@@ -18,7 +18,7 @@ from typepy.type import Integer
 from ._logger import logger
 
 
-DEFAULT_DEADLINE = 1
+DEFAULT_DEADLINE = 3
 
 
 class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
