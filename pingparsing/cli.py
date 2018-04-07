@@ -22,7 +22,9 @@ QUIET_LOG_LEVEL = logbook.NOTSET
 
 
 def parse_option():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        epilog="Issue tracker: https://github.com/thombashi/pingparsing/issues")
+
     if is_use_stdin():
         parser.add_argument(
             "destination_or_file", nargs="+",
