@@ -260,9 +260,7 @@ class PingParsing(PingParserInterface):
 
         line_list = _to_unicode(ping_message).splitlines()
         parser_class_list = (
-            LinuxPingParser, WindowsPingParser, OsxPingParser,
-            AlpineLinuxPingParser,
-        )
+            LinuxPingParser, WindowsPingParser, OsxPingParser, AlpineLinuxPingParser)
 
         for parser_class in parser_class_list:
             self.__parser = parser_class()
