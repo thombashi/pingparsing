@@ -129,7 +129,7 @@ class PingTransmitter(object):
         return platform.system() == "Linux"
 
     @staticmethod
-    def __is_osx():
+    def __is_macos():
         return platform.system() == "Darwin"
 
     @staticmethod
@@ -254,7 +254,7 @@ class PingTransmitter(object):
             # ping for Windows not have the option with equals to the deadline
             # option.
             return "-n {:d}".format(deadline)
-        elif self.__is_osx():
+        elif self.__is_macos():
             return "-t {:d}".format(deadline)
 
         return "-w {:d}".format(deadline)
