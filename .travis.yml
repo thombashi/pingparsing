@@ -39,5 +39,6 @@ deploy:
   on:
     repo: thombashi/pingparsing
     tags: true
+    branch: master
     python: 3.6
   distributions: "sdist bdist_wheel"
