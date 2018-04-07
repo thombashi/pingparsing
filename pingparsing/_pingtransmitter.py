@@ -255,6 +255,11 @@ class PingTransmitter(object):
             # option.
             return "-n {:d}".format(deadline)
         elif self.__is_macos():
+            if self.__is_ipv6():
+                # there is no timeout option for macOS ping6.
+                # so, using -i and -c option to simulate timeout.
+                return "-i 1 -c {:d}".format(deadline)
+
             return "-t {:d}".format(deadline)
 
         return "-w {:d}".format(deadline)
