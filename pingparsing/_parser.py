@@ -79,7 +79,7 @@ class PingParser(PingParserInterface):
         return self._duplicates
 
     @abc.abstractproperty
-    def _system_name(self):  # pragma: no cover
+    def _parse_name(self):  # pragma: no cover
         pass
 
     @abc.abstractproperty
@@ -88,7 +88,7 @@ class PingParser(PingParserInterface):
 
     def _preprocess_parse(self, line_list):
         logger.debug(
-            "parsing as {:s} ping result format".format(self._system_name))
+            "parsing as {:s} ping result format".format(self._parse_name))
 
         self.__initialize_parse_result()
 
@@ -132,7 +132,7 @@ class PingParser(PingParserInterface):
 class NullPingParser(PingParser):
 
     @property
-    def _system_name(self):
+    def _parse_name(self):
         return "null"
 
     @property
@@ -149,7 +149,7 @@ class NullPingParser(PingParser):
 class LinuxPingParser(PingParser):
 
     @property
-    def _system_name(self):
+    def _parse_name(self):
         return "Linux"
 
     @property
@@ -214,7 +214,7 @@ class LinuxPingParser(PingParser):
 class WindowsPingParser(PingParser):
 
     @property
-    def _system_name(self):
+    def _parse_name(self):
         return "Windows"
 
     @property
@@ -265,8 +265,8 @@ class WindowsPingParser(PingParser):
 class OsxPingParser(PingParser):
 
     @property
-    def _system_name(self):
         return "OSX"
+    def _parse_name(self):
 
     @property
     def _stats_headline_pattern(self):
@@ -314,7 +314,7 @@ class OsxPingParser(PingParser):
 class AlpineLinuxPingParser(LinuxPingParser):
 
     @property
-    def _system_name(self):
+    def _parse_name(self):
         return "AlpineLinux"
 
     def parse(self, ping_message):
