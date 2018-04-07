@@ -265,8 +265,8 @@ class WindowsPingParser(PingParser):
 class OsxPingParser(PingParser):
 
     @property
-        return "OSX"
     def _parse_name(self):
+        return "macOS"
 
     @property
     def _stats_headline_pattern(self):
