@@ -103,7 +103,7 @@ FEDORA_UNREACHABLE = PingTestData(
         "rtt_mdev": None,
     })
 
-OSX_SUCCESS_0 = PingTestData(
+MACOS_SUCCESS_0 = PingTestData(
     dedent("""\
     PING google.com (172.217.6.238): 56 data bytes
     64 bytes from 172.217.6.238: icmp_seq=0 ttl=53 time=20.482 ms
@@ -129,7 +129,7 @@ OSX_SUCCESS_0 = PingTestData(
         "rtt_max": 46.093,
         "rtt_mdev": 8.292,
     })
-OSX_SUCCESS_1 = PingTestData(
+MACOS_SUCCESS_1 = PingTestData(
     dedent("""\
     PING github.com (192.30.255.113): 56 data bytes
 
@@ -150,7 +150,7 @@ OSX_SUCCESS_1 = PingTestData(
         "rtt_max": 405.879,
         "rtt_mdev": 70.170,
     })
-OSX_UNREACHABLE_0 = PingTestData(
+MACOS_UNREACHABLE_0 = PingTestData(
     dedent("""\
     PING twitter.com (59.24.3.173): 56 data bytes
     ^C
@@ -170,7 +170,7 @@ OSX_UNREACHABLE_0 = PingTestData(
         "packet_duplicate_rate": None,
         "packet_duplicate_count": 0,
     })
-OSX_UNREACHABLE_1 = PingTestData(
+MACOS_UNREACHABLE_1 = PingTestData(
     dedent("""\
     PING twitter.com (31.13.78.66): 56 data bytes
 
@@ -316,10 +316,10 @@ class Test_PingParsing_parse(object):
         [DEBIAN_UNREACHABLE_2, "Linux"],
         [FEDORA_DUP_LOSS, "Linux"],
         [FEDORA_UNREACHABLE, "Linux"],
-        [OSX_SUCCESS_0, "macOS"],
-        [OSX_SUCCESS_1, "macOS"],
-        [OSX_UNREACHABLE_0, "macOS"],
-        [OSX_UNREACHABLE_1, "macOS"],
+        [MACOS_SUCCESS_0, "macOS"],
+        [MACOS_SUCCESS_1, "macOS"],
+        [MACOS_UNREACHABLE_0, "macOS"],
+        [MACOS_UNREACHABLE_1, "macOS"],
         [ALPINE_LINUX_SUCCESS, "AlpineLinux"],
         [ALPINE_LINUX_DUP_LOSS, "AlpineLinux"],
         [WINDOWS7SP1_SUCCESS, "Windows"],
