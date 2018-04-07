@@ -262,7 +262,7 @@ class WindowsPingParser(PingParser):
         return headline.lstrip("Ping statistics for ").rstrip(":")
 
 
-class OsxPingParser(PingParser):
+class MacOsPingParser(PingParser):
 
     @property
     def _parse_name(self):

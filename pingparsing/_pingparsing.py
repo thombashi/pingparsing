@@ -13,7 +13,7 @@ from ._common import _to_unicode
 from ._interface import PingParserInterface
 from ._logger import logger
 from ._parser import (
-    AlpineLinuxPingParser, LinuxPingParser, NullPingParser, OsxPingParser, WindowsPingParser)
+    AlpineLinuxPingParser, LinuxPingParser, NullPingParser, MacOsPingParser, WindowsPingParser)
 from .error import PingStatisticsHeaderNotFoundError
 
 
@@ -260,7 +260,7 @@ class PingParsing(PingParserInterface):
 
         line_list = _to_unicode(ping_message).splitlines()
         parser_class_list = (
-            LinuxPingParser, WindowsPingParser, OsxPingParser, AlpineLinuxPingParser)
+            LinuxPingParser, WindowsPingParser, MacOsPingParser, AlpineLinuxPingParser)
 
         for parser_class in parser_class_list:
             self.__parser = parser_class()
