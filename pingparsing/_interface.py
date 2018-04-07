@@ -4,8 +4,7 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
 import abc
 

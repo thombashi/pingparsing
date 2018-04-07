@@ -3,18 +3,14 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import print_function, unicode_literals
 
 import json
 
 import pytest
 from subprocrunner import SubprocessRunner
 
-from .data import (
-    DEBIAN_SUCCESS,
-    WINDOWS7SP1_SUCCESS,
-)
+from .data import DEBIAN_SUCCESS, WINDOWS7SP1_SUCCESS
 
 
 @pytest.mark.xfail

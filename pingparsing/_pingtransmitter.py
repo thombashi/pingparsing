@@ -6,10 +6,10 @@
 
 from __future__ import absolute_import
 
-from collections import namedtuple
 import ipaddress
 import platform
 import warnings
+from collections import namedtuple
 
 import six
 import typepy

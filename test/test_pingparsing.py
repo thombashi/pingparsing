@@ -6,15 +6,12 @@
 
 from __future__ import absolute_import
 
-from pingparsing import EmptyPingStatisticsError
 import pytest
 import six
+from pingparsing import EmptyPingStatisticsError
 
-from .common import (ping_parser, PingTestData)
-from .data import (
-    DEBIAN_SUCCESS,
-    WINDOWS7SP1_SUCCESS,
-)
+from .common import PingTestData, ping_parser
+from .data import DEBIAN_SUCCESS, WINDOWS7SP1_SUCCESS
 
 
 PING_FEDORA_EMPTY_BODY = six.b("""

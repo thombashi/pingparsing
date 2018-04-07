@@ -10,6 +10,7 @@ import six
 
 from .common import PingTestData
 
+
 # ping google.com -q -c 60:
 #   - Debian 8.2 w/ iputils-ping 20121221-5+b2
 #   - Debian 5.0.10 w/ iputils-ping 20071127-1+lenny1

@@ -4,23 +4,16 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-from __future__ import division
-
-import typepy
+from __future__ import absolute_import, division
 
 import pyparsing as pp
+import typepy
 
 from ._common import _to_unicode
 from ._interface import PingParserInterface
 from ._logger import logger
 from ._parser import (
-    NullPingParser,
-    LinuxPingParser,
-    WindowsPingParser,
-    OsxPingParser,
-    AlpineLinuxPingParser,
-)
+    AlpineLinuxPingParser, LinuxPingParser, NullPingParser, OsxPingParser, WindowsPingParser)
 from .error import PingStatisticsHeaderNotFoundError
 
 

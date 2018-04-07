@@ -4,8 +4,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from pingparsing import PingTransmitter
 import pytest
+from pingparsing import PingTransmitter
 from typepy.type import RealNumber
 
 from .common import ping_parser

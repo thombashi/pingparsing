@@ -6,13 +6,11 @@
 
 from __future__ import absolute_import
 
-from pingparsing import PingResult
 import pytest
+from pingparsing import PingResult
 
 from .common import ping_parser
-from .data import (
-    DEBIAN_SUCCESS,
-)
+from .data import DEBIAN_SUCCESS
 
 
 class Test_PingResult(object):

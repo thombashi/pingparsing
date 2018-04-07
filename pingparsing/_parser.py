@@ -4,21 +4,18 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
 import abc
 import re
 
-import typepy
-
 import pyparsing as pp
+import typepy
 
 from ._common import _to_unicode
 from ._interface import PingParserInterface
 from ._logger import logger
-from .error import EmptyPingStatisticsError
-from .error import PingStatisticsHeaderNotFoundError
+from .error import EmptyPingStatisticsError, PingStatisticsHeaderNotFoundError
 
 
 class PingParser(PingParserInterface):

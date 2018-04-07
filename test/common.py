@@ -8,8 +8,8 @@ from __future__ import absolute_import
 
 from collections import namedtuple
 
-from pingparsing import PingParsing
 import pytest
+from pingparsing import PingParsing
 
 
 @pytest.fixture
