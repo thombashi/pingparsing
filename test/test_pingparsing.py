@@ -190,6 +190,28 @@ MACOS_UNREACHABLE_1 = PingTestData(
         "rtt_max": None,
         "rtt_mdev": None,
     })
+MACOS_DUPLICATE_0 = PingTestData(
+    dedent("""\
+    PING duplicate.com (31.13.78.66): 56 data bytes
+
+    --- duplicate.com ping statistics ---
+    3 packets transmitted, 3 packets received, +3 duplicates, 0% packet loss
+
+    round-trip min/avg/max/stddev = 0.311/1.091/2.186/0.662 ms
+    """),
+    {
+        "destination": "duplicate.com",
+        "packet_transmit": 3,
+        "packet_receive": 3,
+        "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "packet_duplicate_count": 3,
+        "packet_duplicate_rate": 100,
+        "rtt_min": None,
+        "rtt_avg": None,
+        "rtt_max": None,
+        "rtt_mdev": None,
+    })
 
 ALPINE_LINUX_SUCCESS = PingTestData(
    dedent("""\
@@ -320,6 +342,7 @@ class Test_PingParsing_parse(object):
         [MACOS_SUCCESS_1, "macOS"],
         [MACOS_UNREACHABLE_0, "macOS"],
         [MACOS_UNREACHABLE_1, "macOS"],
+        [MACOS_DUPLICATE_0, "macOS"],
         [ALPINE_LINUX_SUCCESS, "AlpineLinux"],
         [ALPINE_LINUX_DUP_LOSS, "AlpineLinux"],
         [WINDOWS7SP1_SUCCESS, "Windows"],
