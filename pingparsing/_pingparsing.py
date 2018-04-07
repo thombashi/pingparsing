@@ -28,6 +28,10 @@ class PingParsing(PingParserInterface):
         self.__parser = NullPingParser()
 
     @property
+    def parser_name(self):
+        return self.__parser._parser_name
+
+    @property
     def destination(self):
         """
         :return: The ping destination.
