@@ -122,8 +122,8 @@ OSX_SUCCESS_0 = PingTestData(
         "packet_receive": 5,
         "packet_loss_count": 0,
         "packet_loss_rate": 0.0,
-        "packet_duplicate_count": None,
-        "packet_duplicate_rate": None,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": 0,
         "rtt_min": 20.482,
         "rtt_avg": 31.927,
         "rtt_max": 46.093,
@@ -143,8 +143,8 @@ OSX_SUCCESS_1 = PingTestData(
         "packet_receive": 10,
         "packet_loss_count": 0,
         "packet_loss_rate": 0.0,
-        "packet_duplicate_count": None,
-        "packet_duplicate_rate": None,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": 0,
         "rtt_min": 218.391,
         "rtt_avg": 283.477,
         "rtt_max": 405.879,
@@ -168,7 +168,7 @@ OSX_UNREACHABLE_0 = PingTestData(
         "rtt_max": None,
         "rtt_mdev": None,
         "packet_duplicate_rate": None,
-        "packet_duplicate_count": None,
+        "packet_duplicate_count": 0,
     })
 OSX_UNREACHABLE_1 = PingTestData(
     dedent("""\
@@ -183,7 +183,7 @@ OSX_UNREACHABLE_1 = PingTestData(
         "packet_receive": 0,
         "packet_loss_count": 10,
         "packet_loss_rate": 100.0,
-        "packet_duplicate_count": None,
+        "packet_duplicate_count": 0,
         "packet_duplicate_rate": None,
         "rtt_min": None,
         "rtt_avg": None,
@@ -309,30 +309,31 @@ WINDOWS_UNREACHABLE_2 = PingTestData(
 
 class Test_PingParsing_parse(object):
 
-    @pytest.mark.parametrize(["test_data"], [
-        [DEBIAN_SUCCESS],
-        [DEBIAN_UNREACHABLE_0],
-        [DEBIAN_UNREACHABLE_1],
-        [DEBIAN_UNREACHABLE_2],
-        [FEDORA_DUP_LOSS],
-        [FEDORA_UNREACHABLE],
-        [OSX_SUCCESS_0],
-        [OSX_SUCCESS_1],
-        [OSX_UNREACHABLE_0],
-        [OSX_UNREACHABLE_1],
-        [ALPINE_LINUX_SUCCESS],
-        [ALPINE_LINUX_DUP_LOSS],
-        [WINDOWS7SP1_SUCCESS],
-        [WINDOWS10_LOSS],
-        [WINDOWS_UNREACHABLE_0],
-        [WINDOWS_UNREACHABLE_1],
-        [WINDOWS_UNREACHABLE_2],
+    @pytest.mark.parametrize(["test_data", "parser_name"], [
+        [DEBIAN_SUCCESS, "Linux"],
+        [DEBIAN_UNREACHABLE_0, "Linux"],
+        [DEBIAN_UNREACHABLE_1, "Linux"],
+        [DEBIAN_UNREACHABLE_2, "Linux"],
+        [FEDORA_DUP_LOSS, "Linux"],
+        [FEDORA_UNREACHABLE, "Linux"],
+        [OSX_SUCCESS_0, "macOS"],
+        [OSX_SUCCESS_1, "macOS"],
+        [OSX_UNREACHABLE_0, "macOS"],
+        [OSX_UNREACHABLE_1, "macOS"],
+        [ALPINE_LINUX_SUCCESS, "AlpineLinux"],
+        [ALPINE_LINUX_DUP_LOSS, "AlpineLinux"],
+        [WINDOWS7SP1_SUCCESS, "Windows"],
+        [WINDOWS10_LOSS, "Windows"],
+        [WINDOWS_UNREACHABLE_0, "Windows"],
+        [WINDOWS_UNREACHABLE_1, "Windows"],
+        [WINDOWS_UNREACHABLE_2, "Windows"],
     ])
-    def test_normal_text(self, ping_parser, test_data):
+    def test_normal_text(self, ping_parser, test_data, parser_name):
         ping_parser.parse(test_data.value)
 
         print("[input text]\n{}".format(test_data.value))
 
+        assert ping_parser.parser_name == parser_name
         assert ping_parser.as_dict() == test_data.expected
 
     def test_empty(self, ping_parser):
