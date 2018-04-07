@@ -1,4 +1,4 @@
 pytest-cov
 pytest
-subprocrunner>=0.10.0
+subprocrunner>=0.12.1
 tox
