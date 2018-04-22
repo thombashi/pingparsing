@@ -76,8 +76,9 @@ setuptools.setup(
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
     extras_require={
-        "test": tests_requires,
+        "build": "wheel",
         "docs": docs_requires,
+        "test": tests_requires,
     },
 
     classifiers=[
