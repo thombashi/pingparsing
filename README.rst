@@ -1,4 +1,3 @@
-
 pingparsing
 =============
 .. image:: https://badge.fury.io/py/pingparsing.svg
@@ -309,7 +308,7 @@ Premise
 Parsing the ``ping`` command output with any other locale may fail.
 This is because the output of the ``ping`` command will change depending on the locale setting.
 
-
 Documentation
 ===============
 http://pingparsing.rtfd.io/
+
