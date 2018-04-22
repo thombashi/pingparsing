@@ -14,6 +14,7 @@ import setuptools
 
 
 MODULE_NAME = "pingparsing"
+REPOSITORY_URL = "https://github.com/thombashi/{:s}".format(MODULE_NAME)
 REQUIREMENT_DIR = "requirements"
 ENCODING = "utf8"
 
@@ -51,13 +52,13 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 with open(os.path.join(REQUIREMENT_DIR, "docs_requirements.txt")) as f:
     docs_requires = [line.strip() for line in f if line.strip()]
 
-setuptools_require = ["setuptools>=20.2.2"]
+setuptools_require = ["setuptools>=38.3.0"]
 pytest_runner_require = ["pytest-runner"] if need_pytest() else []
 
 setuptools.setup(
     name=MODULE_NAME,
     version=pkg_info["__version__"],
-    url="https://github.com/thombashi/{:s}".format(MODULE_NAME),
+    url=REPOSITORY_URL,
 
     author=pkg_info["__author__"],
     author_email=pkg_info["__email__"],
@@ -67,6 +68,10 @@ setuptools.setup(
     license=pkg_info["__license__"],
     long_description=long_description,
     packages=setuptools.find_packages(exclude=["test*"]),
+    project_urls={
+        "Documentation": "http://{:s}.rtfd.io/".format(MODULE_NAME),
+        "Tracker": "{:s}/issues".format(REPOSITORY_URL),
+    },
 
     install_requires=setuptools_require + install_requires,
     setup_requires=setuptools_require + pytest_runner_require,
