@@ -1,5 +1,5 @@
 Supported Environment
 ============================
 - Linux
-- macOS
 - Windows
+- macOS
