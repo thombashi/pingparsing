@@ -24,22 +24,13 @@ def need_pytest():
     return set(["pytest", "test", "ptr"]).intersection(sys.argv)
 
 
-class ReleaseCommand(setuptools.Command):
-    user_options = []
+def get_release_command_class():
+    try:
+        from releasecmd import ReleaseCommand
+    except ImportError:
+        return {}
 
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        tag = "v{}".format(pkg_info["__version__"])
-
-        print("Pushing git tags: {}".format(tag))
-
-        os.system("git tag {}".format(tag))
-        os.system("git push --tags")
+    return {"release": ReleaseCommand}
 
 
 with open(os.path.join(MODULE_NAME, "__version__.py")) as f:
@@ -83,6 +74,7 @@ setuptools.setup(
     extras_require={
         "build": "wheel",
         "docs": docs_requires,
+        "release": "releasecmd>=0.0.9",
         "test": tests_requires,
     },
 
@@ -103,9 +95,7 @@ setuptools.setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: System :: Networking",
     ],
-    cmdclass={
-        "release": ReleaseCommand,
-    },
+    cmdclass=get_release_command_class(),
     entry_points={
         "console_scripts": [
             "pingparsing=pingparsing.cli:main",
