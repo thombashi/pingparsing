@@ -3,4 +3,4 @@ ipaddress;python_version<"3.3"
 logbook
 pyparsing>=2.2.0
 six
-typepy>=0.0.23
+typepy>=0.0.26
