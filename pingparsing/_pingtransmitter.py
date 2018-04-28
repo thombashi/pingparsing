@@ -7,6 +7,7 @@
 from __future__ import absolute_import
 
 import ipaddress
+import msgfy
 import platform
 import warnings
 from collections import namedtuple
@@ -139,7 +140,7 @@ class PingTransmitter(object):
         try:
             network = ipaddress.ip_address(six.text_type(self.destination_host))
         except ValueError as e:
-            logger.debug("{:s}: {}".format(e.__class__.__name__, e))
+            logger.debug(msgfy.to_debug_message(e))
             return False
 
         logger.debug("IP address: version={}, address={}".format(
