@@ -13,7 +13,7 @@ from collections import namedtuple
 
 import six
 import typepy
-from typepy.type import Integer
+from typepy import Integer
 
 from ._logger import logger
 

@@ -6,7 +6,7 @@
 
 import pytest
 from pingparsing import PingTransmitter
-from typepy.type import RealNumber
+from typepy import RealNumber
 
 from .common import ping_parser
 
