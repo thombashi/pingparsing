@@ -87,8 +87,7 @@ class PingParser(PingParserInterface):
         pass
 
     def _preprocess_parse(self, line_list):
-        logger.debug(
-            "parsing as {:s} ping result format".format(self._parser_name))
+        logger.debug("parsing as {:s} ping result format".format(self._parser_name))
 
         self.__initialize_parse_result()
 
@@ -109,8 +108,7 @@ class PingParser(PingParserInterface):
             if re_stats_header.search(line):
                 break
         else:
-            raise PingStatisticsHeaderNotFoundError(
-                "ping statistics not found")
+            raise PingStatisticsHeaderNotFoundError("ping statistics not found")
 
         return i
 
@@ -132,8 +130,8 @@ class PingParser(PingParserInterface):
         packet_pattern = (
             pp.SkipTo(pp.Word("+" + pp.nums) + pp.Literal("duplicates,")) +
             pp.Word("+" + pp.nums) +
-            pp.Literal("duplicates,")
-        )
+            pp.Literal("duplicates,"))
+
         try:
             duplicate_parse_list = packet_pattern.parseString(_to_unicode(line))
         except pp.ParseException:
@@ -176,8 +174,7 @@ class LinuxPingParser(PingParser):
             pp.Word(pp.nums) +
             pp.Literal("packets transmitted,") +
             pp.Word(pp.nums) +
-            pp.Literal("received,")
-        )
+            pp.Literal("received,"))
 
         self._destination = self._parse_destination(headline)
 
@@ -200,8 +197,7 @@ class LinuxPingParser(PingParser):
             pp.Word(pp.nums + ".") + "/" +
             pp.Word(pp.nums + ".") + "/" +
             pp.Word(pp.nums + ".") +
-            pp.Word(pp.nums + "ms")
-        )
+            pp.Word(pp.nums + "ms"))
         parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
         self._rtt_min = float(parse_list[1])
         self._rtt_avg = float(parse_list[3])
@@ -226,8 +222,7 @@ class WindowsPingParser(PingParser):
             pp.Literal("Packets: Sent = ") +
             pp.Word(pp.nums) +
             pp.Literal(", Received = ") +
-            pp.Word(pp.nums)
-        )
+            pp.Word(pp.nums))
 
         self._destination = self._parse_destination(headline)
 
@@ -249,8 +244,7 @@ class WindowsPingParser(PingParser):
             pp.Literal("ms, Maximum = ") +
             pp.Word(pp.nums) +
             pp.Literal("ms, Average = ") +
-            pp.Word(pp.nums)
-        )
+            pp.Word(pp.nums))
         parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
         self._rtt_min = float(parse_list[1])
         self._rtt_avg = float(parse_list[5])
@@ -277,8 +271,7 @@ class MacOsPingParser(PingParser):
             pp.Word(pp.nums) +
             pp.Literal("packets transmitted,") +
             pp.Word(pp.nums) +
-            pp.Literal("packets received,")
-        )
+            pp.Literal("packets received,"))
 
         self._destination = self._parse_destination(headline)
 
@@ -301,8 +294,7 @@ class MacOsPingParser(PingParser):
             pp.Word(pp.nums + ".") + "/" +
             pp.Word(pp.nums + ".") + "/" +
             pp.Word(pp.nums + ".") +
-            pp.Word(pp.nums + "ms")
-        )
+            pp.Word(pp.nums + "ms"))
         parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
         self._rtt_min = float(parse_list[1])
         self._rtt_avg = float(parse_list[3])
@@ -323,8 +315,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             pp.Word(pp.nums) +
             pp.Literal("packets transmitted,") +
             pp.Word(pp.nums) +
-            pp.Literal("packets received,")
-        )
+            pp.Literal("packets received,"))
 
         self._destination = self._parse_destination(headline)
 
@@ -346,8 +337,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             pp.Word(pp.nums + ".") + "/" +
             pp.Word(pp.nums + ".") + "/" +
             pp.Word(pp.nums + ".") +
-            pp.Word(pp.nums + "ms")
-        )
+            pp.Word(pp.nums + "ms"))
         parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
         self._rtt_min = float(parse_list[1])
         self._rtt_avg = float(parse_list[3])
@@ -357,11 +347,9 @@ class AlpineLinuxPingParser(LinuxPingParser):
         packet_pattern = (
             pp.SkipTo(pp.Word(pp.nums) + pp.Literal("duplicates,")) +
             pp.Word(pp.nums) +
-            pp.Literal("duplicates,")
-        )
+            pp.Literal("duplicates,"))
         try:
-            duplicate_parse_list = packet_pattern.parseString(
-                _to_unicode(line))
+            duplicate_parse_list = packet_pattern.parseString(_to_unicode(line))
         except pp.ParseException:
             return 0
 

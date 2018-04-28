@@ -118,8 +118,7 @@ class PingTransmitter(object):
         logger.debug(command)
 
         ping_proc = subprocess.Popen(
-            command, shell=True,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = ping_proc.communicate()
 
         return PingResult(stdout, stderr, ping_proc.returncode)
@@ -138,8 +137,7 @@ class PingTransmitter(object):
 
     def __is_ipv6(self):
         try:
-            network = ipaddress.ip_address(
-                six.text_type(self.destination_host))
+            network = ipaddress.ip_address(six.text_type(self.destination_host))
         except ValueError as e:
             logger.debug("{:s}: {}".format(e.__class__.__name__, e))
             return False
@@ -164,13 +162,10 @@ class PingTransmitter(object):
         try:
             deadline = Integer(self.deadline).convert()
         except typepy.TypeConversionError:
-            raise ValueError("deadline must be an integer: actual={}".format(
-                self.deadline))
+            raise ValueError("deadline must be an integer: actual={}".format(self.deadline))
 
         if deadline <= 0:
-            raise ValueError(
-                "deadline must be greater than zero: actual={}".format(
-                    self.deadline))
+            raise ValueError("deadline must be greater than zero: actual={}".format(self.deadline))
 
     def __validate_count(self):
         if self.count is None:
@@ -179,8 +174,7 @@ class PingTransmitter(object):
         try:
             count = Integer(self.count).convert()
         except typepy.TypeConversionError:
-            raise ValueError("count must be an integer: actual={}".format(
-                self.count))
+            raise ValueError("count must be an integer: actual={}".format(self.count))
 
         if count <= 0:
             raise ValueError("count must be greater than zero")
@@ -189,13 +183,11 @@ class PingTransmitter(object):
         if not self.__is_ipv6():
             return
 
-        if not ipaddress.ip_network(
-                six.text_type(self.destination_host)).is_link_local:
+        if not ipaddress.ip_network(six.text_type(self.destination_host)).is_link_local:
             return
 
         if typepy.is_null_string(self.interface):
-            raise ValueError(
-                "interface required to ping to IPv6 link local address")
+            raise ValueError("interface required to ping to IPv6 link local address")
 
     def __get_ping_command(self):
         command_list = []

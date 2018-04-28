@@ -77,8 +77,7 @@ def initialize_log_handler(log_level):
     if log_level == logbook.DEBUG:
         info_format_str = debug_format_str
     else:
-        info_format_str = (
-            "[{record.level_name}] {record.channel}: {record.message}")
+        info_format_str = "[{record.level_name}] {record.channel}: {record.message}"
 
     logbook.StderrHandler(
         level=logbook.DEBUG, format_string=debug_format_str
