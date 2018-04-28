@@ -86,7 +86,7 @@ class PingParser(PingParserInterface):
     def _stats_headline_pattern(self):  # pragma: no cover
         pass
 
-    def _preprocess_parse(self, line_list):
+    def _preprocess_parse_stats(self, line_list):
         logger.debug("parsing as {:s} ping result format".format(self._parser_name))
 
         self.__initialize_parse_result()
@@ -153,7 +153,7 @@ class NullPingParser(PingParser):
     def parse(self, ping_message):  # pragma: no cover
         pass
 
-    def _preprocess_parse(self, line_list):  # pragma: no cover
+    def _preprocess_parse_stats(self, line_list):  # pragma: no cover
         pass
 
 
@@ -168,7 +168,7 @@ class LinuxPingParser(PingParser):
         return "--- .* ping statistics ---"
 
     def parse(self, ping_message):
-        headline, packet_info_line, body_line_list = self._preprocess_parse(
+        headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
@@ -216,7 +216,7 @@ class WindowsPingParser(PingParser):
         return "^Ping statistics for "
 
     def parse(self, ping_message):
-        headline, packet_info_line, body_line_list = self._preprocess_parse(
+        headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
             pp.Literal("Packets: Sent = ") +
@@ -265,7 +265,7 @@ class MacOsPingParser(PingParser):
         return "--- .* ping statistics ---"
 
     def parse(self, ping_message):
-        headline, packet_info_line, body_line_list = self._preprocess_parse(
+        headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
@@ -309,7 +309,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
         return "AlpineLinux"
 
     def parse(self, ping_message):
-        headline, packet_info_line, body_line_list = self._preprocess_parse(
+        headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
