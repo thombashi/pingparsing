@@ -214,8 +214,8 @@ MACOS_DUPLICATE_0 = PingTestData(
     })
 
 ALPINE_LINUX_SUCCESS = PingTestData(
-   dedent("""\
-   PING heise.de (193.99.144.80): 56 data bytes
+    dedent("""\
+    PING heise.de (193.99.144.80): 56 data bytes
 
     --- heise.de ping statistics ---
     5 packets transmitted, 5 packets received, 0% packet loss
