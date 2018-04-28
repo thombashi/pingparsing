@@ -21,9 +21,6 @@ from ._stats import PingStats
 
 class PingParser(PingParserInterface):
 
-    def __init__(self):
-        self.ping_option = ""
-
     @abc.abstractproperty
     def _parser_name(self):  # pragma: no cover
         pass

@@ -24,8 +24,6 @@ class PingParsing(PingParserInterface):
     """
 
     def __init__(self):
-        self.ping_option = ""
-
         self.__parser = NullPingParser()
         self.__stats = None
 
