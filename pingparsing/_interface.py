@@ -14,42 +14,6 @@ import six
 @six.add_metaclass(abc.ABCMeta)
 class PingParserInterface(object):
 
-    @abc.abstractproperty
-    def packet_transmit(self):  # pragma: no cover
-        pass
-
-    @abc.abstractproperty
-    def packet_receive(self):  # pragma: no cover
-        pass
-
-    @abc.abstractproperty
-    def packet_loss_rate(self):  # pragma: no cover
-        pass
-
-    @abc.abstractproperty
-    def packet_loss_count(self):  # pragma: no cover
-        pass
-
-    @abc.abstractproperty
-    def rtt_min(self):  # pragma: no cover
-        pass
-
-    @abc.abstractproperty
-    def rtt_avg(self):  # pragma: no cover
-        pass
-
-    @abc.abstractproperty
-    def rtt_max(self):  # pragma: no cover
-        pass
-
-    @abc.abstractproperty
-    def rtt_mdev(self):  # pragma: no cover
-        pass
-
-    @abc.abstractproperty
-    def packet_duplicate_rate(self):  # pragma: no cover
-        pass
-
-    @abc.abstractproperty
-    def packet_duplicate_count(self):  # pragma: no cover
+    @abc.abstractmethod
+    def parse(self, ping_message):  # pragma: no cover
         pass

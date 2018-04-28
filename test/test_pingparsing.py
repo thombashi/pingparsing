@@ -71,7 +71,7 @@ FEDORA_DUP_LOSS = PingTestData(
         "packet_duplicate_count": 1,
         "packet_duplicate_rate": 0.0643915003219575,
         "packet_loss_count": 135,
-        "packet_loss_rate": 7.997630331753558,
+        "packet_loss_rate": 7.9976303317535535,
         "rtt_min": 0.282,
         "rtt_max": 11.699,
         "rtt_mdev": 0.699,
@@ -260,7 +260,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
         "packet_duplicate_count": 2,
         "packet_duplicate_rate": 22.22222222222222,
         "packet_loss_count": 1,
-        "packet_loss_rate": 9.999999999999998,
+        "packet_loss_rate": 10.0,
         "rtt_min": 0.613,
         "rtt_avg": 0.93,
         "rtt_max": 1.219,
@@ -291,7 +291,7 @@ WINDOWS10_LOSS = PingTestData(
         "packet_transmit": 10,
         "packet_receive": 9,
         "packet_loss_count": 1,
-        "packet_loss_rate": 9.999999999999998,
+        "packet_loss_rate": 10.0,
         "packet_duplicate_count": None,
         "packet_duplicate_rate": None,
         "rtt_min": 0.0,
@@ -352,12 +352,14 @@ class Test_PingParsing_parse(object):
         [WINDOWS_UNREACHABLE_2, "Windows"],
     ])
     def test_normal_text(self, ping_parser, test_data, parser_name):
-        ping_parser.parse(test_data.value)
+        stats = ping_parser.parse(test_data.value)
 
         print("[input text]\n{}".format(test_data.value))
+        print("[expected]\n{}".format(test_data.expected))
+        print("[actual]\n{}".format(stats.as_dict()))
 
         assert ping_parser.parser_name == parser_name
-        assert ping_parser.as_dict() == test_data.expected
+        assert stats.as_dict() == test_data.expected
 
     def test_empty(self, ping_parser):
         ping_parser.parse(dedent("""\
@@ -367,19 +369,19 @@ class Test_PingParsing_parse(object):
             60 packets transmitted, 60 received, 0% packet loss, time 59153ms
             rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
             """))
-        ping_parser.parse("")
+        stats = ping_parser.parse("")
 
-        assert ping_parser.destination is None
-        assert ping_parser.packet_transmit is None
-        assert ping_parser.packet_receive is None
-        assert ping_parser.packet_loss_count is None
-        assert ping_parser.packet_loss_rate is None
-        assert ping_parser.packet_duplicate_count is None
-        assert ping_parser.packet_duplicate_rate is None
-        assert ping_parser.rtt_min is None
-        assert ping_parser.rtt_avg is None
-        assert ping_parser.rtt_max is None
-        assert ping_parser.rtt_mdev is None
+        assert stats.destination is None
+        assert stats.packet_transmit is None
+        assert stats.packet_receive is None
+        assert stats.packet_loss_count is None
+        assert stats.packet_loss_rate is None
+        assert stats.packet_duplicate_count is None
+        assert stats.packet_duplicate_rate is None
+        assert stats.rtt_min is None
+        assert stats.rtt_avg is None
+        assert stats.rtt_max is None
+        assert stats.rtt_mdev is None
 
     @pytest.mark.parametrize(["value", "expected"], [
         [PING_FEDORA_EMPTY_BODY, ParseError],
@@ -392,8 +394,8 @@ class Test_PingParsing_parse(object):
 
 class Test_PingParsing_as_tuple(object):
     def test_normal(self, ping_parser):
-        ping_parser.parse(DEBIAN_SUCCESS.value)
-        result = ping_parser.as_tuple()
+        stats = ping_parser.parse(DEBIAN_SUCCESS.value)
+        result = stats.as_tuple()
 
         assert result.destination == "google.com"
         assert result.packet_transmit == 60

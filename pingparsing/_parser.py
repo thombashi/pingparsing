@@ -16,67 +16,13 @@ from ._common import _to_unicode
 from ._interface import PingParserInterface
 from ._logger import logger
 from .error import ParseError, ParseErrorReason
+from ._stats import PingStats
 
 
 class PingParser(PingParserInterface):
 
     def __init__(self):
         self.ping_option = ""
-
-        self.__initialize_parse_result()
-
-    @property
-    def destination(self):
-        return self._destination
-
-    @property
-    def packet_transmit(self):
-        return self._packet_transmit
-
-    @property
-    def packet_receive(self):
-        return self._packet_receive
-
-    @property
-    def packet_loss_rate(self):
-        try:
-            return (1.0 - (self.packet_receive / self.packet_transmit)) * 100
-        except (TypeError, ZeroDivisionError, OverflowError):
-            return None
-
-    @property
-    def packet_loss_count(self):
-        try:
-            return self.packet_transmit - self.packet_receive
-        except TypeError:
-            return None
-
-    @property
-    def rtt_min(self):
-        return self._rtt_min
-
-    @property
-    def rtt_avg(self):
-        return self._rtt_avg
-
-    @property
-    def rtt_max(self):
-        return self._rtt_max
-
-    @property
-    def rtt_mdev(self):
-        return self._rtt_mdev
-
-    @property
-    def packet_duplicate_rate(self):
-        try:
-            return (self.packet_duplicate_count / self.packet_receive) * 100
-        except (TypeError, ZeroDivisionError, OverflowError):
-            return None
-
-    @property
-    def packet_duplicate_count(self):
-        return self._duplicates
 
     @abc.abstractproperty
     def _parser_name(self):  # pragma: no cover
@@ -86,10 +32,12 @@ class PingParser(PingParserInterface):
     def _stats_headline_pattern(self):  # pragma: no cover
         pass
 
+    @abc.abstractproperty
+    def _is_support_packet_duplicate(self):  # pragma: no cover
+        pass
+
     def _preprocess_parse_stats(self, line_list):
         logger.debug("parsing as {:s} ping result format".format(self._parser_name))
-
-        self.__initialize_parse_result()
 
         headline_idx = self.__find_stats_headline_idx(
             line_list, re.compile(self._stats_headline_pattern))
@@ -116,17 +64,10 @@ class PingParser(PingParserInterface):
         if typepy.is_empty_sequence(body_line_list):
             raise ParseError(reason=ParseErrorReason.EMPTY_STATISTICS)
 
-    def __initialize_parse_result(self):
-        self._destination = None
-        self._packet_transmit = None
-        self._packet_receive = None
-        self._rtt_min = None
-        self._rtt_avg = None
-        self._rtt_max = None
-        self._rtt_mdev = None
-        self._duplicates = None
-
     def _parse_duplicate(self, line):
+        if not self._is_support_packet_duplicate:
+            return None
+
         packet_pattern = (
             pp.SkipTo(pp.Word("+" + pp.nums) + pp.Literal("duplicates,")) +
             pp.Word("+" + pp.nums) +
@@ -150,6 +91,10 @@ class NullPingParser(PingParser):
     def _stats_headline_pattern(self):
         return ""
 
+    @property
+    def _is_support_packet_duplicate(self):  # pragma: no cover
+        return False
+
     def parse(self, ping_message):  # pragma: no cover
         pass
 
@@ -167,6 +112,10 @@ class LinuxPingParser(PingParser):
     def _stats_headline_pattern(self):
         return "--- .* ping statistics ---"
 
+    @property
+    def _is_support_packet_duplicate(self):
+        return True
+
     def parse(self, ping_message):
         headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
@@ -176,20 +125,23 @@ class LinuxPingParser(PingParser):
             pp.Word(pp.nums) +
             pp.Literal("received,"))
 
-        self._destination = self._parse_destination(headline)
+        destination = self._parse_destination(headline)
+        duplicates = self._parse_duplicate(packet_info_line)
 
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
-        self._packet_transmit = int(parse_list[0])
-        self._packet_receive = int(parse_list[2])
-        self._duplicates = self._parse_duplicate(packet_info_line)
+        packet_transmit = int(parse_list[0])
+        packet_receive = int(parse_list[2])
 
+        is_valid_data = True
         try:
             rtt_line = body_line_list[1]
         except IndexError:
-            return
+            is_valid_data = False
 
-        if typepy.is_null_string(rtt_line):
-            return
+        if not is_valid_data or typepy.is_null_string(rtt_line):
+            return PingStats(
+                destination=destination, packet_transmit=packet_transmit,
+                packet_receive=packet_receive, duplicates=duplicates)
 
         rtt_pattern = (
             pp.Literal("rtt min/avg/max/mdev =") +
@@ -199,10 +151,12 @@ class LinuxPingParser(PingParser):
             pp.Word(pp.nums + ".") +
             pp.Word(pp.nums + "ms"))
         parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        self._rtt_min = float(parse_list[1])
-        self._rtt_avg = float(parse_list[3])
-        self._rtt_max = float(parse_list[5])
-        self._rtt_mdev = float(parse_list[7])
+
+        return PingStats(
+            destination=destination, packet_transmit=packet_transmit,
+            packet_receive=packet_receive, duplicates=duplicates,
+            rtt_min=float(parse_list[1]), rtt_avg=float(parse_list[3]),
+            rtt_max=float(parse_list[5]), rtt_mdev=float(parse_list[7]))
 
 
 class WindowsPingParser(PingParser):
@@ -215,6 +169,10 @@ class WindowsPingParser(PingParser):
     def _stats_headline_pattern(self):
         return "^Ping statistics for "
 
+    @property
+    def _is_support_packet_duplicate(self):
+        return False
+
     def parse(self, ping_message):
         headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
@@ -224,19 +182,23 @@ class WindowsPingParser(PingParser):
             pp.Literal(", Received = ") +
             pp.Word(pp.nums))
 
-        self._destination = self._parse_destination(headline)
+        destination = self._parse_destination(headline)
+        duplicates = self._parse_duplicate(packet_info_line)
 
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
-        self._packet_transmit = int(parse_list[1])
-        self._packet_receive = int(parse_list[3])
+        packet_transmit = int(parse_list[1])
+        packet_receive = int(parse_list[3])
 
+        is_valid_data = True
         try:
             rtt_line = body_line_list[2].strip()
         except IndexError:
-            return
+            is_valid_data = False
 
-        if typepy.is_null_string(rtt_line):
-            return
+        if not is_valid_data or typepy.is_null_string(rtt_line):
+            return PingStats(
+                destination=destination, packet_transmit=packet_transmit,
+                packet_receive=packet_receive, duplicates=duplicates)
 
         rtt_pattern = (
             pp.Literal("Minimum = ") +
@@ -246,9 +208,12 @@ class WindowsPingParser(PingParser):
             pp.Literal("ms, Average = ") +
             pp.Word(pp.nums))
         parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        self._rtt_min = float(parse_list[1])
-        self._rtt_avg = float(parse_list[5])
-        self._rtt_max = float(parse_list[3])
+
+        return PingStats(
+            destination=destination, packet_transmit=packet_transmit,
+            packet_receive=packet_receive, duplicates=duplicates,
+            rtt_min=float(parse_list[1]), rtt_avg=float(parse_list[5]),
+            rtt_max=float(parse_list[3]))
 
     def _parse_destination(self, headline):
         return headline.lstrip("Ping statistics for ").rstrip(":")
@@ -264,6 +229,10 @@ class MacOsPingParser(PingParser):
     def _stats_headline_pattern(self):
         return "--- .* ping statistics ---"
 
+    @property
+    def _is_support_packet_duplicate(self):
+        return True
+
     def parse(self, ping_message):
         headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
@@ -273,20 +242,23 @@ class MacOsPingParser(PingParser):
             pp.Word(pp.nums) +
             pp.Literal("packets received,"))
 
-        self._destination = self._parse_destination(headline)
+        destination = self._parse_destination(headline)
+        duplicates = self._parse_duplicate(packet_info_line)
 
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
-        self._packet_transmit = int(parse_list[0])
-        self._packet_receive = int(parse_list[2])
-        self._duplicates = self._parse_duplicate(packet_info_line)
+        packet_transmit = int(parse_list[0])
+        packet_receive = int(parse_list[2])
 
+        is_valid_data = True
         try:
             rtt_line = body_line_list[1]
         except IndexError:
-            return
+            is_valid_data = False
 
-        if typepy.is_null_string(rtt_line):
-            return
+        if not is_valid_data or typepy.is_null_string(rtt_line):
+            return PingStats(
+                destination=destination, packet_transmit=packet_transmit,
+                packet_receive=packet_receive, duplicates=duplicates)
 
         rtt_pattern = (
             pp.Literal("round-trip min/avg/max/stddev =") +
@@ -296,10 +268,12 @@ class MacOsPingParser(PingParser):
             pp.Word(pp.nums + ".") +
             pp.Word(pp.nums + "ms"))
         parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        self._rtt_min = float(parse_list[1])
-        self._rtt_avg = float(parse_list[3])
-        self._rtt_max = float(parse_list[5])
-        self._rtt_mdev = float(parse_list[7])
+
+        return PingStats(
+            destination=destination, packet_transmit=packet_transmit,
+            packet_receive=packet_receive, duplicates=duplicates,
+            rtt_min=float(parse_list[1]), rtt_avg=float(parse_list[3]),
+            rtt_max=float(parse_list[5]), rtt_mdev=float(parse_list[7]))
 
 
 class AlpineLinuxPingParser(LinuxPingParser):
@@ -307,6 +281,10 @@ class AlpineLinuxPingParser(LinuxPingParser):
     @property
     def _parser_name(self):
         return "AlpineLinux"
+
+    @property
+    def _is_support_packet_duplicate(self):
+        return True
 
     def parse(self, ping_message):
         headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
@@ -317,20 +295,23 @@ class AlpineLinuxPingParser(LinuxPingParser):
             pp.Word(pp.nums) +
             pp.Literal("packets received,"))
 
-        self._destination = self._parse_destination(headline)
+        destination = self._parse_destination(headline)
+        duplicates = self._parse_duplicate(packet_info_line)
 
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
-        self._packet_transmit = int(parse_list[0])
-        self._packet_receive = int(parse_list[2])
-        self._duplicates = self._parse_duplicate(packet_info_line)
+        packet_transmit = int(parse_list[0])
+        packet_receive = int(parse_list[2])
 
+        is_valid_data = True
         try:
             rtt_line = body_line_list[1]
         except IndexError:
-            return
+            is_valid_data = False
 
-        if typepy.is_null_string(rtt_line):
-            return
+        if not is_valid_data or typepy.is_null_string(rtt_line):
+            return PingStats(
+                destination=destination, packet_transmit=packet_transmit,
+                packet_receive=packet_receive, duplicates=duplicates)
 
         rtt_pattern = (
             pp.Literal("round-trip min/avg/max =") +
@@ -339,9 +320,12 @@ class AlpineLinuxPingParser(LinuxPingParser):
             pp.Word(pp.nums + ".") +
             pp.Word(pp.nums + "ms"))
         parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
-        self._rtt_min = float(parse_list[1])
-        self._rtt_avg = float(parse_list[3])
-        self._rtt_max = float(parse_list[5])
+
+        return PingStats(
+            destination=destination, packet_transmit=packet_transmit,
+            packet_receive=packet_receive, duplicates=duplicates,
+            rtt_min=float(parse_list[1]), rtt_avg=float(parse_list[3]),
+            rtt_max=float(parse_list[5]))
 
     def _parse_duplicate(self, line):
         packet_pattern = (

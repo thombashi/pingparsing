@@ -14,6 +14,7 @@ from ._interface import PingParserInterface
 from ._logger import logger
 from ._parser import (
     AlpineLinuxPingParser, LinuxPingParser, MacOsPingParser, NullPingParser, WindowsPingParser)
+from ._stats import PingStats
 from .error import ParseError, ParseErrorReason
 
 
@@ -26,6 +27,7 @@ class PingParsing(PingParserInterface):
         self.ping_option = ""
 
         self.__parser = NullPingParser()
+        self.__stats = None
 
     @property
     def parser_name(self):
@@ -34,43 +36,48 @@ class PingParsing(PingParserInterface):
     @property
     def destination(self):
         """
+        (Duprecated)
+
         :return: The ping destination.
         :rtype: str
         """
 
-        return self.__parser.destination
+        return self.__stats.destination
 
     @property
     def packet_transmit(self):
         """
+        (Duprecated)
+
         :return: Number of packets transmitted.
         :rtype: int
         """
 
-        return self.__parser.packet_transmit
+        return self.__stats.packet_transmit
 
     @property
     def packet_receive(self):
         """
+        (Duprecated)
+
         :return: Number of packets received.
         :rtype: int
         """
 
-        return self.__parser.packet_receive
+        return self.__stats.packet_receive
 
     @property
     def packet_loss_rate(self):
         """
+        (Duprecated)
+
         :return:
             Percentage of packet loss ``[%]``.
             ``None`` if the value is not a number.
         :rtype: float
         """
 
-        try:
-            return (1.0 - (self.packet_receive / self.packet_transmit)) * 100
-        except (TypeError, ZeroDivisionError, OverflowError):
-            return None
+        return self.__stats.packet_loss_rate
 
     @property
     def packet_loss(self):
@@ -80,80 +87,88 @@ class PingParsing(PingParserInterface):
     @property
     def packet_loss_count(self):
         """
+        (Duprecated)
+
         :return: Packet loss count. ``None`` if the value is not a number.
         :rtype: int
         """
 
-        try:
-            return self.packet_transmit - self.packet_receive
-        except TypeError:
-            return None
+        return self.__stats.packet_loss_count
 
     @property
     def rtt_min(self):
         """
+        (Duprecated)
+
         :return:
             Minimum round trip time of transmitted ICMP packets ``[msec]``.
         :rtype: float
         """
 
-        return self.__parser.rtt_min
+        return self.__stats.rtt_min
 
     @property
     def rtt_avg(self):
         """
+        (Duprecated)
+
         :return:
             Average round trip time of transmitted ICMP packets ``[msec]``.
         :rtype: float
         """
 
-        return self.__parser.rtt_avg
+        return self.__stats.rtt_avg
 
     @property
     def rtt_max(self):
         """
+        (Duprecated)
+
         :return:
             Maximum round trip time of transmitted ICMP packets ``[msec]``.
         :rtype: float
         """
 
-        return self.__parser.rtt_max
+        return self.__stats.rtt_max
 
     @property
     def rtt_mdev(self):
         """
+        (Duprecated)
+
         :return:
             Standard deviation of transmitted ICMP packets. The attribute
             returns always ``None`` when parsing Windows ping result.
         :rtype: float
         """
 
-        return self.__parser.rtt_mdev
+        return self.__stats.rtt_mdev
 
     @property
     def packet_duplicate_rate(self):
         """
+        (Duprecated)
+
         :return:
             Percentage of duplicated packets ``[%]``.
             ``None`` if the value is not a number.
         :rtype: float
         """
 
-        try:
-            return (self.packet_duplicate_count / self.packet_receive) * 100
-        except (TypeError, ZeroDivisionError, OverflowError):
-            return None
+        return self.__stats.packet_duplicate_rate
 
     @property
     def packet_duplicate_count(self):
         """
+        (Duprecated)
+
         :return:
             Number of duplicated packet. The attribute
             returns always ``None`` when parsing Windows ping result.
         :rtype: int
         """
 
-        return self.__parser.packet_duplicate_count
+        return self.__stats.packet_duplicate_count
 
     @property
     def duplicates(self):
@@ -162,6 +177,8 @@ class PingParsing(PingParserInterface):
 
     def as_dict(self):
         """
+        (Duprecated)
+
         :return: Parsed result as a dictionary.
         :rtype: dict
 
@@ -185,22 +202,12 @@ class PingParsing(PingParserInterface):
             }
         """
 
-        return {
-            "destination": self.destination,
-            "packet_transmit": self.packet_transmit,
-            "packet_receive": self.packet_receive,
-            "packet_loss_rate": self.packet_loss_rate,
-            "packet_loss_count": self.packet_loss_count,
-            "rtt_min": self.rtt_min,
-            "rtt_avg": self.rtt_avg,
-            "rtt_max": self.rtt_max,
-            "rtt_mdev": self.rtt_mdev,
-            "packet_duplicate_rate": self.packet_duplicate_rate,
-            "packet_duplicate_count": self.packet_duplicate_count,
-        }
+        return self.__stats.as_dict()
 
     def as_tuple(self):
         """
+        (Duprecated)
+
         :return: Parsed result as a tuple.
         :rtype: collections.namedtuple
 
@@ -212,39 +219,18 @@ class PingParsing(PingParserInterface):
             PingResult(destination='google.com', packet_transmit=60, packet_receive=60, packet_loss_rate=0.0, packet_loss_count=0, rtt_min=61.425, rtt_avg=99.731, rtt_max=212.597, rtt_mdev=27.566, packet_duplicate_rate=0.0, packet_duplicate_count=0)
         """
 
-        from collections import namedtuple
-
-        ping_result = self.as_dict()
-
-        return namedtuple("PingResult", ping_result.keys())(**ping_result)
+        return self.__stats.as_tuple()
 
     def parse(self, ping_message):
         """
         Parse ping command output.
-        You can get parsing results by following attributes:
-
-            - :py:attr:`.packet_transmit`
-            - :py:attr:`.packet_receive`
-            - :py:attr:`.packet_loss_rate`
-            - :py:attr:`.packet_loss_count`
-            - :py:attr:`.packet_duplicate_rate`
-            - :py:attr:`.packet_duplicate_count`
-            - :py:attr:`.rtt_min`
-            - :py:attr:`.rtt_avg`
-            - :py:attr:`.rtt_max`
-            - :py:attr:`.rtt_mdev`
-
-        Alternatively, you can get the results as:
-
-            - a dictionary by :py:meth:`.as_dict`
-            - a tuple by by :py:meth:`.as_tuple`
 
         :param ping_message: ping command output.
-        :type ping_message: str or pingparsing.PingResult
+        :type ping_message: str or :py:class:`~pingparsing.PingResult`
         :return: Parsed result.
 
             .. seealso:: :py:meth:`.as_tuple`
-        :rtype: collections.namedtuple
+        :rtype: :py:class:`~pingparsing.PingStats`
         """
 
         try:
@@ -260,7 +246,9 @@ class PingParsing(PingParserInterface):
 
         if typepy.is_null_string(ping_message):
             logger.debug("ping_message is empty")
-            return self.as_tuple()
+            self.__stats = PingStats()
+
+            return self.__stats
 
         line_list = _to_unicode(ping_message).splitlines()
         parser_class_list = (
@@ -269,8 +257,8 @@ class PingParsing(PingParserInterface):
         for parser_class in parser_class_list:
             self.__parser = parser_class()
             try:
-                self.__parser.parse(line_list)
-                return self.as_tuple()
+                self.__stats = self.__parser.parse(line_list)
+                return self.__stats
             except ParseError as e:
                 if e.reason != ParseErrorReason.HEADER_NOT_FOUND:
                     raise e
@@ -279,4 +267,4 @@ class PingParsing(PingParserInterface):
 
         self.__parser = NullPingParser()
 
-        return self.as_tuple()
+        return self.__stats
