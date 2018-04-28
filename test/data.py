@@ -22,7 +22,7 @@ rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
 """)
 
 
-DEBIAN_SUCCESS = PingTestData(
+DEBIAN_SUCCESS_0 = PingTestData(
     PING_DEBIAN_SUCCESS,
     {
         "destination": "google.com",

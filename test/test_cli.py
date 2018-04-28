@@ -10,7 +10,7 @@ import json
 import pytest
 from subprocrunner import SubprocessRunner
 
-from .data import DEBIAN_SUCCESS, WINDOWS7SP1_SUCCESS
+from .data import DEBIAN_SUCCESS_0, WINDOWS7SP1_SUCCESS
 
 
 @pytest.mark.xfail
@@ -18,7 +18,7 @@ class Test_cli_file(object):
 
     def test_normal_single(self, tmpdir):
         tmp_ping_file = tmpdir.join("ping_deb.txt")
-        tmp_ping_file.write(DEBIAN_SUCCESS.value)
+        tmp_ping_file.write(DEBIAN_SUCCESS_0.value)
         tmp_ping_path = str(tmp_ping_file)
 
         runner = SubprocessRunner(
@@ -30,11 +30,11 @@ class Test_cli_file(object):
 
         assert runner.returncode == 0
         assert json.loads(runner.stdout)[
-            tmp_ping_path] == DEBIAN_SUCCESS.expected
+            tmp_ping_path] == DEBIAN_SUCCESS_0.expected
 
     def test_normal_multi(self, tmpdir):
         tmp_ping_file_deb = tmpdir.join("ping_deb.txt")
-        tmp_ping_file_deb.write(DEBIAN_SUCCESS.value)
+        tmp_ping_file_deb.write(DEBIAN_SUCCESS_0.value)
         tmp_ping_path_deb = str(tmp_ping_file_deb)
 
         tmp_ping_file_win = tmpdir.join("ping_win.txt")
@@ -51,7 +51,7 @@ class Test_cli_file(object):
         assert runner.returncode == 0
 
         parsed_result = json.loads(runner.stdout)
-        assert parsed_result[tmp_ping_path_deb] == DEBIAN_SUCCESS.expected
+        assert parsed_result[tmp_ping_path_deb] == DEBIAN_SUCCESS_0.expected
         assert parsed_result[tmp_ping_path_win] == WINDOWS7SP1_SUCCESS.expected
 
 
@@ -60,13 +60,13 @@ class Test_cli_pipe(object):
 
     def test_normal_single(self, tmpdir):
         runner = SubprocessRunner("pingparsing")
-        runner.run(input=DEBIAN_SUCCESS.value)
+        runner.run(input=DEBIAN_SUCCESS_0.value)
 
         print("[stdout]\n{}".format(runner.stdout))
         print("[stderr]\n{}".format(runner.stderr))
 
         assert runner.returncode == 0
-        assert json.loads(runner.stdout) == DEBIAN_SUCCESS.expected
+        assert json.loads(runner.stdout) == DEBIAN_SUCCESS_0.expected
 
 
 @pytest.mark.xfail

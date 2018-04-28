@@ -10,15 +10,15 @@ import pytest
 from pingparsing import PingResult
 
 from .common import ping_parser
-from .data import DEBIAN_SUCCESS
+from .data import DEBIAN_SUCCESS_0
 
 
 class Test_PingResult(object):
 
     @pytest.mark.parametrize(["pingresult", "expected"], [
         [
-            PingResult(DEBIAN_SUCCESS.value, "", 0),
-            DEBIAN_SUCCESS.expected
+            PingResult(DEBIAN_SUCCESS_0.value, "", 0),
+            DEBIAN_SUCCESS_0.expected
         ]
     ])
     def test_normal_pingresult(self, ping_parser, pingresult, expected):

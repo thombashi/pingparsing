@@ -13,7 +13,7 @@ import six
 from pingparsing import ParseError
 
 from .common import PingTestData, ping_parser
-from .data import DEBIAN_SUCCESS, WINDOWS7SP1_SUCCESS
+from .data import DEBIAN_SUCCESS_0, WINDOWS7SP1_SUCCESS
 
 
 PING_FEDORA_EMPTY_BODY = six.b("""\
@@ -332,7 +332,7 @@ WINDOWS_UNREACHABLE_2 = PingTestData(
 class Test_PingParsing_parse(object):
 
     @pytest.mark.parametrize(["test_data", "parser_name"], [
-        [DEBIAN_SUCCESS, "Linux"],
+        [DEBIAN_SUCCESS_0, "Linux"],
         [DEBIAN_UNREACHABLE_0, "Linux"],
         [DEBIAN_UNREACHABLE_1, "Linux"],
         [DEBIAN_UNREACHABLE_2, "Linux"],
@@ -394,7 +394,7 @@ class Test_PingParsing_parse(object):
 
 class Test_PingParsing_as_tuple(object):
     def test_normal(self, ping_parser):
-        stats = ping_parser.parse(DEBIAN_SUCCESS.value)
+        stats = ping_parser.parse(DEBIAN_SUCCESS_0.value)
         result = stats.as_tuple()
 
         assert result.destination == "google.com"
