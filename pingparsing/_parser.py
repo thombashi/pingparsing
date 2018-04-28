@@ -45,8 +45,8 @@ class PingParser(PingParserInterface):
 
         return (line_list[stats_headline_idx], packet_info_line, body_line_list)
 
-    def _parse_destination(self, headline):
-        return headline.lstrip("--- ").rstrip(" ping statistics ---")
+    def _parse_destination(self, stats_headline):
+        return stats_headline.lstrip("--- ").rstrip(" ping statistics ---")
 
     def __find_stats_headline_idx(self, line_list, re_stats_header):
         for i, line in enumerate(line_list):
@@ -114,7 +114,7 @@ class LinuxPingParser(PingParser):
         return True
 
     def parse(self, ping_message):
-        headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
+        stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
@@ -122,7 +122,7 @@ class LinuxPingParser(PingParser):
             pp.Word(pp.nums) +
             pp.Literal("received,"))
 
-        destination = self._parse_destination(headline)
+        destination = self._parse_destination(stats_headline)
         duplicates = self._parse_duplicate(packet_info_line)
 
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
@@ -171,7 +171,7 @@ class WindowsPingParser(PingParser):
         return False
 
     def parse(self, ping_message):
-        headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
+        stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
             pp.Literal("Packets: Sent = ") +
@@ -179,7 +179,7 @@ class WindowsPingParser(PingParser):
             pp.Literal(", Received = ") +
             pp.Word(pp.nums))
 
-        destination = self._parse_destination(headline)
+        destination = self._parse_destination(stats_headline)
         duplicates = self._parse_duplicate(packet_info_line)
 
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
@@ -212,8 +212,8 @@ class WindowsPingParser(PingParser):
             rtt_min=float(parse_list[1]), rtt_avg=float(parse_list[5]),
             rtt_max=float(parse_list[3]))
 
-    def _parse_destination(self, headline):
-        return headline.lstrip("Ping statistics for ").rstrip(":")
+    def _parse_destination(self, stats_headline):
+        return stats_headline.lstrip("Ping statistics for ").rstrip(":")
 
 
 class MacOsPingParser(PingParser):
@@ -231,7 +231,7 @@ class MacOsPingParser(PingParser):
         return True
 
     def parse(self, ping_message):
-        headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
+        stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
@@ -239,7 +239,7 @@ class MacOsPingParser(PingParser):
             pp.Word(pp.nums) +
             pp.Literal("packets received,"))
 
-        destination = self._parse_destination(headline)
+        destination = self._parse_destination(stats_headline)
         duplicates = self._parse_duplicate(packet_info_line)
 
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
@@ -284,7 +284,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
         return True
 
     def parse(self, ping_message):
-        headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
+        stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
             pp.Word(pp.nums) +
@@ -292,7 +292,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             pp.Word(pp.nums) +
             pp.Literal("packets received,"))
 
-        destination = self._parse_destination(headline)
+        destination = self._parse_destination(stats_headline)
         duplicates = self._parse_duplicate(packet_info_line)
 
         parse_list = packet_pattern.parseString(_to_unicode(packet_info_line))
