@@ -10,11 +10,11 @@ from textwrap import dedent
 
 import pytest
 import six
-
 from pingparsing import EmptyPingStatisticsError
 
 from .common import PingTestData, ping_parser
 from .data import DEBIAN_SUCCESS, WINDOWS7SP1_SUCCESS
+
 
 PING_FEDORA_EMPTY_BODY = six.b("""\
 PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.

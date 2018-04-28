@@ -13,7 +13,7 @@ from ._common import _to_unicode
 from ._interface import PingParserInterface
 from ._logger import logger
 from ._parser import (
-    AlpineLinuxPingParser, LinuxPingParser, NullPingParser, MacOsPingParser, WindowsPingParser)
+    AlpineLinuxPingParser, LinuxPingParser, MacOsPingParser, NullPingParser, WindowsPingParser)
 from .error import PingStatisticsHeaderNotFoundError
 
 
