@@ -14,7 +14,7 @@ from ._interface import PingParserInterface
 from ._logger import logger
 from ._parser import (
     AlpineLinuxPingParser, LinuxPingParser, MacOsPingParser, NullPingParser, WindowsPingParser)
-from .error import PingStatisticsHeaderNotFoundError
+from .error import ParseError, ParseErrorReason
 
 
 class PingParsing(PingParserInterface):
@@ -271,7 +271,10 @@ class PingParsing(PingParserInterface):
             try:
                 self.__parser.parse(line_list)
                 return self.as_tuple()
-            except (PingStatisticsHeaderNotFoundError, pp.ParseException):
+            except ParseError as e:
+                if e.reason != ParseErrorReason.HEADER_NOT_FOUND:
+                    raise e
+            except pp.ParseException:
                 pass
 
         self.__parser = NullPingParser()

@@ -15,7 +15,7 @@ import typepy
 from ._common import _to_unicode
 from ._interface import PingParserInterface
 from ._logger import logger
-from .error import EmptyPingStatisticsError, PingStatisticsHeaderNotFoundError
+from .error import ParseError, ParseErrorReason
 
 
 class PingParser(PingParserInterface):
@@ -108,13 +108,13 @@ class PingParser(PingParserInterface):
             if re_stats_header.search(line):
                 break
         else:
-            raise PingStatisticsHeaderNotFoundError("ping statistics not found")
+            raise ParseError(reason=ParseErrorReason.HEADER_NOT_FOUND)
 
         return i
 
     def __validate_stats_body(self, body_line_list):
         if typepy.is_empty_sequence(body_line_list):
-            raise EmptyPingStatisticsError("ping statistics is empty")
+            raise ParseError(reason=ParseErrorReason.EMPTY_STATISTICS)
 
     def __initialize_parse_result(self):
         self._destination = None

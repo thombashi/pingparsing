@@ -10,7 +10,7 @@ from textwrap import dedent
 
 import pytest
 import six
-from pingparsing import EmptyPingStatisticsError
+from pingparsing import ParseError
 
 from .common import PingTestData, ping_parser
 from .data import DEBIAN_SUCCESS, WINDOWS7SP1_SUCCESS
@@ -382,8 +382,8 @@ class Test_PingParsing_parse(object):
         assert ping_parser.rtt_mdev is None
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [PING_FEDORA_EMPTY_BODY, EmptyPingStatisticsError],
-        [PING_WINDOWS_INVALID, EmptyPingStatisticsError],
+        [PING_FEDORA_EMPTY_BODY, ParseError],
+        [PING_WINDOWS_INVALID, ParseError],
     ])
     def test_exception(self, ping_parser, value, expected):
         with pytest.raises(expected):
