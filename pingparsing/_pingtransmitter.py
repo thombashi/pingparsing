@@ -7,11 +7,11 @@
 from __future__ import absolute_import
 
 import ipaddress
-import msgfy
 import platform
 import warnings
 from collections import namedtuple
 
+import msgfy
 import six
 import typepy
 from typepy import Integer

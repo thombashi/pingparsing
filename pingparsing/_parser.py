@@ -15,8 +15,8 @@ import typepy
 from ._common import _to_unicode
 from ._interface import PingParserInterface
 from ._logger import logger
-from .error import ParseError, ParseErrorReason
 from ._stats import PingStats
+from .error import ParseError, ParseErrorReason
 
 
 class PingParser(PingParserInterface):
