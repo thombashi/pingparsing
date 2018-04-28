@@ -36,14 +36,14 @@ class PingParser(PingParserInterface):
     def _preprocess_parse_stats(self, line_list):
         logger.debug("parsing as {:s} ping result format".format(self._parser_name))
 
-        headline_idx = self.__find_stats_headline_idx(
+        stats_headline_idx = self.__find_stats_headline_idx(
             line_list, re.compile(self._stats_headline_pattern))
-        body_line_list = line_list[headline_idx + 1:]
+        body_line_list = line_list[stats_headline_idx + 1:]
         self.__validate_stats_body(body_line_list)
 
         packet_info_line = body_line_list[0]
 
-        return (line_list[headline_idx], packet_info_line, body_line_list)
+        return (line_list[stats_headline_idx], packet_info_line, body_line_list)
 
     def _parse_destination(self, headline):
         return headline.lstrip("--- ").rstrip(" ping statistics ---")
