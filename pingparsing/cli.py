@@ -40,6 +40,9 @@ def parse_option():
         help="""JSON output will be pretty-printed with the indent level.
         (default= %(default)s)
         """)
+    parser.add_argument(
+        "--icmp-reply", action="store_true", default=False,
+        help="print icmp packet replies.")
 
     loglevel_dest = "log_level"
     group = parser.add_mutually_exclusive_group()
@@ -91,7 +94,7 @@ def is_use_stdin():
     return sys.stdin.isatty() or len(sys.argv) > 1
 
 
-def parse_ping(logger, dest_or_file, interface, count, deadline):
+def parse_ping(logger, dest_or_file, interface, count, deadline, is_parse_icmp_reply):
     if os.path.isfile(dest_or_file):
         with open(dest_or_file) as f:
             ping_result_text = f.read()
@@ -101,15 +104,19 @@ def parse_ping(logger, dest_or_file, interface, count, deadline):
         transmitter.interface = interface
         transmitter.count = count
         transmitter.deadline = deadline
+        transmitter.is_quiet = not is_parse_icmp_reply
         result = transmitter.ping()
         ping_result_text = result.stdout
         if result.returncode != 0:
             logger.error(result.stderr)
 
     ping_parser = pingparsing.PingParsing()
-    ping_parser.parse(ping_result_text)
+    stats = ping_parser.parse(ping_result_text)
+    output = stats.as_dict()
+    if is_parse_icmp_reply:
+        output["icmp_reply"] = stats.icmp_reply_list
 
-    return (dest_or_file, ping_parser.as_dict())
+    return (dest_or_file, output)
 
 
 def get_ping_param(options):
@@ -150,7 +157,7 @@ def main():
                     logger.debug("start {}".format(dest_or_file))
                     future_list.append(executor.submit(
                         parse_ping, logger, dest_or_file, options.interface,
-                        count, deadline))
+                        count, deadline, options.icmp_reply))
 
                 for future in futures.as_completed(future_list):
                     key, ping_data = future.result()
@@ -161,8 +168,10 @@ def main():
     else:
         ping_result_text = sys.stdin.read()
         ping_parser = pingparsing.PingParsing()
-        ping_parser.parse(ping_result_text)
-        output = ping_parser.as_dict()
+        stats = ping_parser.parse(ping_result_text)
+        output = stats.as_dict()
+        if options.icmp_reply:
+            output["icmp_reply"] = stats.icmp_reply_list
 
     if options.indent <= 0:
         print(json.dumps(output))

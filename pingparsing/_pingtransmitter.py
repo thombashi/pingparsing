@@ -98,6 +98,7 @@ class PingTransmitter(object):
         self.deadline = None
         self.count = None
         self.ping_option = ""
+        self.is_quiet = False
         self.interface = None
         self.auto_codepage = True
 
@@ -229,7 +230,7 @@ class PingTransmitter(object):
         return "ping"
 
     def __get_quiet_option(self):
-        if self.__is_windows():
+        if not self.is_quiet or self.__is_windows():
             return ""
 
         return "-q"
