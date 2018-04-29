@@ -1,5 +1,12 @@
-pingparsing
-=============
+**pingparsing**
+
+.. contents:: Table of Contents
+   :depth: 2
+
+Summary
+=========
+pingparsing is a CLI-tool/Python-library for parsing ping command output.
+
 .. image:: https://badge.fury.io/py/pingparsing.svg
     :target: https://badge.fury.io/py/pingparsing
 
@@ -11,13 +18,6 @@ pingparsing
 
 .. image:: https://img.shields.io/github/stars/thombashi/pingparsing.svg?style=social&label=Star
    :target: https://github.com/thombashi/pingparsing
-
-.. contents:: Table of Contents
-   :depth: 2
-
-Summary
----------
-pingparsing is a CLI-tool/Python-library for parsing ping command output.
 
 CLI Usage
 ====================
@@ -84,6 +84,48 @@ The parsed result output with JSON format.
         }
     }
 
+.. code-block:: console
+
+    $ pingparsing google.com -c 3 --icmp-reply
+    {
+        "google.com": {
+            "destination": "google.com",
+            "packet_transmit": 3,
+            "packet_receive": 3,
+            "packet_loss_count": 0,
+            "packet_loss_rate": 0.0,
+            "rtt_min": 136.097,
+            "rtt_avg": 140.476,
+            "rtt_max": 148.341,
+            "rtt_mdev": 5.589,
+            "packet_duplicate_count": 0,
+            "packet_duplicate_rate": 0.0,
+            "icmp_reply": [
+                {
+                    "timestamp": null,
+                    "icmp_seq": 1,
+                    "ttl": 39,
+                    "time": 148.0,
+                    "duplicate": false
+                },
+                {
+                    "timestamp": null,
+                    "icmp_seq": 2,
+                    "ttl": 39,
+                    "time": 136.0,
+                    "duplicate": false
+                },
+                {
+                    "timestamp": null,
+                    "icmp_seq": 3,
+                    "ttl": 39,
+                    "time": 136.0,
+                    "duplicate": false
+                }
+            ]
+        }
+    }
+
 
 Parse ping result file
 --------------------------------------------
@@ -141,6 +183,71 @@ Parse ping result file
             }
         }
 
+    .. code-block:: console
+
+        $ pingparsing ping.txt osx.txt --icmp-reply
+        {
+            "ping.txt": {
+                "destination": "google.com",
+                "packet_transmit": 60,
+                "packet_receive": 60,
+                "packet_loss_count": 0,
+                "packet_loss_rate": 0.0,
+                "rtt_min": 61.425,
+                "rtt_avg": 99.731,
+                "rtt_max": 212.597,
+                "rtt_mdev": 27.566,
+                "packet_duplicate_count": 0,
+                "packet_duplicate_rate": 0.0,
+                "icmp_reply": []
+            },
+            "osx.txt": {
+                "destination": "google.com",
+                "packet_transmit": 5,
+                "packet_receive": 5,
+                "packet_loss_count": 0,
+                "packet_loss_rate": 0.0,
+                "rtt_min": 20.482,
+                "rtt_avg": 31.927,
+                "rtt_max": 46.093,
+                "rtt_mdev": 8.292,
+                "packet_duplicate_count": 0,
+                "packet_duplicate_rate": 0.0,
+                "icmp_reply": [
+                    {
+                        "icmp_seq": 0,
+                        "ttl": 53,
+                        "time": 20.482,
+                        "duplicate": false
+                    },
+                    {
+                        "icmp_seq": 1,
+                        "ttl": 53,
+                        "time": 32.55,
+                        "duplicate": false
+                    },
+                    {
+                        "icmp_seq": 2,
+                        "ttl": 53,
+                        "time": 32.013,
+                        "duplicate": false
+                    },
+                    {
+                        "icmp_seq": 3,
+                        "ttl": 53,
+                        "time": 28.498,
+                        "duplicate": false
+                    },
+                    {
+                        "icmp_seq": 4,
+                        "ttl": 53,
+                        "time": 46.093,
+                        "duplicate": false
+                    }
+                ]
+            }
+        }
+
 
 Parse from the standard input
 --------------------------------------------
@@ -180,8 +287,8 @@ ping output as a string.
         transmitter.destination_host = "google.com"
         transmitter.count = 10
         result = transmitter.ping()
-        ping_parser.parse(result)
-        print(json.dumps(ping_parser.as_dict(), indent=4))
+
+        print(json.dumps(ping_parser.parse(result).as_dict(), indent=4))
 
 :Output:
     .. code-block:: json
@@ -210,13 +317,13 @@ Parsing ``ping`` command output
         import pingparsing
 
         parser = pingparsing.PingParsing()
-        parser.parse("""PING google.com (216.58.196.238) 56(84) bytes of data.
+        stats = parser.parse("""PING google.com (216.58.196.238) 56(84) bytes of data.
 
         --- google.com ping statistics ---
         60 packets transmitted, 60 received, 0% packet loss, time 59153ms
         rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
         """)
-        print(json.dumps(parser.as_dict(), indent=4))
+        print(json.dumps(stats.as_dict(), indent=4))
 
 :Output:
     .. code-block:: json
@@ -272,6 +379,7 @@ Dependencies
 Python 2.7+ or 3.4+
 
 - `logbook <http://logbook.readthedocs.io/en/stable/>`__
+- `msgfy <https://github.com/thombashi/msgfy>`__
 - `pyparsing <https://pyparsing.wikispaces.com/>`__
 - `six <https://pypi.python.org/pypi/six/>`__
 - `typepy <https://github.com/thombashi/typepy>`__
