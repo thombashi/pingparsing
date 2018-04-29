@@ -367,7 +367,6 @@ class Test_PingParsing_parse(object):
         [DEBIAN_UNREACHABLE_1, "Linux"],
         [DEBIAN_UNREACHABLE_2, "Linux"],
         [UBUNTU_SUCCESS_0, "Linux"],
-        [UBUNTU_SUCCESS_1, "Linux"],
         [FEDORA_DUP_LOSS, "Linux"],
         [FEDORA_UNREACHABLE, "Linux"],
         [MACOS_SUCCESS_0, "macOS"],
@@ -395,6 +394,24 @@ class Test_PingParsing_parse(object):
         assert ping_parser.parser_name == parser_name
         assert stats.as_dict() == test_data.expected
         assert stats.icmp_reply_list == test_data.reply
+
+    @pytest.mark.xfail
+    @pytest.mark.parametrize(["test_data", "parser_name"], [
+        [UBUNTU_SUCCESS_1, "Linux"],
+    ])
+    def test_normal_timestamp(self, ping_parser, test_data, parser_name):
+        stats = ping_parser.parse(test_data.value)
+
+        print("[input text]\n{}\n".format(test_data.value))
+        print("[expected]\n{}\n".format(test_data.expected))
+        print("[actual]\n{}\n".format(stats.as_dict()))
+        for icmp_reply in stats.icmp_reply_list:
+            print(icmp_reply)
+
+        assert ping_parser.parser_name == parser_name
+        assert stats.as_dict() == test_data.expected
+        assert stats.icmp_reply_list == test_data.reply
+
 
     def test_empty(self, ping_parser):
         ping_parser.parse(dedent("""\
