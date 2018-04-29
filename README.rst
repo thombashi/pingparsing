@@ -404,6 +404,7 @@ Python 2.7+ or 3.4+
 - `msgfy <https://github.com/thombashi/msgfy>`__
 - `pyparsing <https://pyparsing.wikispaces.com/>`__
 - `six <https://pypi.python.org/pypi/six/>`__
+- `subprocrunner <https://github.com/thombashi/subprocrunner>`__
 - `typepy <https://github.com/thombashi/typepy>`__
 
 Test dependencies
