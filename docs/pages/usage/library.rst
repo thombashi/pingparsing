@@ -17,8 +17,8 @@ ping output as a string.
         transmitter.destination_host = "google.com"
         transmitter.count = 10
         result = transmitter.ping()
-        ping_parser.parse(result)
-        print(json.dumps(ping_parser.as_dict(), indent=4))
+
+        print(json.dumps(ping_parser.parse(result).as_dict(), indent=4))
 
 :Output:
     .. code-block:: json
@@ -47,13 +47,13 @@ Parsing ``ping`` command output
         import pingparsing
 
         parser = pingparsing.PingParsing()
-        parser.parse("""PING google.com (216.58.196.238) 56(84) bytes of data.
+        stats = parser.parse("""PING google.com (216.58.196.238) 56(84) bytes of data.
 
         --- google.com ping statistics ---
         60 packets transmitted, 60 received, 0% packet loss, time 59153ms
         rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
         """)
-        print(json.dumps(parser.as_dict(), indent=4))
+        print(json.dumps(stats.as_dict(), indent=4))
 
 :Output:
     .. code-block:: json

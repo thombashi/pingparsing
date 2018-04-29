@@ -1,5 +1,5 @@
 Premise
 =======
-``pingparsing`` expects the locale at the ping command execution environment with English. 
+``pingparsing`` expects the locale at the ping command execution environment with English.
 Parsing the ``ping`` command output with any other locale may fail.
 This is because the output of the ``ping`` command will change depending on the locale setting.

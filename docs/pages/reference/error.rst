@@ -1,8 +1,12 @@
 Errors
 ----------------------------
 
-.. autoexception:: pingparsing.PingStatisticsHeaderNotFoundError
+.. autoexception:: pingparsing.ParseError
     :show-inheritance:
 
-.. autoexception:: pingparsing.EmptyPingStatisticsError
+.. autoclass:: pingparsing.error.ParseErrorReason
     :show-inheritance:
+
+    .. py:attribute:: HEADER_NOT_FOUND
+
+    .. py:attribute:: EMPTY_STATISTICS
