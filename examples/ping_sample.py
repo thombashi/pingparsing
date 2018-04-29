@@ -19,8 +19,8 @@ def main():
     transmitter.destination_host = "google.com"
     transmitter.count = 10
     result = transmitter.ping()
-    ping_parser.parse(result)
-    print(json.dumps(ping_parser.as_dict(), indent=4))
+
+    print(json.dumps(ping_parser.parse(result).as_dict(), indent=4))
 
     return result.returncode
 
