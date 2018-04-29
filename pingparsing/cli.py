@@ -15,6 +15,7 @@ import sys
 
 import logbook
 import pingparsing
+from subprocrunner import CommandError
 
 
 DEFAULT_COUNT = 10
@@ -105,7 +106,13 @@ def parse_ping(logger, dest_or_file, interface, count, deadline, is_parse_icmp_r
         transmitter.count = count
         transmitter.deadline = deadline
         transmitter.is_quiet = not is_parse_icmp_reply
-        result = transmitter.ping()
+
+        try:
+            result = transmitter.ping()
+        except CommandError as e:
+            logger.error(e)
+            sys.exit(e.errno)
+
         ping_result_text = result.stdout
         if result.returncode != 0:
             logger.error(result.stderr)
