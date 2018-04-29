@@ -314,33 +314,55 @@ Parsing ``ping`` command output
     .. code-block:: python
 
         import json
+        from textwrap import dedent
         import pingparsing
 
         parser = pingparsing.PingParsing()
-        stats = parser.parse("""PING google.com (216.58.196.238) 56(84) bytes of data.
+        stats = parser.parse(dedent("""\
+            PING google.com (74.125.24.100) 56(84) bytes of data.
+            [1524930937.003555] 64 bytes from 74.125.24.100: icmp_seq=1 ttl=39 time=148 ms
+            [1524930937.787175] 64 bytes from 74.125.24.100: icmp_seq=2 ttl=39 time=137 ms
+            [1524930938.787642] 64 bytes from 74.125.24.100: icmp_seq=3 ttl=39 time=137 ms
+            [1524930939.787653] 64 bytes from 74.125.24.100: icmp_seq=4 ttl=39 time=136 ms
+            [1524930940.788365] 64 bytes from 74.125.24.100: icmp_seq=5 ttl=39 time=136 ms
 
-        --- google.com ping statistics ---
-        60 packets transmitted, 60 received, 0% packet loss, time 59153ms
-        rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
-        """)
+            --- google.com ping statistics ---
+            5 packets transmitted, 5 received, 0% packet loss, time 4001ms
+            rtt min/avg/max/mdev = 136.537/139.174/148.006/4.425 ms
+            """))
+
+        print("[ping statistics]")
         print(json.dumps(stats.as_dict(), indent=4))
 
-:Output:
-    .. code-block:: json
+        print("\n[icmp reply]")
+        for icmp_reply in stats.icmp_reply_list:
+            print(icmp_reply)
 
+:Output:
+    ::
+
+        [ping statistics]
         {
             "destination": "google.com",
-            "packet_transmit": 60,
-            "packet_receive": 60,
-            "packet_loss_rate": 0.0,
+            "packet_transmit": 5,
+            "packet_receive": 5,
             "packet_loss_count": 0,
-            "rtt_min": 61.425,
-            "rtt_avg": 99.731,
-            "rtt_max": 212.597,
-            "rtt_mdev": 27.566,
-            "packet_duplicate_rate": 0.0,
-            "packet_duplicate_count": 0
+            "packet_loss_rate": 0.0,
+            "rtt_min": 136.537,
+            "rtt_avg": 139.174,
+            "rtt_max": 148.006,
+            "rtt_mdev": 4.425,
+            "packet_duplicate_count": 0,
+            "packet_duplicate_rate": 0.0
         }
+
+        [icmp reply]
+        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 1, 'ttl': 39, 'time': 148.0, 'duplicate': False}
+        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 2, 'ttl': 39, 'time': 137.0, 'duplicate': False}
+        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 38), 'icmp_seq': 3, 'ttl': 39, 'time': 137.0, 'duplicate': False}
+        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 39), 'icmp_seq': 4, 'ttl': 39, 'time': 136.0, 'duplicate': False}
+        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 40), 'icmp_seq': 5, 'ttl': 39, 'time': 136.0, 'duplicate': False}
+
 
 Recommended ping command execution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
