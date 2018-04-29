@@ -18,6 +18,8 @@ class PingStats(object):
         self.__rtt_mdev = kwargs.pop("rtt_mdev", None)
         self.__duplicates = kwargs.pop("duplicates", None)
 
+        self.__icmp_reply_list = kwargs.pop("icmp_reply_list", [])
+
     @property
     def destination(self):
         """
@@ -135,6 +137,15 @@ class PingStats(object):
             return (self.packet_duplicate_count / self.packet_receive) * 100
         except (TypeError, ZeroDivisionError, OverflowError):
             return None
+
+    @property
+    def icmp_reply_list(self):
+        """
+        :return: List of ICMP packet reply information.
+        :rtype: list of dict
+        """
+
+        return self.__icmp_reply_list
 
     def as_dict(self):
         """

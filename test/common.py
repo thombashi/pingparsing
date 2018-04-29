@@ -17,4 +17,4 @@ def ping_parser():
     return PingParsing()
 
 
-PingTestData = namedtuple("PingTestData", "value expected")
+PingTestData = namedtuple("PingTestData", "value expected reply")

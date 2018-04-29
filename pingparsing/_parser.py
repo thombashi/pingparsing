@@ -7,10 +7,12 @@
 from __future__ import absolute_import, division
 
 import abc
+from datetime import datetime
 import re
 
 import pyparsing as pp
 import typepy
+from typepy import Integer
 
 from ._common import _to_unicode
 from ._interface import PingParserInterface
@@ -21,9 +23,22 @@ from .error import ParseError, ParseErrorReason
 
 class PingParser(PingParserInterface):
 
+    _IPADDR_PATTERN = "(\d{1,3}\.){3}\d{1,3}"
+    _ICMP_SEQ_PATTERN = "icmp_seq=(?P<icmp_seq>\d+)"
+    _TTL_PATTERN = "ttl=(?P<ttl>\d+)"
+    _TIME_PATTERN = "time=(?P<time>[0-9\.]+)"
+
     @abc.abstractproperty
     def _parser_name(self):  # pragma: no cover
         pass
+
+    @abc.abstractproperty
+    def _icmp_reply_pattern(self):  # pragma: no cover
+        pass
+
+    @property
+    def _duplicate_packet_pattern(self):
+        return ".+ \(DUP!\)$"
 
     @abc.abstractproperty
     def _stats_headline_pattern(self):  # pragma: no cover
@@ -32,6 +47,40 @@ class PingParser(PingParserInterface):
     @abc.abstractproperty
     def _is_support_packet_duplicate(self):  # pragma: no cover
         pass
+
+    def _parse_icmp_reply(self, ping_line_list):
+        icmp_reply_regexp = re.compile(self._icmp_reply_pattern, re.IGNORECASE)
+        duplicate_packet_regexp = re.compile(self._duplicate_packet_pattern)
+        icmp_reply_list = []
+
+        for line in ping_line_list:
+            match = icmp_reply_regexp.search(line)
+            if not match:
+                continue
+
+            reply = match.groupdict()
+
+            if reply.get("timestamp"):
+                reply["timestamp"] = datetime.fromtimestamp(
+                    Integer(reply["timestamp"].lstrip("[").rstrip("]")).force_convert())
+
+            if reply.get("icmp_seq"):
+                reply["icmp_seq"] = int(reply["icmp_seq"])
+
+            if reply.get("ttl"):
+                reply["ttl"] = int(reply["ttl"])
+
+            if reply.get("time"):
+                reply["time"] = float(reply["time"])
+
+            if duplicate_packet_regexp.search(line):
+                reply["duplicate"] = True
+            else:
+                reply["duplicate"] = False
+
+            icmp_reply_list.append(reply)
+
+        return icmp_reply_list
 
     def _preprocess_parse_stats(self, line_list):
         logger.debug("parsing as {:s} ping result format".format(self._parser_name))
@@ -85,6 +134,10 @@ class NullPingParser(PingParser):
         return "null"
 
     @property
+    def _icmp_reply_pattern(self):
+        return ""
+
+    @property
     def _stats_headline_pattern(self):
         return ""
 
@@ -106,6 +159,12 @@ class LinuxPingParser(PingParser):
         return "Linux"
 
     @property
+    def _icmp_reply_pattern(self):
+        return (
+            "(?P<timestamp>\[[0-9\.]+\])?\s?.+ from " + self._IPADDR_PATTERN + ".*" +
+            self._ICMP_SEQ_PATTERN + " " + self._TTL_PATTERN + " " + self._TIME_PATTERN)
+
+    @property
     def _stats_headline_pattern(self):
         return "--- .* ping statistics ---"
 
@@ -114,6 +173,7 @@ class LinuxPingParser(PingParser):
         return True
 
     def parse(self, ping_message):
+        icmp_reply_list = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
@@ -138,7 +198,8 @@ class LinuxPingParser(PingParser):
         if not is_valid_data or typepy.is_null_string(rtt_line):
             return PingStats(
                 destination=destination, packet_transmit=packet_transmit,
-                packet_receive=packet_receive, duplicates=duplicates)
+                packet_receive=packet_receive, duplicates=duplicates,
+                icmp_reply_list=icmp_reply_list)
 
         rtt_pattern = (
             pp.Literal("rtt min/avg/max/mdev =") +
@@ -153,7 +214,8 @@ class LinuxPingParser(PingParser):
             destination=destination, packet_transmit=packet_transmit,
             packet_receive=packet_receive, duplicates=duplicates,
             rtt_min=float(parse_list[1]), rtt_avg=float(parse_list[3]),
-            rtt_max=float(parse_list[5]), rtt_mdev=float(parse_list[7]))
+            rtt_max=float(parse_list[5]), rtt_mdev=float(parse_list[7]),
+            icmp_reply_list=icmp_reply_list)
 
 
 class WindowsPingParser(PingParser):
@@ -161,6 +223,12 @@ class WindowsPingParser(PingParser):
     @property
     def _parser_name(self):
         return "Windows"
+
+    @property
+    def _icmp_reply_pattern(self):
+        return (
+            " from " + self._IPADDR_PATTERN + ".*" +
+            self._TTL_PATTERN + " " + self._TIME_PATTERN)
 
     @property
     def _stats_headline_pattern(self):
@@ -171,6 +239,7 @@ class WindowsPingParser(PingParser):
         return False
 
     def parse(self, ping_message):
+        icmp_reply_list = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
@@ -195,7 +264,8 @@ class WindowsPingParser(PingParser):
         if not is_valid_data or typepy.is_null_string(rtt_line):
             return PingStats(
                 destination=destination, packet_transmit=packet_transmit,
-                packet_receive=packet_receive, duplicates=duplicates)
+                packet_receive=packet_receive, duplicates=duplicates,
+                icmp_reply_list=icmp_reply_list)
 
         rtt_pattern = (
             pp.Literal("Minimum = ") +
@@ -210,7 +280,8 @@ class WindowsPingParser(PingParser):
             destination=destination, packet_transmit=packet_transmit,
             packet_receive=packet_receive, duplicates=duplicates,
             rtt_min=float(parse_list[1]), rtt_avg=float(parse_list[5]),
-            rtt_max=float(parse_list[3]))
+            rtt_max=float(parse_list[3]),
+            icmp_reply_list=icmp_reply_list)
 
     def _parse_destination(self, stats_headline):
         return stats_headline.lstrip("Ping statistics for ").rstrip(":")
@@ -223,6 +294,12 @@ class MacOsPingParser(PingParser):
         return "macOS"
 
     @property
+    def _icmp_reply_pattern(self):
+        return (
+            " from " + self._IPADDR_PATTERN + ".*" +
+            self._ICMP_SEQ_PATTERN + " " + self._TTL_PATTERN + " " + self._TIME_PATTERN)
+
+    @property
     def _stats_headline_pattern(self):
         return "--- .* ping statistics ---"
 
@@ -231,6 +308,7 @@ class MacOsPingParser(PingParser):
         return True
 
     def parse(self, ping_message):
+        icmp_reply_list = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
@@ -255,7 +333,8 @@ class MacOsPingParser(PingParser):
         if not is_valid_data or typepy.is_null_string(rtt_line):
             return PingStats(
                 destination=destination, packet_transmit=packet_transmit,
-                packet_receive=packet_receive, duplicates=duplicates)
+                packet_receive=packet_receive, duplicates=duplicates,
+                icmp_reply_list=icmp_reply_list)
 
         rtt_pattern = (
             pp.Literal("round-trip min/avg/max/stddev =") +
@@ -270,7 +349,8 @@ class MacOsPingParser(PingParser):
             destination=destination, packet_transmit=packet_transmit,
             packet_receive=packet_receive, duplicates=duplicates,
             rtt_min=float(parse_list[1]), rtt_avg=float(parse_list[3]),
-            rtt_max=float(parse_list[5]), rtt_mdev=float(parse_list[7]))
+            rtt_max=float(parse_list[5]), rtt_mdev=float(parse_list[7]),
+            icmp_reply_list=icmp_reply_list)
 
 
 class AlpineLinuxPingParser(LinuxPingParser):
@@ -280,10 +360,17 @@ class AlpineLinuxPingParser(LinuxPingParser):
         return "AlpineLinux"
 
     @property
+    def _icmp_reply_pattern(self):
+        return (
+            " from " + self._IPADDR_PATTERN + ".*" +
+            "seq=(?P<icmp_seq>\d+) " + self._TTL_PATTERN + " " + self._TIME_PATTERN)
+
+    @property
     def _is_support_packet_duplicate(self):
         return True
 
     def parse(self, ping_message):
+        icmp_reply_list = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             line_list=ping_message)
         packet_pattern = (
@@ -308,7 +395,8 @@ class AlpineLinuxPingParser(LinuxPingParser):
         if not is_valid_data or typepy.is_null_string(rtt_line):
             return PingStats(
                 destination=destination, packet_transmit=packet_transmit,
-                packet_receive=packet_receive, duplicates=duplicates)
+                packet_receive=packet_receive, duplicates=duplicates,
+                icmp_reply_list=icmp_reply_list)
 
         rtt_pattern = (
             pp.Literal("round-trip min/avg/max =") +
@@ -322,7 +410,8 @@ class AlpineLinuxPingParser(LinuxPingParser):
             destination=destination, packet_transmit=packet_transmit,
             packet_receive=packet_receive, duplicates=duplicates,
             rtt_min=float(parse_list[1]), rtt_avg=float(parse_list[3]),
-            rtt_max=float(parse_list[5]))
+            rtt_max=float(parse_list[5]),
+            icmp_reply_list=icmp_reply_list)
 
     def _parse_duplicate(self, line):
         packet_pattern = (

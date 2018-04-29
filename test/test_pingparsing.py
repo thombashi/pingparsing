@@ -13,7 +13,7 @@ import six
 from pingparsing import ParseError
 
 from .common import PingTestData, ping_parser
-from .data import DEBIAN_SUCCESS_0, WINDOWS7SP1_SUCCESS
+from .data import DEBIAN_SUCCESS_0, UBUNTU_SUCCESS_0, UBUNTU_SUCCESS_1, WINDOWS7SP1_SUCCESS
 
 
 PING_FEDORA_EMPTY_BODY = six.b("""\
@@ -50,11 +50,12 @@ DEBIAN_UNREACHABLE_0 = PingTestData(
         "rtt_avg": None,
         "rtt_max": None,
         "rtt_mdev": None,
-    })
+    },
+    [])
 DEBIAN_UNREACHABLE_1 = PingTestData(
-    DEBIAN_UNREACHABLE_0.value + "\n", DEBIAN_UNREACHABLE_0.expected)
+    DEBIAN_UNREACHABLE_0.value + "\n", DEBIAN_UNREACHABLE_0.expected, [])
 DEBIAN_UNREACHABLE_2 = PingTestData(
-    DEBIAN_UNREACHABLE_1.value + "\n", DEBIAN_UNREACHABLE_0.expected)
+    DEBIAN_UNREACHABLE_1.value + "\n", DEBIAN_UNREACHABLE_0.expected, [])
 
 FEDORA_DUP_LOSS = PingTestData(
     dedent("""\
@@ -76,7 +77,8 @@ FEDORA_DUP_LOSS = PingTestData(
         "rtt_max": 11.699,
         "rtt_mdev": 0.699,
         "rtt_avg": 0.642,
-    })
+    },
+    [])
 FEDORA_UNREACHABLE = PingTestData(
     dedent("""\
     PING 192.168.207.100 (192.168.207.100) 56(84) bytes of data.
@@ -101,7 +103,8 @@ FEDORA_UNREACHABLE = PingTestData(
         "rtt_avg": None,
         "rtt_max": None,
         "rtt_mdev": None,
-    })
+    },
+    [])
 
 MACOS_SUCCESS_0 = PingTestData(
     dedent("""\
@@ -128,7 +131,14 @@ MACOS_SUCCESS_0 = PingTestData(
         "rtt_avg": 31.927,
         "rtt_max": 46.093,
         "rtt_mdev": 8.292,
-    })
+    },
+    [
+        {'icmp_seq': 0, 'ttl': 53, 'time': 20.482, 'duplicate': False},
+        {'icmp_seq': 1, 'ttl': 53, 'time': 32.55, 'duplicate': False},
+        {'icmp_seq': 2, 'ttl': 53, 'time': 32.013, 'duplicate': False},
+        {'icmp_seq': 3, 'ttl': 53, 'time': 28.498, 'duplicate': False},
+        {'icmp_seq': 4, 'ttl': 53, 'time': 46.093, 'duplicate': False},
+    ])
 MACOS_SUCCESS_1 = PingTestData(
     dedent("""\
     PING github.com (192.30.255.113): 56 data bytes
@@ -149,7 +159,8 @@ MACOS_SUCCESS_1 = PingTestData(
         "rtt_avg": 283.477,
         "rtt_max": 405.879,
         "rtt_mdev": 70.170,
-    })
+    },
+    [])
 MACOS_UNREACHABLE_0 = PingTestData(
     dedent("""\
     PING twitter.com (59.24.3.173): 56 data bytes
@@ -169,7 +180,8 @@ MACOS_UNREACHABLE_0 = PingTestData(
         "rtt_mdev": None,
         "packet_duplicate_rate": None,
         "packet_duplicate_count": 0,
-    })
+    },
+    [])
 MACOS_UNREACHABLE_1 = PingTestData(
     dedent("""\
     PING twitter.com (31.13.78.66): 56 data bytes
@@ -189,7 +201,8 @@ MACOS_UNREACHABLE_1 = PingTestData(
         "rtt_avg": None,
         "rtt_max": None,
         "rtt_mdev": None,
-    })
+    },
+    [])
 MACOS_DUPLICATE_0 = PingTestData(
     dedent("""\
     PING duplicate.com (31.13.78.66): 56 data bytes
@@ -211,7 +224,8 @@ MACOS_DUPLICATE_0 = PingTestData(
         "rtt_avg": None,
         "rtt_max": None,
         "rtt_mdev": None,
-    })
+    },
+    [])
 
 ALPINE_LINUX_SUCCESS = PingTestData(
     dedent("""\
@@ -233,7 +247,8 @@ ALPINE_LINUX_SUCCESS = PingTestData(
         "rtt_avg": 0.683,
         "rtt_max": 0.746,
         "rtt_mdev": None,
-    })
+    },
+    [])
 ALPINE_LINUX_DUP_LOSS = PingTestData(
     dedent("""\
     PING 192.168.2.106 (192.168.2.106): 56 data bytes
@@ -265,7 +280,20 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
         "rtt_avg": 0.93,
         "rtt_max": 1.219,
         "rtt_mdev": None,
-    })
+    },
+    [
+        {'icmp_seq': 0, 'ttl': 64, 'time': 0.936, 'duplicate': False},
+        {'icmp_seq': 0, 'ttl': 64, 'time': 1.003, 'duplicate': True},
+        {'icmp_seq': 1, 'ttl': 64, 'time': 0.802, 'duplicate': False},
+        {'icmp_seq': 2, 'ttl': 64, 'time': 0.696, 'duplicate': False},
+        {'icmp_seq': 3, 'ttl': 64, 'time': 0.664, 'duplicate': False},
+        {'icmp_seq': 4, 'ttl': 64, 'time': 1.194, 'duplicate': False},
+        {'icmp_seq': 5, 'ttl': 64, 'time': 0.613, 'duplicate': False},
+        {'icmp_seq': 6, 'ttl': 64, 'time': 0.898, 'duplicate': False},
+        {'icmp_seq': 8, 'ttl': 64, 'time': 1.066, 'duplicate': False},
+        {'icmp_seq': 9, 'ttl': 64, 'time': 1.144, 'duplicate': False},
+        {'icmp_seq': 9, 'ttl': 64, 'time': 1.219, 'duplicate': True},
+    ])
 
 WINDOWS10_LOSS = PingTestData(
     dedent("""\
@@ -298,7 +326,8 @@ WINDOWS10_LOSS = PingTestData(
         "rtt_avg": 14.0,
         "rtt_max": 33.0,
         "rtt_mdev": None,
-    })
+    },
+    [])
 WINDOWS_UNREACHABLE_0 = PingTestData(
     dedent("""\
     Pinging 192.168.207.100 with 32 bytes of data:
@@ -322,11 +351,12 @@ WINDOWS_UNREACHABLE_0 = PingTestData(
         "rtt_avg": None,
         "rtt_max": None,
         "rtt_mdev": None,
-    })
+    },
+    [])
 WINDOWS_UNREACHABLE_1 = PingTestData(
-    WINDOWS_UNREACHABLE_0.value + "\n", WINDOWS_UNREACHABLE_0.expected)
+    WINDOWS_UNREACHABLE_0.value + "\n", WINDOWS_UNREACHABLE_0.expected, [])
 WINDOWS_UNREACHABLE_2 = PingTestData(
-    WINDOWS_UNREACHABLE_1.value + "\n", WINDOWS_UNREACHABLE_0.expected)
+    WINDOWS_UNREACHABLE_1.value + "\n", WINDOWS_UNREACHABLE_0.expected, [])
 
 
 class Test_PingParsing_parse(object):
@@ -336,6 +366,8 @@ class Test_PingParsing_parse(object):
         [DEBIAN_UNREACHABLE_0, "Linux"],
         [DEBIAN_UNREACHABLE_1, "Linux"],
         [DEBIAN_UNREACHABLE_2, "Linux"],
+        [UBUNTU_SUCCESS_0, "Linux"],
+        [UBUNTU_SUCCESS_1, "Linux"],
         [FEDORA_DUP_LOSS, "Linux"],
         [FEDORA_UNREACHABLE, "Linux"],
         [MACOS_SUCCESS_0, "macOS"],
@@ -354,12 +386,15 @@ class Test_PingParsing_parse(object):
     def test_normal_text(self, ping_parser, test_data, parser_name):
         stats = ping_parser.parse(test_data.value)
 
-        print("[input text]\n{}".format(test_data.value))
-        print("[expected]\n{}".format(test_data.expected))
-        print("[actual]\n{}".format(stats.as_dict()))
+        print("[input text]\n{}\n".format(test_data.value))
+        print("[expected]\n{}\n".format(test_data.expected))
+        print("[actual]\n{}\n".format(stats.as_dict()))
+        for icmp_reply in stats.icmp_reply_list:
+            print(icmp_reply)
 
         assert ping_parser.parser_name == parser_name
         assert stats.as_dict() == test_data.expected
+        assert stats.icmp_reply_list == test_data.reply
 
     def test_empty(self, ping_parser):
         ping_parser.parse(dedent("""\
@@ -382,6 +417,7 @@ class Test_PingParsing_parse(object):
         assert stats.rtt_avg is None
         assert stats.rtt_max is None
         assert stats.rtt_mdev is None
+        assert stats.icmp_reply_list == []
 
     @pytest.mark.parametrize(["value", "expected"], [
         [PING_FEDORA_EMPTY_BODY, ParseError],
@@ -408,3 +444,4 @@ class Test_PingParsing_as_tuple(object):
         assert result.rtt_avg == 99.731
         assert result.rtt_max == 212.597
         assert result.rtt_mdev == 27.566
+        assert stats.icmp_reply_list == []
