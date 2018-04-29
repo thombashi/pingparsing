@@ -7,6 +7,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import logbook
+import subprocrunner
 
 
 LOG_FORMAT_STRING = "[{record.level_name}] {record.channel}: {record.message}"
@@ -22,6 +23,7 @@ def set_logger(is_enable):
     else:
         logger.disable()
 
+    subprocrunner.set_logger(is_enable)
 
 def set_log_level(log_level):
     """
@@ -44,3 +46,5 @@ def set_log_level(log_level):
         set_logger(is_enable=True)
 
     logger.level = log_level
+    subprocrunner.set_log_level(log_level)
+    

@@ -13,6 +13,7 @@ from collections import namedtuple
 
 import msgfy
 import six
+import subprocrunner
 import typepy
 from typepy import Integer
 
@@ -111,19 +112,12 @@ class PingTransmitter(object):
         :raises ValueError: If parameters not valid.
         """
 
-        import subprocess
-
         self.__validate_ping_param()
 
-        command = self.__get_ping_command()
+        ping_proc = subprocrunner.SubprocessRunner(self.__get_ping_command())
+        ping_proc.run()
 
-        logger.debug(command)
-
-        ping_proc = subprocess.Popen(
-            command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = ping_proc.communicate()
-
-        return PingResult(stdout, stderr, ping_proc.returncode)
+        return PingResult(ping_proc.stdout, ping_proc.stderr, ping_proc.returncode)
 
     @staticmethod
     def __is_linux():
