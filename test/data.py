@@ -7,11 +7,12 @@
 from __future__ import absolute_import
 
 from datetime import datetime
-
-import six
 from textwrap import dedent
 
+import six
+
 from .common import PingTestData
+
 
 # ping google.com -q -c 60:
 #   - Debian 8.2 w/ iputils-ping 20121221-5+b2

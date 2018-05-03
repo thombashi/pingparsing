@@ -7,8 +7,8 @@
 from __future__ import absolute_import, division
 
 import abc
-from datetime import datetime
 import re
+from datetime import datetime
 
 import pyparsing as pp
 import typepy
