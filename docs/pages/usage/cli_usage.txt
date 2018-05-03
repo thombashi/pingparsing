@@ -237,17 +237,17 @@ Parse from the standard input
 --------------------------------------------
 .. code-block:: console
 
-    $ ping -f -w 10 192.168.2.100 | pingparsing
+    $ ping -i 0.2 -w 20 192.168.2.101 | pingparsing
     {
-        "destination": "192.168.2.100",
-        "packet_transmit": 1302,
-        "packet_receive": 1156,
-        "packet_loss_rate": 11.213517665130567,
-        "packet_loss_count": 146,
-        "rtt_min": 0.142,
-        "rtt_avg": 44.569,
-        "rtt_max": 314.637,
-        "rtt_mdev": 60.714,
-        "packet_duplicate_rate": 5.190311418685121,
-        "packet_duplicate_count": 60
+        "destination": "192.168.2.101",
+        "packet_transmit": 99,
+        "packet_receive": 88,
+        "packet_loss_count": 11,
+        "packet_loss_rate": 11.11111111111111,
+        "rtt_min": 1.615,
+        "rtt_avg": 26.581,
+        "rtt_max": 93.989,
+        "rtt_mdev": 19.886,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": 0.0
     }
