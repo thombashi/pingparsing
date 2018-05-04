@@ -412,7 +412,6 @@ class Test_PingParsing_parse(object):
         assert stats.as_dict() == test_data.expected
         assert stats.icmp_reply_list == test_data.reply
 
-
     def test_empty(self, ping_parser):
         ping_parser.parse(dedent("""\
             PING google.com (216.58.196.238) 56(84) bytes of data.

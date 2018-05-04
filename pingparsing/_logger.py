@@ -25,6 +25,7 @@ def set_logger(is_enable):
 
     subprocrunner.set_logger(is_enable)
 
+
 def set_log_level(log_level):
     """
     Set logging level of this module. The module using
@@ -47,4 +48,3 @@ def set_log_level(log_level):
 
     logger.level = log_level
     subprocrunner.set_log_level(log_level)
-    
