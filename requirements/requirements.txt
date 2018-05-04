@@ -6,4 +6,4 @@ msgfy>=0.0.2
 pyparsing>=2.2.0
 six
 subprocrunner>=0.13.0
-typepy>=0.0.27
+typepy>=0.1.0
