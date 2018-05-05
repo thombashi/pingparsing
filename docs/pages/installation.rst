@@ -23,7 +23,7 @@ Test dependencies
 - `tox <https://pypi.python.org/pypi/tox>`__
 
 
-Tested Environment
+Tested environment
 ==================
 
 +--------------+-----------------------------------+
@@ -39,3 +39,8 @@ Tested Environment
 +--------------+-----------------------------------+
 | macOS 10.13  | ``-``                             |
 +--------------+-----------------------------------+
+
+
+Docker image
+==================
+`thombashi/pingparsing - Docker Hub <https://hub.docker.com/r/thombashi/pingparsing/>`__
