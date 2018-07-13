@@ -13,7 +13,7 @@ from subprocrunner import SubprocessRunner
 from .data import DEBIAN_SUCCESS_0, WINDOWS7SP1_SUCCESS
 
 
-@pytest.mark.xfail
+@pytest.mark.xfail(run=False)
 class Test_cli_file(object):
 
     def test_normal_single(self, tmpdir):
@@ -55,7 +55,7 @@ class Test_cli_file(object):
         assert parsed_result[tmp_ping_path_win] == WINDOWS7SP1_SUCCESS.expected
 
 
-@pytest.mark.xfail
+@pytest.mark.xfail(run=False)
 class Test_cli_pipe(object):
 
     def test_normal_single(self, tmpdir):
@@ -69,7 +69,7 @@ class Test_cli_pipe(object):
         assert json.loads(runner.stdout) == DEBIAN_SUCCESS_0.expected
 
 
-@pytest.mark.xfail
+@pytest.mark.xfail(run=False)
 class Test_PingParsing_ping(object):
 
     def test_normal_single(self):

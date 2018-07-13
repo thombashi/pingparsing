@@ -395,7 +395,7 @@ class Test_PingParsing_parse(object):
         assert stats.as_dict() == test_data.expected
         assert stats.icmp_reply_list == test_data.reply
 
-    @pytest.mark.xfail
+    @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["test_data", "parser_name"], [
         [UBUNTU_SUCCESS_1, "Linux"],
     ])

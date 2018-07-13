@@ -18,7 +18,7 @@ def transmitter():
 
 class Test_PingTransmitter_ping(object):
 
-    @pytest.mark.xfail
+    @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["host", "deadline"], [
         ["localhost", 1],
         ["127.0.0.1", 1],
@@ -32,7 +32,7 @@ class Test_PingTransmitter_ping(object):
         assert result.returncode == 0
         assert len(result.stdout) > 0
 
-    @pytest.mark.xfail
+    @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["host", "count", "deadline"], [
         ["localhost", 1, None],
         ["localhost", 1, 1000],
@@ -46,7 +46,7 @@ class Test_PingTransmitter_ping(object):
         assert result.returncode == 0
         assert len(result.stdout) > 0
 
-    @pytest.mark.xfail
+    @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["host", "count"], [
         ["localhost", 3],
     ])
