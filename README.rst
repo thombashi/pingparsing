@@ -10,7 +10,10 @@ pingparsing is a CLI-tool/Python-library for parsing ping command output.
 .. image:: https://badge.fury.io/py/pingparsing.svg
     :target: https://badge.fury.io/py/pingparsing
 
-.. image:: https://img.shields.io/travis/thombashi/pingparsing/master.svg?label=Linux
+.. image:: https://img.shields.io/pypi/pyversions/pingparsing.svg
+   :target: https://pypi.python.org/pypi/pingparsing
+
+.. image:: https://img.shields.io/travis/thombashi/pingparsing/master.svg?label=Linux/macOS
     :target: https://travis-ci.org/thombashi/pingparsing
 
 .. image:: https://img.shields.io/appveyor/ci/thombashi/pingparsing/master.svg?label=Windows
