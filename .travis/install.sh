@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     if ! type python3 > /dev/null 2>&1; then
