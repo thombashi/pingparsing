@@ -24,52 +24,68 @@ QUIET_LOG_LEVEL = logbook.NOTSET
 
 def parse_option():
     parser = argparse.ArgumentParser(
-        epilog="Issue tracker: https://github.com/thombashi/pingparsing/issues")
+        epilog="Issue tracker: https://github.com/thombashi/pingparsing/issues"
+    )
 
     if is_use_stdin():
-        parser.add_argument(
-            "destination_or_file", nargs="+",
-            help="")
+        parser.add_argument("destination_or_file", nargs="+", help="")
 
     parser.add_argument(
-        "--max-workers", type=int,
+        "--max-workers",
+        type=int,
         help="""a number of threads for when multiple destination/file
         specified. defaults to equals to two times number of cores.
-        """)
+        """,
+    )
     parser.add_argument(
-        "--indent", type=int, default=4,
+        "--indent",
+        type=int,
+        default=4,
         help="""JSON output will be pretty-printed with the indent level.
         (default= %(default)s)
-        """)
+        """,
+    )
     parser.add_argument(
-        "--icmp-reply", action="store_true", default=False,
-        help="print icmp packet replies.")
+        "--icmp-reply", action="store_true", default=False, help="print icmp packet replies."
+    )
 
     loglevel_dest = "log_level"
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
-        "--debug", dest=loglevel_dest, action="store_const",
-        const=logbook.DEBUG, default=logbook.INFO,
-        help="for debug print.")
+        "--debug",
+        dest=loglevel_dest,
+        action="store_const",
+        const=logbook.DEBUG,
+        default=logbook.INFO,
+        help="for debug print.",
+    )
     group.add_argument(
-        "--quiet", dest=loglevel_dest, action="store_const",
-        const=logbook.NOTSET, default=logbook.INFO,
-        help="suppress execution log messages.")
+        "--quiet",
+        dest=loglevel_dest,
+        action="store_const",
+        const=logbook.NOTSET,
+        default=logbook.INFO,
+        help="suppress execution log messages.",
+    )
 
     group = parser.add_argument_group("Ping Options")
     group.add_argument(
-        "-c", "--count", type=int,
+        "-c",
+        "--count",
+        type=int,
         help="""stop after sending the count.
         see also ping(8) [-c count] option description.
-        """)
+        """,
+    )
     group.add_argument(
-        "-w", "--deadline", type=float,
+        "-w",
+        "--deadline",
+        type=float,
         help="""timeout in seconds.
         see also ping(8) [-w deadline] option description.
-        """)
-    group.add_argument(
-        "-I", "--interface", dest="interface",
-        help="network interface")
+        """,
+    )
+    group.add_argument("-I", "--interface", dest="interface", help="network interface")
 
     return parser.parse_args()
 
@@ -77,16 +93,19 @@ def parse_option():
 def initialize_log_handler(log_level):
     debug_level_format_str = (
         "[{record.level_name}] {record.channel} {record.func_name} "
-        "({record.lineno}): {record.message}")
+        "({record.lineno}): {record.message}"
+    )
     if log_level == logbook.DEBUG:
         info_level_format_str = debug_level_format_str
     else:
         info_level_format_str = "[{record.level_name}] {record.channel}: {record.message}"
 
     logbook.StderrHandler(
-        level=logbook.DEBUG, format_string=debug_level_format_str).push_application()
+        level=logbook.DEBUG, format_string=debug_level_format_str
+    ).push_application()
     logbook.StderrHandler(
-        level=logbook.INFO, format_string=info_level_format_str).push_application()
+        level=logbook.INFO, format_string=info_level_format_str
+    ).push_application()
 
 
 def is_use_stdin():
@@ -149,20 +168,28 @@ def main():
 
         pingparsing.set_log_level(options.log_level)
 
-        max_workers = (multiprocessing.cpu_count() * 2
-                       if options.max_workers is None else options.max_workers)
+        max_workers = (
+            multiprocessing.cpu_count() * 2 if options.max_workers is None else options.max_workers
+        )
         count, deadline = get_ping_param(options)
-        logger.debug("max-workers={}, count={}, deadline={}".format(
-            max_workers, count, deadline))
+        logger.debug("max-workers={}, count={}, deadline={}".format(max_workers, count, deadline))
 
         try:
             with futures.ProcessPoolExecutor(max_workers) as executor:
                 future_list = []
                 for dest_or_file in options.destination_or_file:
                     logger.debug("start {}".format(dest_or_file))
-                    future_list.append(executor.submit(
-                        parse_ping, logger, dest_or_file, options.interface,
-                        count, deadline, options.icmp_reply))
+                    future_list.append(
+                        executor.submit(
+                            parse_ping,
+                            logger,
+                            dest_or_file,
+                            options.interface,
+                            count,
+                            deadline,
+                            options.icmp_reply,
+                        )
+                    )
 
                 for future in futures.as_completed(future_list):
                     key, ping_data = future.result()

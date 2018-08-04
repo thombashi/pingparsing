@@ -81,16 +81,16 @@ class PingTransmitter(object):
     @property
     def waittime(self):
         warnings.warn(
-            "waittime will be deleted in the future, use deadline instead.",
-            DeprecationWarning)
+            "waittime will be deleted in the future, use deadline instead.", DeprecationWarning
+        )
 
         return self.deadline
 
     @waittime.setter
     def waittime(self, value):
         warnings.warn(
-            "waittime will be deleted in the future, use deadline instead.",
-            DeprecationWarning)
+            "waittime will be deleted in the future, use deadline instead.", DeprecationWarning
+        )
 
         self.deadline = value
 
@@ -138,8 +138,9 @@ class PingTransmitter(object):
             logger.debug(msgfy.to_debug_message(e))
             return False
 
-        logger.debug("IP address: version={}, address={}".format(
-            network.version, self.destination_host))
+        logger.debug(
+            "IP address: version={}, address={}".format(network.version, self.destination_host)
+        )
 
         return network.version == 6
 
@@ -191,12 +192,14 @@ class PingTransmitter(object):
         if self.__is_windows() and self.auto_codepage:
             command_list.append("chcp 437 &")
 
-        command_list.extend([
-            self.__get_builtin_ping_command(),
-            self.__get_deadline_option(),
-            self.__get_count_option(),
-            self.__get_quiet_option(),
-        ])
+        command_list.extend(
+            [
+                self.__get_builtin_ping_command(),
+                self.__get_deadline_option(),
+                self.__get_count_option(),
+                self.__get_quiet_option(),
+            ]
+        )
 
         if self.__is_linux() and typepy.is_not_null_string(self.interface):
             command_list.append("-I {}".format(self.interface))

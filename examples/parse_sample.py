@@ -16,7 +16,9 @@ import pingparsing
 
 def main():
     parser = pingparsing.PingParsing()
-    stats = parser.parse(dedent("""\
+    stats = parser.parse(
+        dedent(
+            """\
         PING google.com (74.125.24.100) 56(84) bytes of data.
         [1524930937.003555] 64 bytes from 74.125.24.100: icmp_seq=1 ttl=39 time=148 ms
         [1524930937.787175] 64 bytes from 74.125.24.100: icmp_seq=2 ttl=39 time=137 ms
@@ -27,7 +29,9 @@ def main():
         --- google.com ping statistics ---
         5 packets transmitted, 5 received, 0% packet loss, time 4001ms
         rtt min/avg/max/mdev = 136.537/139.174/148.006/4.425 ms
-        """))
+        """
+        )
+    )
 
     print("[ping statistics]")
     print(json.dumps(stats.as_dict(), indent=4))

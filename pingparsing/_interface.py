@@ -13,7 +13,6 @@ import six
 
 @six.add_metaclass(abc.ABCMeta)
 class PingParserInterface(object):
-
     @abc.abstractmethod
     def parse(self, ping_message):  # pragma: no cover
         pass

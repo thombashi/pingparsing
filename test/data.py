@@ -16,17 +16,23 @@ from .common import PingTestData
 
 # ping google.com -q -c 60:
 #   - Debian 8.2 w/ iputils-ping 20121221-5+b2
-PING_DEBIAN_SUCCESS_0 = six.b(dedent("""\
+PING_DEBIAN_SUCCESS_0 = six.b(
+    dedent(
+        """\
     PING google.com (216.58.196.238) 56(84) bytes of data.
 
     --- google.com ping statistics ---
     60 packets transmitted, 60 received, 0% packet loss, time 59153ms
     rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
-    """))
+    """
+    )
+)
 
 # Ubuntu stretch
 #   $ ping -c 5 twitter.com
-PING_UBUNTU_SUCCESS_0 = six.b(dedent("""\
+PING_UBUNTU_SUCCESS_0 = six.b(
+    dedent(
+        """\
     PING twitter.com (104.244.42.65) 56(84) bytes of data.
     64 bytes from 104.244.42.65: icmp_seq=1 ttl=53 time=68.5 ms
     64 bytes from 104.244.42.65: icmp_seq=2 ttl=53 time=67.7 ms
@@ -37,10 +43,13 @@ PING_UBUNTU_SUCCESS_0 = six.b(dedent("""\
     --- twitter.com ping statistics ---
     5 packets transmitted, 5 received, 0% packet loss, time 4003ms
     rtt min/avg/max/mdev = 64.912/66.494/68.524/1.430 ms
-    """))
+    """
+    )
+)
 
 #   $ ping -c 5 google.com -D
-PING_UBUNTU_SUCCESS_1 = dedent("""\
+PING_UBUNTU_SUCCESS_1 = dedent(
+    """\
     PING google.com (74.125.24.100) 56(84) bytes of data.
     [1524930937.003555] 64 bytes from 74.125.24.100: icmp_seq=1 ttl=39 time=148 ms
     [1524930937.787175] 64 bytes from 74.125.24.100: icmp_seq=2 ttl=39 time=137 ms
@@ -51,7 +60,8 @@ PING_UBUNTU_SUCCESS_1 = dedent("""\
     --- google.com ping statistics ---
     5 packets transmitted, 5 received, 0% packet loss, time 4001ms
     rtt min/avg/max/mdev = 136.537/139.174/148.006/4.425 ms
-    """)
+    """
+)
 
 DEBIAN_SUCCESS_0 = PingTestData(
     PING_DEBIAN_SUCCESS_0,
@@ -68,7 +78,8 @@ DEBIAN_SUCCESS_0 = PingTestData(
         "rtt_max": 212.597,
         "rtt_mdev": 27.566,
     },
-    [])
+    [],
+)
 UBUNTU_SUCCESS_0 = PingTestData(
     PING_UBUNTU_SUCCESS_0,
     {
@@ -85,12 +96,13 @@ UBUNTU_SUCCESS_0 = PingTestData(
         "rtt_mdev": 1.430,
     },
     [
-        {'timestamp': None, 'icmp_seq': 1, 'ttl': 53, 'time': 68.5, 'duplicate': False},
-        {'timestamp': None, 'icmp_seq': 2, 'ttl': 53, 'time': 67.7, 'duplicate': False},
-        {'timestamp': None, 'icmp_seq': 3, 'ttl': 53, 'time': 65.6, 'duplicate': False},
-        {'timestamp': None, 'icmp_seq': 4, 'ttl': 53, 'time': 65.6, 'duplicate': False},
-        {'timestamp': None, 'icmp_seq': 5, 'ttl': 53, 'time': 64.9, 'duplicate': False},
-    ])
+        {"timestamp": None, "icmp_seq": 1, "ttl": 53, "time": 68.5, "duplicate": False},
+        {"timestamp": None, "icmp_seq": 2, "ttl": 53, "time": 67.7, "duplicate": False},
+        {"timestamp": None, "icmp_seq": 3, "ttl": 53, "time": 65.6, "duplicate": False},
+        {"timestamp": None, "icmp_seq": 4, "ttl": 53, "time": 65.6, "duplicate": False},
+        {"timestamp": None, "icmp_seq": 5, "ttl": 53, "time": 64.9, "duplicate": False},
+    ],
+)
 UBUNTU_SUCCESS_1 = PingTestData(
     PING_UBUNTU_SUCCESS_1,
     {
@@ -107,16 +119,48 @@ UBUNTU_SUCCESS_1 = PingTestData(
         "rtt_mdev": 4.425,
     },
     [
-        {'timestamp': datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 1, 'ttl': 39, 'time': 148.0, 'duplicate': False},
-        {'timestamp': datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 2, 'ttl': 39, 'time': 137.0, 'duplicate': False},
-        {'timestamp': datetime(2018, 4, 29, 0, 55, 38), 'icmp_seq': 3, 'ttl': 39, 'time': 137.0, 'duplicate': False},
-        {'timestamp': datetime(2018, 4, 29, 0, 55, 39), 'icmp_seq': 4, 'ttl': 39, 'time': 136.0, 'duplicate': False},
-        {'timestamp': datetime(2018, 4, 29, 0, 55, 40), 'icmp_seq': 5, 'ttl': 39, 'time': 136.0, 'duplicate': False},
-    ])
+        {
+            "timestamp": datetime(2018, 4, 29, 0, 55, 37),
+            "icmp_seq": 1,
+            "ttl": 39,
+            "time": 148.0,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2018, 4, 29, 0, 55, 37),
+            "icmp_seq": 2,
+            "ttl": 39,
+            "time": 137.0,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2018, 4, 29, 0, 55, 38),
+            "icmp_seq": 3,
+            "ttl": 39,
+            "time": 137.0,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2018, 4, 29, 0, 55, 39),
+            "icmp_seq": 4,
+            "ttl": 39,
+            "time": 136.0,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2018, 4, 29, 0, 55, 40),
+            "icmp_seq": 5,
+            "ttl": 39,
+            "time": 136.0,
+            "duplicate": False,
+        },
+    ],
+)
 
 WINDOWS7SP1_SUCCESS = PingTestData(
     # ping google.com -n 10:
-    dedent("""\
+    dedent(
+        """\
         Pinging google.com [216.58.196.238] with 32 bytes of data:
         Reply from 216.58.196.238: bytes=32 time=87ms TTL=51
         Reply from 216.58.196.238: bytes=32 time=97ms TTL=51
@@ -133,7 +177,8 @@ WINDOWS7SP1_SUCCESS = PingTestData(
             Packets: Sent = 10, Received = 10, Lost = 0 (0% loss),
         Approximate round trip times in milli-seconds:
             Minimum = 56ms, Maximum = 194ms, Average = 107ms
-        """),
+        """
+    ),
     {
         "destination": "216.58.196.238",
         "packet_transmit": 10,
@@ -147,4 +192,5 @@ WINDOWS7SP1_SUCCESS = PingTestData(
         "rtt_max": 194,
         "rtt_mdev": None,
     },
-    [])
+    [],
+)

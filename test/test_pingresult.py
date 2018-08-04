@@ -14,13 +14,10 @@ from .data import DEBIAN_SUCCESS_0
 
 
 class Test_PingResult(object):
-
-    @pytest.mark.parametrize(["pingresult", "expected"], [
-        [
-            PingResult(DEBIAN_SUCCESS_0.value, "", 0),
-            DEBIAN_SUCCESS_0.expected
-        ]
-    ])
+    @pytest.mark.parametrize(
+        ["pingresult", "expected"],
+        [[PingResult(DEBIAN_SUCCESS_0.value, "", 0), DEBIAN_SUCCESS_0.expected]],
+    )
     def test_normal_pingresult(self, ping_parser, pingresult, expected):
         ping_parser.parse(pingresult.stdout)
         assert ping_parser.as_dict() == expected

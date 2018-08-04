@@ -42,12 +42,10 @@ def main():
 
     maker.set_indent_level(0)
     maker.write_chapter("Documentation")
-    maker.write_line_list([
-        "http://{:s}.rtfd.io/".format(PROJECT_NAME),
-    ])
+    maker.write_line_list(["http://{:s}.rtfd.io/".format(PROJECT_NAME)])
 
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

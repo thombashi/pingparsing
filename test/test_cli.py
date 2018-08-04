@@ -15,22 +15,19 @@ from .data import DEBIAN_SUCCESS_0, WINDOWS7SP1_SUCCESS
 
 @pytest.mark.xfail(run=False)
 class Test_cli_file(object):
-
     def test_normal_single(self, tmpdir):
         tmp_ping_file = tmpdir.join("ping_deb.txt")
         tmp_ping_file.write(DEBIAN_SUCCESS_0.value)
         tmp_ping_path = str(tmp_ping_file)
 
-        runner = SubprocessRunner(
-            "pingparsing {}".format(tmp_ping_path))
+        runner = SubprocessRunner("pingparsing {}".format(tmp_ping_path))
         runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
         print("[stderr]\n{}".format(runner.stderr))
 
         assert runner.returncode == 0
-        assert json.loads(runner.stdout)[
-            tmp_ping_path] == DEBIAN_SUCCESS_0.expected
+        assert json.loads(runner.stdout)[tmp_ping_path] == DEBIAN_SUCCESS_0.expected
 
     def test_normal_multi(self, tmpdir):
         tmp_ping_file_deb = tmpdir.join("ping_deb.txt")
@@ -41,8 +38,7 @@ class Test_cli_file(object):
         tmp_ping_file_win.write(WINDOWS7SP1_SUCCESS.value)
         tmp_ping_path_win = str(tmp_ping_file_win)
 
-        runner = SubprocessRunner(
-            "pingparsing {} {}".format(tmp_ping_path_deb, tmp_ping_path_win))
+        runner = SubprocessRunner("pingparsing {} {}".format(tmp_ping_path_deb, tmp_ping_path_win))
         runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
@@ -57,7 +53,6 @@ class Test_cli_file(object):
 
 @pytest.mark.xfail(run=False)
 class Test_cli_pipe(object):
-
     def test_normal_single(self, tmpdir):
         runner = SubprocessRunner("pingparsing")
         runner.run(input=DEBIAN_SUCCESS_0.value)
@@ -71,12 +66,10 @@ class Test_cli_pipe(object):
 
 @pytest.mark.xfail(run=False)
 class Test_PingParsing_ping(object):
-
     def test_normal_single(self):
         count = 1
         dest = "localhost"
-        runner = SubprocessRunner(
-            "pingparsing {:s} -c {:d}".format(dest, count))
+        runner = SubprocessRunner("pingparsing {:s} -c {:d}".format(dest, count))
         runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
@@ -92,8 +85,7 @@ class Test_PingParsing_ping(object):
     def test_normal_multi(self):
         count = 1
         dest_list = ["google.com", "twitter.com"]
-        runner = SubprocessRunner(
-            "pingparsing {:s} -c {:d}".format(" ".join(dest_list), count))
+        runner = SubprocessRunner("pingparsing {:s} -c {:d}".format(" ".join(dest_list), count))
         runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
