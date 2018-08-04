@@ -75,20 +75,18 @@ def parse_option():
 
 
 def initialize_log_handler(log_level):
-    debug_format_str = (
+    debug_level_format_str = (
         "[{record.level_name}] {record.channel} {record.func_name} "
         "({record.lineno}): {record.message}")
     if log_level == logbook.DEBUG:
-        info_format_str = debug_format_str
+        info_level_format_str = debug_level_format_str
     else:
-        info_format_str = "[{record.level_name}] {record.channel}: {record.message}"
+        info_level_format_str = "[{record.level_name}] {record.channel}: {record.message}"
 
     logbook.StderrHandler(
-        level=logbook.DEBUG, format_string=debug_format_str
-    ).push_application()
+        level=logbook.DEBUG, format_string=debug_level_format_str).push_application()
     logbook.StderrHandler(
-        level=logbook.INFO, format_string=info_format_str
-    ).push_application()
+        level=logbook.INFO, format_string=info_level_format_str).push_application()
 
 
 def is_use_stdin():
