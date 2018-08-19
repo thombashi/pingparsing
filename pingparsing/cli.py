@@ -163,6 +163,21 @@ def get_ping_param(options):
     return (count, deadline)
 
 
+def print_result(text):
+    try:
+        from pygments import highlight
+        from pygments.lexers import JsonLexer
+        from pygments.formatters import TerminalTrueColorFormatter
+
+        print(
+            highlight(
+                code=text, lexer=JsonLexer(), formatter=TerminalTrueColorFormatter(style="monokai")
+            ).strip()
+        )
+    except ImportError:
+        print(text)
+
+
 def main():
     options = parse_option()
 
@@ -216,9 +231,11 @@ def main():
             output["icmp_reply"] = stats.icmp_reply_list
 
     if options.indent <= 0:
-        print(json.dumps(output))
+        result = json.dumps(output)
     else:
-        print(json.dumps(output, indent=options.indent))
+        result = json.dumps(output, indent=options.indent)
+
+    print_result(result)
 
     return 0
 
