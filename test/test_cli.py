@@ -1,3 +1,4 @@
+# encoding: utf-8
 
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
@@ -20,7 +21,7 @@ class Test_cli_file(object):
         tmp_ping_file.write(DEBIAN_SUCCESS_0.value)
         tmp_ping_path = str(tmp_ping_file)
 
-        runner = SubprocessRunner("pingparsing {}".format(tmp_ping_path))
+        runner = SubprocessRunner(["pingparsing", tmp_ping_path])
         runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
@@ -38,7 +39,7 @@ class Test_cli_file(object):
         tmp_ping_file_win.write(WINDOWS7SP1_SUCCESS.value)
         tmp_ping_path_win = str(tmp_ping_file_win)
 
-        runner = SubprocessRunner("pingparsing {} {}".format(tmp_ping_path_deb, tmp_ping_path_win))
+        runner = SubprocessRunner(["pingparsing", tmp_ping_path_deb, tmp_ping_path_win])
         runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
@@ -54,7 +55,7 @@ class Test_cli_file(object):
 @pytest.mark.xfail(run=False)
 class Test_cli_pipe(object):
     def test_normal_single(self, tmpdir):
-        runner = SubprocessRunner("pingparsing")
+        runner = SubprocessRunner(["pingparsing"])
         runner.run(input=DEBIAN_SUCCESS_0.value)
 
         print("[stdout]\n{}".format(runner.stdout))
@@ -69,7 +70,7 @@ class Test_PingParsing_ping(object):
     def test_normal_single(self):
         count = 1
         dest = "localhost"
-        runner = SubprocessRunner("pingparsing {:s} -c {:d}".format(dest, count))
+        runner = SubprocessRunner(["pingparsing", dest, "-c", count])
         runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
@@ -85,7 +86,7 @@ class Test_PingParsing_ping(object):
     def test_normal_multi(self):
         count = 1
         dest_list = ["google.com", "twitter.com"]
-        runner = SubprocessRunner("pingparsing {:s} -c {:d}".format(" ".join(dest_list), count))
+        runner = SubprocessRunner(["pingparsing"] + dest_list + ["-c", count])
         runner.run()
 
         print("[stdout]\n{}".format(runner.stdout))
