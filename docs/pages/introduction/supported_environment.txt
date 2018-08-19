@@ -1,10 +1,10 @@
-Supported environment
+Supported Environments
 ============================
 - Linux
 - Windows
 - macOS
 
-Tested environment
+Tested Environments
 ---------------------------
 
 +--------------+-----------------------------------+

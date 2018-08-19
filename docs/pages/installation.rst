@@ -16,13 +16,18 @@ Python 2.7+ or 3.4+
 - `subprocrunner <https://github.com/thombashi/subprocrunner>`__
 - `typepy <https://github.com/thombashi/typepy>`__
 
-Test dependencies
+Optional Dependencies
+------------------------------------
+- `Pygments <http://pygments.org/>`__
+    - Syntax highlighting to ``pingparsing`` command output when installed
+
+Test Dependencies
 -----------------
 - `pytest <https://pypi.python.org/pypi/pytest>`__
 - `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
 - `tox <https://pypi.python.org/pypi/tox>`__
 
 
-Docker image
+Docker Image
 ==================
 `thombashi/pingparsing - Docker Hub <https://hub.docker.com/r/thombashi/pingparsing/>`__
