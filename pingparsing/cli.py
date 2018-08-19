@@ -12,6 +12,7 @@ import json
 import multiprocessing
 import os
 import sys
+from textwrap import dedent
 
 import logbook
 import pingparsing
@@ -24,7 +25,13 @@ QUIET_LOG_LEVEL = logbook.NOTSET
 
 def parse_option():
     parser = argparse.ArgumentParser(
-        epilog="Issue tracker: https://github.com/thombashi/pingparsing/issues"
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=dedent(
+            """\
+            Documentation: https://pingparsing.rtfd.io/
+            Issue tracker: https://github.com/thombashi/pingparsing/issues
+            """
+        ),
     )
 
     if is_use_stdin():
@@ -46,7 +53,10 @@ def parse_option():
         """,
     )
     parser.add_argument(
-        "--icmp-reply", action="store_true", default=False, help="print icmp packet replies."
+        "--icmp-reply",
+        action="store_true",
+        default=False,
+        help="print results for each ICMP packet reply.",
     )
 
     loglevel_dest = "log_level"
