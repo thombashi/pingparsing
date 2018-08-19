@@ -2,8 +2,8 @@ enum34;python_version<"3.4"
 futures;python_version<"3.2"
 ipaddress;python_version<"3.3"
 logbook
-msgfy>=0.0.2
+msgfy>=0.0.3
 pyparsing>=2.2.0
 six
-subprocrunner>=0.14.1
-typepy>=0.1.1
+subprocrunner>=0.15.1
+typepy>=0.2.1
