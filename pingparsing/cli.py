@@ -73,7 +73,7 @@ def parse_option():
         "--quiet",
         dest=loglevel_dest,
         action="store_const",
-        const=logbook.NOTSET,
+        const=QUIET_LOG_LEVEL,
         default=logbook.INFO,
         help="suppress execution log messages.",
     )
