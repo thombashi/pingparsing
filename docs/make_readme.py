@@ -23,6 +23,7 @@ def write_examples(maker):
     usage_root = Path("pages").joinpath("usage")
 
     maker.write_file(usage_root.joinpath("cli_usage.txt"))
+    maker.write_file(usage_root.joinpath("cli_help.txt"))
     maker.write_file(usage_root.joinpath("library.rst"))
 
 

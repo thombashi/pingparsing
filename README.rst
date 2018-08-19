@@ -271,6 +271,43 @@ Parse from the standard input
         "packet_duplicate_rate": 0.0
     }
 
+CLI help
+--------------------------------------------
+::
+
+    usage: pingparsing [-h] [--max-workers MAX_WORKERS] [--indent INDENT]
+                       [--icmp-reply] [--debug | --quiet] [-c COUNT] [-w DEADLINE]
+                       [-I INTERFACE]
+                       destination_or_file [destination_or_file ...]
+
+    positional arguments:
+      destination_or_file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      --max-workers MAX_WORKERS
+                            a number of threads for when multiple destination/file
+                            specified. defaults to equals to two times number of
+                            cores.
+      --indent INDENT       JSON output will be pretty-printed with the indent
+                            level. (default= 4)
+      --icmp-reply          print results for each ICMP packet reply.
+      --debug               for debug print.
+      --quiet               suppress execution log messages.
+
+    Ping Options:
+      -c COUNT, --count COUNT
+                            stop after sending the count. see also ping(8) [-c
+                            count] option description.
+      -w DEADLINE, --deadline DEADLINE
+                            timeout in seconds. see also ping(8) [-w deadline]
+                            option description.
+      -I INTERFACE, --interface INTERFACE
+                            network interface
+
+    Documentation: https://pingparsing.rtfd.io/
+    Issue tracker: https://github.com/thombashi/pingparsing/issues
+
 Library Usage
 ====================
 
@@ -454,5 +491,5 @@ This is because the output of the ``ping`` command will change depending on the 
 
 Documentation
 ===============
-http://pingparsing.rtfd.io/
+https://pingparsing.rtfd.io/
 
