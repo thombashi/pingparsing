@@ -275,7 +275,7 @@ CLI help
 --------------------------------------------
 ::
 
-    usage: pingparsing [-h] [--max-workers MAX_WORKERS] [--indent INDENT]
+    usage: pingparsing [-h] [-V] [--max-workers MAX_WORKERS] [--indent INDENT]
                        [--icmp-reply] [--debug | --quiet] [-c COUNT] [-w DEADLINE]
                        [-I INTERFACE]
                        destination_or_file [destination_or_file ...]
@@ -285,6 +285,7 @@ CLI help
 
     optional arguments:
       -h, --help            show this help message and exit
+      -V, --version         show program's version number and exit
       --max-workers MAX_WORKERS
                             a number of threads for when multiple destination/file
                             specified. defaults to equals to two times number of
