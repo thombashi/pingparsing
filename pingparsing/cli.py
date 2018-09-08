@@ -18,6 +18,8 @@ import logbook
 import pingparsing
 from subprocrunner import CommandError
 
+from .__version__ import __version__
+
 
 DEFAULT_COUNT = 10
 QUIET_LOG_LEVEL = logbook.NOTSET
@@ -32,6 +34,9 @@ def parse_option():
             Issue tracker: https://github.com/thombashi/pingparsing/issues
             """
         ),
+    )
+    parser.add_argument(
+        "-V", "--version", action="version", version="%(prog)s {}".format(__version__)
     )
 
     if is_use_stdin():
