@@ -169,6 +169,11 @@ def get_ping_param(options):
 
 
 def print_result(text):
+    if not sys.stdout.isatty():
+        # avoid to colorized when piped or redirected
+        print(text)
+        return
+
     try:
         from pygments import highlight
         from pygments.lexers import JsonLexer
