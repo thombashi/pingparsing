@@ -8,7 +8,6 @@
 from __future__ import print_function
 
 import argparse
-import json
 import multiprocessing
 import os
 import sys
@@ -19,6 +18,12 @@ import pingparsing
 from subprocrunner import CommandError
 
 from .__version__ import __version__
+
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 
 DEFAULT_COUNT = 10
