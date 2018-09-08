@@ -6,12 +6,17 @@
 
 from __future__ import print_function, unicode_literals
 
-import json
-
 import pytest
 from subprocrunner import SubprocessRunner
 
+import simplejson as json
+
 from .data import DEBIAN_SUCCESS_0, WINDOWS7SP1_SUCCESS
+
+
+def print_result(stdout, stderr):
+    print("[stdout]\n{}".format(stdout))
+    print("[stderr]\n{}".format(stderr))
 
 
 @pytest.mark.xfail(run=False)
@@ -24,8 +29,7 @@ class Test_cli_file(object):
         runner = SubprocessRunner(["pingparsing", tmp_ping_path])
         runner.run()
 
-        print("[stdout]\n{}".format(runner.stdout))
-        print("[stderr]\n{}".format(runner.stderr))
+        print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
         assert json.loads(runner.stdout)[tmp_ping_path] == DEBIAN_SUCCESS_0.expected
@@ -42,8 +46,7 @@ class Test_cli_file(object):
         runner = SubprocessRunner(["pingparsing", tmp_ping_path_deb, tmp_ping_path_win])
         runner.run()
 
-        print("[stdout]\n{}".format(runner.stdout))
-        print("[stderr]\n{}".format(runner.stderr))
+        print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
 
@@ -58,8 +61,7 @@ class Test_cli_pipe(object):
         runner = SubprocessRunner(["pingparsing"])
         runner.run(input=DEBIAN_SUCCESS_0.value)
 
-        print("[stdout]\n{}".format(runner.stdout))
-        print("[stderr]\n{}".format(runner.stderr))
+        print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
         assert json.loads(runner.stdout) == DEBIAN_SUCCESS_0.expected
@@ -73,8 +75,7 @@ class Test_PingParsing_ping(object):
         runner = SubprocessRunner(["pingparsing", dest, "-c", count])
         runner.run()
 
-        print("[stdout]\n{}".format(runner.stdout))
-        print("[stderr]\n{}".format(runner.stderr))
+        print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
 
@@ -89,8 +90,7 @@ class Test_PingParsing_ping(object):
         runner = SubprocessRunner(["pingparsing"] + dest_list + ["-c", count])
         runner.run()
 
-        print("[stdout]\n{}".format(runner.stdout))
-        print("[stderr]\n{}".format(runner.stderr))
+        print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
 
