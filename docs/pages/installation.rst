@@ -9,7 +9,7 @@ Dependencies
 ============
 Python 2.7+ or 3.4+
 
-- `logbook <http://logbook.readthedocs.io/en/stable/>`__
+- `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `msgfy <https://github.com/thombashi/msgfy>`__
 - `pyparsing <https://pyparsing.wikispaces.com/>`__
 - `six <https://pypi.python.org/pypi/six/>`__
