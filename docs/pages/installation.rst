@@ -12,7 +12,7 @@ Python 2.7+ or 3.4+
 - `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `msgfy <https://github.com/thombashi/msgfy>`__
 - `pyparsing <https://pyparsing.wikispaces.com/>`__
-- `six <https://pypi.python.org/pypi/six/>`__
+- `six <https://pypi.org/project/six/>`__
 - `subprocrunner <https://github.com/thombashi/subprocrunner>`__
 - `typepy <https://github.com/thombashi/typepy>`__
 
@@ -23,9 +23,9 @@ Optional Dependencies
 
 Test Dependencies
 -----------------
-- `pytest <https://pypi.python.org/pypi/pytest>`__
-- `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
-- `tox <https://pypi.python.org/pypi/tox>`__
+- `pytest <https://pypi.org/project/pytest>`__
+- `pytest-runner <https://github.com/pytest-dev/pytest-runner>`__
+- `tox <https://pypi.org/project/tox>`__
 
 
 Docker Image
