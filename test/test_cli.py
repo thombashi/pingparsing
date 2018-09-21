@@ -7,9 +7,8 @@
 from __future__ import print_function, unicode_literals
 
 import pytest
-from subprocrunner import SubprocessRunner
-
 import simplejson as json
+from subprocrunner import SubprocessRunner
 
 from .data import DEBIAN_SUCCESS_0, WINDOWS7SP1_SUCCESS
 
