@@ -23,10 +23,10 @@ from .error import ParseError, ParseErrorReason
 
 class PingParser(PingParserInterface):
 
-    _IPADDR_PATTERN = "(\d{1,3}\.){3}\d{1,3}"
-    _ICMP_SEQ_PATTERN = "icmp_seq=(?P<icmp_seq>\d+)"
-    _TTL_PATTERN = "ttl=(?P<ttl>\d+)"
-    _TIME_PATTERN = "time=(?P<time>[0-9\.]+)"
+    _IPADDR_PATTERN = r"(\d{1,3}\.){3}\d{1,3}"
+    _ICMP_SEQ_PATTERN = r"icmp_seq=(?P<icmp_seq>\d+)"
+    _TTL_PATTERN = r"ttl=(?P<ttl>\d+)"
+    _TIME_PATTERN = r"time=(?P<time>[0-9\.]+)"
 
     @abc.abstractproperty
     def _parser_name(self):  # pragma: no cover
@@ -38,7 +38,7 @@ class PingParser(PingParserInterface):
 
     @property
     def _duplicate_packet_pattern(self):
-        return ".+ \(DUP!\)$"
+        return r".+ \(DUP!\)$"
 
     @abc.abstractproperty
     def _stats_headline_pattern(self):  # pragma: no cover
@@ -162,7 +162,7 @@ class LinuxPingParser(PingParser):
     @property
     def _icmp_reply_pattern(self):
         return (
-            "(?P<timestamp>\[[0-9\.]+\])?\s?.+ from "
+            r"(?P<timestamp>\[[0-9\.]+\])?\s?.+ from "
             + self._IPADDR_PATTERN
             + ".*"
             + self._ICMP_SEQ_PATTERN
@@ -413,7 +413,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             " from "
             + self._IPADDR_PATTERN
             + ".*"
-            + "seq=(?P<icmp_seq>\d+) "
+            + r"seq=(?P<icmp_seq>\d+) "
             + self._TTL_PATTERN
             + " "
             + self._TIME_PATTERN
