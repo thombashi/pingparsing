@@ -8,7 +8,7 @@ import pytest
 from pingparsing import PingTransmitter
 from typepy import RealNumber
 
-from .common import ping_parser
+from .common import ping_parser  # noqa: W0611
 
 
 @pytest.fixture
