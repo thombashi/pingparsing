@@ -9,8 +9,9 @@ CLI included in the ``pingparsing`` packaged. The ``pingparsing`` command could 
 Execute ping and parse the result
 --------------------------------------------
 If you specify destination(s) to the ``pingparsing`` command as positional arguments,
-the command executes ping for each destination(s) and parses the result.
-The parsed result output with JSON format.
+the command executes ``ping`` for each destination(s) and parses the result.
+``ping`` will execute in parallel for multiple destinations.
+The parsed result outputted with JSON format.
 
 .. code-block:: console
     :caption: Execute with a single destination
