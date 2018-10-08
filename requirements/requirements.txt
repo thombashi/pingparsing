@@ -3,7 +3,7 @@ futures;python_version<"3.2"
 ipaddress;python_version<"3.3"
 logbook
 msgfy>=0.0.3
-pyparsing>=2.2.1
+pyparsing>=2.2.2
 six
-subprocrunner>=0.15.2
-typepy>=0.2.1
+subprocrunner>=0.15.3
+typepy>=0.2.4
