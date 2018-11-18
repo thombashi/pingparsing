@@ -444,7 +444,7 @@ Python 2.7+ or 3.4+
 
 - `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `msgfy <https://github.com/thombashi/msgfy>`__
-- `pyparsing <https://pyparsing.wikispaces.com/>`__
+- `pyparsing <https://github.com/pyparsing/pyparsing//>`__
 - `six <https://pypi.org/project/six/>`__
 - `subprocrunner <https://github.com/thombashi/subprocrunner>`__
 - `typepy <https://github.com/thombashi/typepy>`__
