@@ -5,5 +5,5 @@ logbook
 msgfy>=0.0.4
 pyparsing>=2.2.2
 six
-subprocrunner>=0.15.3
-typepy>=0.3.0
+subprocrunner>=0.15.5
+typepy>=0.3.1
