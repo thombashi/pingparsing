@@ -18,6 +18,10 @@ logger.disable()
 
 
 def set_logger(is_enable):
+    if is_enable != logger.disabled:
+        # logger setting have not changed
+        return
+
     if is_enable:
         logger.enable()
     else:
@@ -40,6 +44,9 @@ def set_log_level(log_level):
 
     # validate log level
     logbook.get_level_name(log_level)
+
+    if log_level == logger.level:
+        return
 
     if log_level == logbook.NOTSET:
         set_logger(is_enable=False)
