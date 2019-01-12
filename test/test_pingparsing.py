@@ -12,7 +12,7 @@ import pytest
 import six
 from pingparsing import ParseError
 
-from .common import PingTestData, ping_parser
+from .common import PingTestData, ping_parser  # noqa: W0611
 from .data import DEBIAN_SUCCESS_0, UBUNTU_SUCCESS_0, UBUNTU_SUCCESS_1, WINDOWS7SP1_SUCCESS
 
 
