@@ -10,9 +10,6 @@ import logbook
 import subprocrunner
 
 
-LOG_FORMAT_STRING = "[{record.level_name}] {record.channel}: {record.message}"
-
-
 logger = logbook.Logger("pingparsing lib")
 logger.disable()
 
