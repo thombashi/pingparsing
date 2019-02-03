@@ -11,7 +11,6 @@ import platform
 import warnings
 from collections import namedtuple
 
-import msgfy
 import six
 import subprocrunner
 import typepy
@@ -135,7 +134,7 @@ class PingTransmitter(object):
         try:
             network = ipaddress.ip_address(six.text_type(self.destination_host))
         except ValueError as e:
-            logger.debug(msgfy.to_debug_message(e))
+            logger.debug(e)
             return False
 
         logger.debug(
