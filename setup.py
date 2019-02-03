@@ -70,10 +70,11 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=["test*"]),
     project_urls={
         "Documentation": "https://{:s}.rtfd.io/".format(MODULE_NAME),
+        "Source": REPOSITORY_URL,
         "Tracker": "{:s}/issues".format(REPOSITORY_URL),
     },
 
-    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*',
+    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*",
     install_requires=setuptools_require + install_requires,
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
@@ -103,6 +104,7 @@ setuptools.setup(
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: System :: Networking",
+        "Topic :: Text Processing",
     ],
     cmdclass=get_release_command_class(),
     entry_points={
