@@ -61,17 +61,17 @@ Parsing ``ping`` command output
             rtt min/avg/max/mdev = 136.537/139.174/148.006/4.425 ms
             """))
 
-        print("[ping statistics]")
+        print("[extract ping statistics]")
         print(json.dumps(stats.as_dict(), indent=4))
 
-        print("\n[icmp reply]")
+        print("\n[extract icmp replies]")
         for icmp_reply in stats.icmp_reply_list:
             print(icmp_reply)
 
 :Output:
     ::
 
-        [ping statistics]
+        [extract ping statistics]
         {
             "destination": "google.com",
             "packet_transmit": 5,
@@ -86,7 +86,7 @@ Parsing ``ping`` command output
             "packet_duplicate_rate": 0.0
         }
 
-        [icmp reply]
+        [extract icmp replies]
         {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 1, 'ttl': 39, 'time': 148.0, 'duplicate': False}
         {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 2, 'ttl': 39, 'time': 137.0, 'duplicate': False}
         {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 38), 'icmp_seq': 3, 'ttl': 39, 'time': 137.0, 'duplicate': False}
