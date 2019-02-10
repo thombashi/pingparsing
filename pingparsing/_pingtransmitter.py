@@ -47,7 +47,7 @@ class PingTransmitter(object):
 
     .. py:attribute:: destination_host
 
-        Hostname or IP-address (IPv4/IPf6) to sending ICMP packets.
+        Hostname or IP-address (IPv4/IPv6) to sending ICMP packets.
 
     .. py:attribute:: deadline
 
