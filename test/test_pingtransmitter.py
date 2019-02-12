@@ -4,6 +4,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+import platform as m_platform  # noqa: W0611
+
 import pytest
 from pingparsing import PingTransmitter
 from typepy import RealNumber
@@ -18,10 +20,29 @@ def transmitter():
 
 class Test_PingTransmitter_ping(object):
     @pytest.mark.xfail(run=False)
-    @pytest.mark.parametrize(["host", "deadline"], [["localhost", 1], ["127.0.0.1", 1], ["::1", 1]])
+    @pytest.mark.parametrize(["host"], [["localhost"], ["127.0.0.1"], ["::1"]])
+    def test_normal_dest(self, transmitter, host):
+        transmitter.destination_host = host
+        result = transmitter.ping()
+
+        assert result.returncode == 0
+        assert len(result.stdout) > 0
+
+    @pytest.mark.xfail(run=False)
+    @pytest.mark.parametrize(["host", "deadline"], [["localhost", 1]])
     def test_normal_deadline(self, transmitter, host, deadline):
         transmitter.destination_host = host
         transmitter.deadline = deadline
+        result = transmitter.ping()
+
+        assert result.returncode == 0
+        assert len(result.stdout) > 0
+
+    @pytest.mark.xfail(run=False)
+    @pytest.mark.parametrize(["host", "timeout"], [["localhost", 1]])
+    def test_normal_timeout(self, transmitter, host, timeout):
+        transmitter.destination_host = host
+        transmitter.timeout = timeout
         result = transmitter.ping()
 
         assert result.returncode == 0
@@ -61,6 +82,27 @@ class Test_PingTransmitter_ping(object):
         assert RealNumber(ping_parser.rtt_mdev).is_type()
 
     @pytest.mark.parametrize(
+        ["system", "timeout", "expected"],
+        [
+            ["Linux", 1, "-W 1"],
+            ["Linux", 1500, "-W 2"],
+            ["Windows", 1, "-w 1"],
+            ["Windows", 1500, "-w 1500"],
+            ["macos", 1, ""],
+            ["macos", 1500, ""],
+        ],
+    )
+    def test_normal_get_timeout_option(self, monkeypatch, transmitter, system, timeout, expected):
+        def platform_mock():
+            return system
+
+        monkeypatch.setattr(m_platform, "system", platform_mock)
+
+        transmitter.timeout = timeout
+
+        assert transmitter._PingTransmitter__get_timeout_option() == expected
+
+    @pytest.mark.parametrize(
         ["host", "deadline", "expected"],
         [
             ["", 1, ValueError],
@@ -73,6 +115,22 @@ class Test_PingTransmitter_ping(object):
     def test_except_deadline(self, transmitter, host, deadline, expected):
         transmitter.destination_host = host
         transmitter.deadline = deadline
+        with pytest.raises(expected):
+            transmitter.ping()
+
+    @pytest.mark.parametrize(
+        ["host", "timeout", "expected"],
+        [
+            ["", 1, ValueError],
+            ["localhost", 0, ValueError],
+            ["localhost", -1, ValueError],
+            ["localhost", "a", ValueError],
+            [None, 1, ValueError],
+        ],
+    )
+    def test_except_timeout(self, transmitter, host, timeout, expected):
+        transmitter.destination_host = host
+        transmitter.timeout = timeout
         with pytest.raises(expected):
             transmitter.ping()
 
