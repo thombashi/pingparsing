@@ -38,48 +38,22 @@ class PingParsing(PingParserInterface):
 
     @property
     def destination(self):
-        """
-        (Duprecated)
-
-        :return: The ping destination.
-        :rtype: str
-        """
-
+        # deprecated
         return self.__stats.destination
 
     @property
     def packet_transmit(self):
-        """
-        (Duprecated)
-
-        :return: Number of packets transmitted.
-        :rtype: int
-        """
-
+        # deprecated
         return self.__stats.packet_transmit
 
     @property
     def packet_receive(self):
-        """
-        (Duprecated)
-
-        :return: Number of packets received.
-        :rtype: int
-        """
-
+        # deprecated
         return self.__stats.packet_receive
 
     @property
     def packet_loss_rate(self):
-        """
-        (Duprecated)
-
-        :return:
-            Percentage of packet loss ``[%]``.
-            |None| if the value is not a number.
-        :rtype: float
-        """
-
+        # deprecated
         return self.__stats.packet_loss_rate
 
     @property
@@ -89,88 +63,37 @@ class PingParsing(PingParserInterface):
 
     @property
     def packet_loss_count(self):
-        """
-        (Duprecated)
-
-        :return: Packet loss count. |None| if the value is not a number.
-        :rtype: int
-        """
-
+        # deprecated
         return self.__stats.packet_loss_count
 
     @property
     def rtt_min(self):
-        """
-        (Duprecated)
-
-        :return:
-            Minimum round trip time of transmitted ICMP packets ``[msec]``.
-        :rtype: float
-        """
-
+        # deprecated
         return self.__stats.rtt_min
 
     @property
     def rtt_avg(self):
-        """
-        (Duprecated)
-
-        :return:
-            Average round trip time of transmitted ICMP packets ``[msec]``.
-        :rtype: float
-        """
-
+        # deprecated
         return self.__stats.rtt_avg
 
     @property
     def rtt_max(self):
-        """
-        (Duprecated)
-
-        :return:
-            Maximum round trip time of transmitted ICMP packets ``[msec]``.
-        :rtype: float
-        """
-
+        # deprecated
         return self.__stats.rtt_max
 
     @property
     def rtt_mdev(self):
-        """
-        (Duprecated)
-
-        :return:
-            Standard deviation of transmitted ICMP packets. The attribute
-            returns always |None| when parsing Windows ping result.
-        :rtype: float
-        """
-
+        # deprecated
         return self.__stats.rtt_mdev
 
     @property
     def packet_duplicate_rate(self):
-        """
-        (Duprecated)
-
-        :return:
-            Percentage of duplicated packets ``[%]``.
-            |None| if the value is not a number.
-        :rtype: float
-        """
-
+        # deprecated
         return self.__stats.packet_duplicate_rate
 
     @property
     def packet_duplicate_count(self):
-        """
-        (Duprecated)
-
-        :return:
-            Number of duplicated packet. The attribute
-            returns always |None| when parsing Windows ping result.
-        :rtype: int
-        """
-
+        # deprecated
         return self.__stats.packet_duplicate_count
 
     @property
@@ -179,49 +102,11 @@ class PingParsing(PingParserInterface):
         return self.packet_duplicate_count
 
     def as_dict(self):
-        """
-        (Duprecated)
-
-        :return: Parsed result as a dictionary.
-        :rtype: dict
-
-        :Examples:
-            >>> import pingparsing
-            >>> parser = pingparsing.PingParsing()
-            >>> parser.parse(ping_result)
-            >>> parser.as_dict()
-            {
-                "destination": "google.com",
-                "packet_transmit": 60,
-                "packet_receive": 60,
-                "packet_loss_rate": 0.0,
-                "packet_loss_count": 0,
-                "rtt_min": 61.425,
-                "rtt_avg": 99.731,
-                "rtt_max": 212.597,
-                "rtt_mdev": 27.566,
-                "packet_duplicate_rate": 0.0,
-                "packet_duplicate_count": 0
-            }
-        """
-
+        # deprecated
         return self.__stats.as_dict()
 
     def as_tuple(self):
-        """
-        (Duprecated)
-
-        :return: Parsed result as a tuple.
-        :rtype: collections.namedtuple
-
-        :Examples:
-            >>> import pingparsing
-            >>> parser = pingparsing.PingParsing()
-            >>> parser.parse(ping_result)
-            >>> parser.as_tuple()
-            PingResult(destination='google.com', packet_transmit=60, packet_receive=60, packet_loss_rate=0.0, packet_loss_count=0, rtt_min=61.425, rtt_avg=99.731, rtt_max=212.597, rtt_mdev=27.566, packet_duplicate_rate=0.0, packet_duplicate_count=0)
-        """
-
+        # deprecated
         return self.__stats.as_tuple()
 
     def parse(self, ping_message):
@@ -231,8 +116,6 @@ class PingParsing(PingParserInterface):
         :param ping_message: ping command output.
         :type ping_message: str or :py:class:`~pingparsing.PingResult`
         :return: Parsed result.
-
-            .. seealso:: :py:meth:`.as_tuple`
         :rtype: :py:class:`~pingparsing.PingStats`
         """
 
