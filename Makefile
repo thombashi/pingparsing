@@ -9,6 +9,7 @@ build:
 	@python setup.py build
 	@twine check dist/*
 	@python setup.py clean --all
+	ls -lh dist/*
 
 .PHONY: clean
 clean:
@@ -29,6 +30,11 @@ clean:
 docs:
 	@python setup.py build_sphinx --source-dir=$(DOCS_DIR)/ --build-dir=$(DOCS_BUILD_DIR) --all-files
 
+.PHONY: idocs
+idocs:
+	@pip install --upgrade .
+	@make docs
+
 .PHONY: fmt
 fmt:
 	@black $(CURDIR)
@@ -42,4 +48,4 @@ readme:
 .PHONY: release
 release:
 	@python setup.py release --sign
-	@rm -rf dist/
+	@make clean
