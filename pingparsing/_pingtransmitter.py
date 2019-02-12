@@ -51,10 +51,11 @@ class PingTransmitter(object):
 
     .. py:attribute:: deadline
 
-        Time ``[sec]`` of sending ICMP packets. The attribute ignored if
-        the value is ``None``. If both :py:attr:`~.deadline` and
-        :py:attr:`~.count` are ``None``, :py:attr:`~.deadline` set to ``1``.
-        Defaults to ``None``.
+        Time ``[second]`` of sending ICMP packets.
+        If both :py:attr:`~.deadline` and :py:attr:`~.count` are |None|,
+        :py:attr:`~.deadline` automatically set to the default value (``3``).
+        Defaults to |None|.
+
 
     .. py:attribute:: count
 
