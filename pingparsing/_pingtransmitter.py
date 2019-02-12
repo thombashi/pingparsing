@@ -14,7 +14,7 @@ from collections import namedtuple
 import six
 import subprocrunner
 import typepy
-from typepy import Integer
+from typepy import Integer, TypeConversionError
 
 from ._logger import logger
 
@@ -157,7 +157,7 @@ class PingTransmitter(object):
 
         try:
             deadline = Integer(self.deadline).convert()
-        except typepy.TypeConversionError as e:
+        except TypeConversionError as e:
             raise ValueError("deadline must be an integer: {}".format(e))
 
         if deadline <= 0:
@@ -169,7 +169,7 @@ class PingTransmitter(object):
 
         try:
             count = Integer(self.count).convert()
-        except typepy.TypeConversionError as e:
+        except TypeConversionError as e:
             raise ValueError("count must be an integer: {}".format(e))
 
         if count <= 0:
@@ -234,7 +234,7 @@ class PingTransmitter(object):
     def __get_deadline_option(self):
         try:
             deadline = Integer(self.deadline).convert()
-        except typepy.TypeConversionError:
+        except TypeConversionError:
             if self.count:
                 return ""
 
@@ -257,7 +257,7 @@ class PingTransmitter(object):
     def __get_count_option(self):
         try:
             count = Integer(self.count).convert()
-        except typepy.TypeConversionError:
+        except TypeConversionError:
             return ""
 
         if self.__is_windows():
