@@ -50,7 +50,7 @@ class PingStats(object):
     @property
     def packet_loss_count(self):
         """
-        :return: Packet loss count. ``None`` if the value is not a number.
+        :return: Packet loss count. |None| if the value is not a number.
         :rtype: int
         """
 
@@ -64,7 +64,7 @@ class PingStats(object):
         """
         :return:
             Percentage of packet loss ``[%]``.
-            ``None`` if the value is not a number.
+            |None| if the value is not a number.
         :rtype: float
         """
 
@@ -108,7 +108,7 @@ class PingStats(object):
         """
         :return:
             Standard deviation of transmitted ICMP packets. The attribute returns
-            always ``None`` when parsing Windows ping result.
+            always |None| when parsing Windows ping result.
         :rtype: float
         """
 
@@ -118,7 +118,7 @@ class PingStats(object):
     def packet_duplicate_count(self):
         """
         :return:
-            Number of duplicated packet. The attribute returns always ``None`` when parsing
+            Number of duplicated packet. The attribute returns always |None| when parsing
             Windows ping result.
         :rtype: int
         """
@@ -129,7 +129,7 @@ class PingStats(object):
     def packet_duplicate_rate(self):
         """
         :return:
-            Percentage of duplicated packets ``[%]``. ``None`` if the value is not a number.
+            Percentage of duplicated packets ``[%]``. |None| if the value is not a number.
         :rtype: float
         """
 

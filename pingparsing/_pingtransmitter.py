@@ -59,7 +59,7 @@ class PingTransmitter(object):
     .. py:attribute:: count
 
         Number of sending ICMP packets. This attribute ignored if the value is
-        ``None``. Defaults to ``None``.
+        |None|. Defaults to |None|.
 
     .. py:attribute:: ping_option
 
@@ -69,7 +69,7 @@ class PingTransmitter(object):
 
         Interface name or zone-id. The attribute required when
         :py:attr:`~.destination_host` is IPv6 link-local scope address.
-        Defaults to ``None``.
+        Defaults to |None|.
 
     .. py:attribute:: auto_codepage
 

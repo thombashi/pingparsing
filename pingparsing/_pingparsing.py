@@ -76,7 +76,7 @@ class PingParsing(PingParserInterface):
 
         :return:
             Percentage of packet loss ``[%]``.
-            ``None`` if the value is not a number.
+            |None| if the value is not a number.
         :rtype: float
         """
 
@@ -92,7 +92,7 @@ class PingParsing(PingParserInterface):
         """
         (Duprecated)
 
-        :return: Packet loss count. ``None`` if the value is not a number.
+        :return: Packet loss count. |None| if the value is not a number.
         :rtype: int
         """
 
@@ -141,7 +141,7 @@ class PingParsing(PingParserInterface):
 
         :return:
             Standard deviation of transmitted ICMP packets. The attribute
-            returns always ``None`` when parsing Windows ping result.
+            returns always |None| when parsing Windows ping result.
         :rtype: float
         """
 
@@ -154,7 +154,7 @@ class PingParsing(PingParserInterface):
 
         :return:
             Percentage of duplicated packets ``[%]``.
-            ``None`` if the value is not a number.
+            |None| if the value is not a number.
         :rtype: float
         """
 
@@ -167,7 +167,7 @@ class PingParsing(PingParserInterface):
 
         :return:
             Number of duplicated packet. The attribute
-            returns always ``None`` when parsing Windows ping result.
+            returns always |None| when parsing Windows ping result.
         :rtype: int
         """
 
