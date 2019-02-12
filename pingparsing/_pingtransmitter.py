@@ -241,8 +241,7 @@ class PingTransmitter(object):
             deadline = DEFAULT_DEADLINE
 
         if self.__is_windows():
-            # ping for Windows not have the option with equals to the deadline
-            # option.
+            # ping for Windows does not have the option with equals to the deadline option.
             return "-n {:d}".format(deadline)
         elif self.__is_macos():
             if self.__is_ipv6():
