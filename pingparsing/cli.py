@@ -14,10 +14,12 @@ import sys
 from textwrap import dedent
 
 import logbook
-import pingparsing
 from subprocrunner import CommandError
 
 from .__version__ import __version__
+from ._logger import set_log_level
+from ._pingparsing import PingParsing
+from ._pingtransmitter import PingTransmitter
 
 
 try:
@@ -137,7 +139,7 @@ def parse_ping(logger, dest_or_file, interface, count, deadline, is_parse_icmp_r
         with open(dest_or_file) as f:
             ping_result_text = f.read()
     else:
-        transmitter = pingparsing.PingTransmitter()
+        transmitter = PingTransmitter()
         transmitter.destination_host = dest_or_file
         transmitter.interface = interface
         transmitter.count = count
@@ -154,7 +156,7 @@ def parse_ping(logger, dest_or_file, interface, count, deadline, is_parse_icmp_r
         if result.returncode != 0:
             logger.error(result.stderr)
 
-    ping_parser = pingparsing.PingParsing()
+    ping_parser = PingParsing()
     stats = ping_parser.parse(ping_result_text)
     output = stats.as_dict()
     if is_parse_icmp_reply:
@@ -200,13 +202,13 @@ def main():
 
     logger = logbook.Logger("pingparsing cli")
     logger.level = options.log_level
-    pingparsing.set_log_level(options.log_level)
+    set_log_level(options.log_level)
 
     output = {}
     if is_use_stdin():
         from concurrent import futures
 
-        pingparsing.set_log_level(options.log_level)
+        set_log_level(options.log_level)
 
         max_workers = (
             multiprocessing.cpu_count() * 2 if options.max_workers is None else options.max_workers
@@ -239,7 +241,7 @@ def main():
             executor.shutdown()
     else:
         ping_result_text = sys.stdin.read()
-        ping_parser = pingparsing.PingParsing()
+        ping_parser = PingParsing()
         stats = ping_parser.parse(ping_result_text)
         output = stats.as_dict()
         if options.icmp_reply:
