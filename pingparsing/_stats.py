@@ -23,8 +23,10 @@ class PingStats(object):
     @property
     def destination(self):
         """
-        :return: The ping destination.
-        :rtype: str
+        The ping destination.
+
+        Returns:
+            |str|:
         """
 
         return self.__destination
@@ -32,8 +34,10 @@ class PingStats(object):
     @property
     def packet_transmit(self):
         """
-        :return: Number of packets transmitted.
-        :rtype: int
+        Number of packets transmitted.
+
+        Returns:
+            |int|:
         """
 
         return self.__packet_transmit
@@ -41,8 +45,10 @@ class PingStats(object):
     @property
     def packet_receive(self):
         """
-        :return: Number of packets received.
-        :rtype: int
+        Number of packets received.
+
+        Returns:
+            |int|:
         """
 
         return self.__packet_receive
@@ -50,8 +56,10 @@ class PingStats(object):
     @property
     def packet_loss_count(self):
         """
-        :return: Packet loss count. |None| if the value is not a number.
-        :rtype: int
+        Number of packet losses.
+
+        Returns:
+            |int|: |None| if the value is not a number.
         """
 
         try:
@@ -62,10 +70,10 @@ class PingStats(object):
     @property
     def packet_loss_rate(self):
         """
-        :return:
-            Percentage of packet loss ``[%]``.
-            |None| if the value is not a number.
-        :rtype: float
+        Percentage of packet loss |percent_unit|.
+
+        Returns:
+            |float|: |None| if the value is not a number.
         """
 
         try:
@@ -76,9 +84,10 @@ class PingStats(object):
     @property
     def rtt_min(self):
         """
-        :return:
-            Minimum round trip time of transmitted ICMP packets ``[msec]``.
-        :rtype: float
+        Minimum round trip time of transmitted ICMP packets |msec_unit|.
+
+        Returns:
+            |float|:
         """
 
         return self.__rtt_min
@@ -86,9 +95,10 @@ class PingStats(object):
     @property
     def rtt_avg(self):
         """
-        :return:
-            Average round trip time of transmitted ICMP packets ``[msec]``.
-        :rtype: float
+        Average round trip time of transmitted ICMP packets |msec_unit|.
+
+        Returns:
+            |float|:
         """
 
         return self.__rtt_avg
@@ -96,9 +106,10 @@ class PingStats(object):
     @property
     def rtt_max(self):
         """
-        :return:
-            Maximum round trip time of transmitted ICMP packets ``[msec]``.
-        :rtype: float
+        Maximum round trip time of transmitted ICMP packets |msec_unit|.
+
+        Returns:
+            |float|:
         """
 
         return self.__rtt_max
@@ -106,10 +117,10 @@ class PingStats(object):
     @property
     def rtt_mdev(self):
         """
-        :return:
-            Standard deviation of transmitted ICMP packets. The attribute returns
-            always |None| when parsing Windows ping result.
-        :rtype: float
+        Standard deviation of transmitted ICMP packets.
+
+        Returns:
+            |float|: |None| when parsing Windows ping result.
         """
 
         return self.__rtt_mdev
@@ -117,10 +128,10 @@ class PingStats(object):
     @property
     def packet_duplicate_count(self):
         """
-        :return:
-            Number of duplicated packet. The attribute returns always |None| when parsing
-            Windows ping result.
-        :rtype: int
+        Number of duplicated packets.
+
+        Returns:
+            |int|: |None| when parsing Windows ping result.
         """
 
         return self.__duplicates
@@ -128,9 +139,10 @@ class PingStats(object):
     @property
     def packet_duplicate_rate(self):
         """
-        :return:
-            Percentage of duplicated packets ``[%]``. |None| if the value is not a number.
-        :rtype: float
+        Percentage of duplicated packets |percent_unit|. 
+
+        Returns:
+            |float|: |None| if the value is not a number.
         """
 
         try:
@@ -141,16 +153,39 @@ class PingStats(object):
     @property
     def icmp_reply_list(self):
         """
-        :return: List of ICMP packet reply information.
-        :rtype: list of dict
+        ICMP packet reply information.
+
+        Returns:
+            |list| of |dict|:
         """
 
         return self.__icmp_reply_list
 
     def as_dict(self):
         """
-        :return: ping statistics.
-        :rtype: dict
+        ping statistics.
+
+        Returns:
+            |dict|:
+
+        Examples:
+            >>> import pingparsing
+            >>> parser = pingparsing.PingParsing()
+            >>> parser.parse(ping_result)
+            >>> parser.as_dict()
+            {
+                "destination": "google.com",
+                "packet_transmit": 60,
+                "packet_receive": 60,
+                "packet_loss_rate": 0.0,
+                "packet_loss_count": 0,
+                "rtt_min": 61.425,
+                "rtt_avg": 99.731,
+                "rtt_max": 212.597,
+                "rtt_mdev": 27.566,
+                "packet_duplicate_rate": 0.0,
+                "packet_duplicate_count": 0
+            }
         """
 
         return {
@@ -169,8 +204,17 @@ class PingStats(object):
 
     def as_tuple(self):
         """
-        :return: ping statistics.
-        :rtype: collections.namedtuple
+        ping statistics.
+
+        Returns:
+            |namedtuple|:
+
+        Examples:
+            >>> import pingparsing
+            >>> parser = pingparsing.PingParsing()
+            >>> parser.parse(ping_result)
+            >>> parser.as_tuple()
+            PingResult(destination='google.com', packet_transmit=60, packet_receive=60, packet_loss_rate=0.0, packet_loss_count=0, rtt_min=61.425, rtt_avg=99.731, rtt_max=212.597, rtt_mdev=27.566, packet_duplicate_rate=0.0, packet_duplicate_count=0)
         """
 
         from collections import namedtuple
