@@ -52,7 +52,7 @@ def parse_option():
     parser.add_argument(
         "--max-workers",
         type=int,
-        help="""a number of threads for when multiple destination/file
+        help="""Number of threads for when multiple destination/file
         specified. defaults to equals to two times number of cores.
         """,
     )
@@ -105,6 +105,7 @@ def parse_option():
         type=float,
         help="""timeout in seconds.
         see also ping(8) [-w deadline] option description.
+        note: meaning of the 'deadline' may differ system to system.
         """,
     )
     group.add_argument("-I", "--interface", dest="interface", help="network interface")
