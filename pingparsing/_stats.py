@@ -139,7 +139,7 @@ class PingStats(object):
     @property
     def packet_duplicate_rate(self):
         """
-        Percentage of duplicated packets |percent_unit|. 
+        Percentage of duplicated packets |percent_unit|.
 
         Returns:
             |float|: |None| if the value is not a number.
