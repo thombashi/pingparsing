@@ -4,7 +4,7 @@ CLI help
 
     usage: pingparsing [-h] [-V] [--max-workers MAX_WORKERS] [--indent INDENT]
                        [--icmp-reply] [--debug | --quiet] [-c COUNT] [-w DEADLINE]
-                       [-I INTERFACE]
+                       [--timeout TIMEOUT] [-I INTERFACE]
                        destination_or_file [destination_or_file ...]
 
     positional arguments:
@@ -14,7 +14,7 @@ CLI help
       -h, --help            show this help message and exit
       -V, --version         show program's version number and exit
       --max-workers MAX_WORKERS
-                            a number of threads for when multiple destination/file
+                            Number of threads for when multiple destination/file
                             specified. defaults to equals to two times number of
                             cores.
       --indent INDENT       JSON output will be pretty-printed with the indent
@@ -29,7 +29,15 @@ CLI help
                             count] option description.
       -w DEADLINE, --deadline DEADLINE
                             timeout in seconds. see also ping(8) [-w deadline]
-                            option description.
+                            option description. note: meaning of the 'deadline'
+                            may differ system to system.
+      --timeout TIMEOUT     Time to wait for a response, in milliseconds. If the
+                            system does not support timeout in milliseconds, round
+                            up as seconds. Use system default if not specified.
+                            Ignored if the system does not support timeout itself.
+                            See also ping(8) [-W timeout] option description.
+                            note: meaning of the 'timeout' may differ system to
+                            system.
       -I INTERFACE, --interface INTERFACE
                             network interface
 
