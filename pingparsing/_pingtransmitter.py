@@ -157,8 +157,8 @@ class PingTransmitter(object):
 
         try:
             deadline = Integer(self.deadline).convert()
-        except typepy.TypeConversionError:
-            raise ValueError("deadline must be an integer: actual={}".format(self.deadline))
+        except typepy.TypeConversionError as e:
+            raise ValueError("deadline must be an integer: {}".format(e))
 
         if deadline <= 0:
             raise ValueError("deadline must be greater than zero: actual={}".format(self.deadline))
@@ -169,8 +169,8 @@ class PingTransmitter(object):
 
         try:
             count = Integer(self.count).convert()
-        except typepy.TypeConversionError:
-            raise ValueError("count must be an integer: actual={}".format(self.count))
+        except typepy.TypeConversionError as e:
+            raise ValueError("count must be an integer: {}".format(e))
 
         if count <= 0:
             raise ValueError("count must be greater than zero")
