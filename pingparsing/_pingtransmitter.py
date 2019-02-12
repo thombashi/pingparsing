@@ -7,6 +7,7 @@
 from __future__ import absolute_import
 
 import ipaddress
+import math
 import platform
 import warnings
 from collections import namedtuple
@@ -56,6 +57,12 @@ class PingTransmitter(object):
         :py:attr:`~.deadline` automatically set to the default value (``3``).
         Defaults to |None|.
 
+    .. py:attribute:: timeout
+
+        Time to wait for a response, in ``milliseconds``.
+        If the system does not support timeout in milliseconds, round up as seconds.
+        Use system default if the value is |None|.
+        Defaults to |None|.
 
     .. py:attribute:: count
 
@@ -97,6 +104,7 @@ class PingTransmitter(object):
     def __init__(self):
         self.destination_host = ""
         self.deadline = None
+        self.timeout = None
         self.count = None
         self.ping_option = ""
         self.is_quiet = False
@@ -149,6 +157,7 @@ class PingTransmitter(object):
             raise ValueError("required destination_host")
 
         self.__validate_deadline()
+        self.__validate_timeout()
         self.__validate_count()
         self.__validate_interface()
 
@@ -163,6 +172,18 @@ class PingTransmitter(object):
 
         if deadline <= 0:
             raise ValueError("deadline must be greater than zero: actual={}".format(self.deadline))
+
+    def __validate_timeout(self):
+        if self.timeout is None:
+            return
+
+        try:
+            timeout = Integer(self.timeout).convert()
+        except TypeConversionError as e:
+            raise ValueError("timeout must be an integer: {}".format(e))
+
+        if timeout <= 0:
+            raise ValueError("timeout must be greater than zero: actual={}".format(self.timeout))
 
     def __validate_count(self):
         if self.count is None:
@@ -196,6 +217,7 @@ class PingTransmitter(object):
             [
                 self.__get_builtin_ping_command(),
                 self.__get_deadline_option(),
+                self.__get_timeout_option(),
                 self.__get_count_option(),
                 self.__get_quiet_option(),
             ]
@@ -253,6 +275,21 @@ class PingTransmitter(object):
             return "-t {:d}".format(deadline)
 
         return "-w {:d}".format(deadline)
+
+    def __get_timeout_option(self):
+        try:
+            timeout_ms = Integer(self.timeout).convert()
+        except TypeConversionError:
+            return ""
+
+        if self.__is_linux():
+            # timeout option value accept in seconds unit in Linux ping and float values
+            # not accepted.
+            return "-W {:d}".format(int(math.ceil(timeout_ms / 1000.0)))
+        if self.__is_windows():
+            return "-w {:d}".format(timeout_ms)
+
+        return ""
 
     def __get_count_option(self):
         try:

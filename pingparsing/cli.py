@@ -108,6 +108,18 @@ def parse_option():
         note: meaning of the 'deadline' may differ system to system.
         """,
     )
+    group.add_argument(
+        "--timeout",
+        type=float,
+        help="""Time to wait for a response, in milliseconds.
+        If the system does not support timeout in milliseconds, round up as seconds.
+        Use system default if not specified.
+        Ignored if the system does not support timeout itself.
+
+        See also ping(8) [-W timeout] option description.
+        note: meaning of the 'timeout' may differ system to system.
+        """,
+    )
     group.add_argument("-I", "--interface", dest="interface", help="network interface")
 
     return parser.parse_args()
@@ -135,7 +147,7 @@ def is_use_stdin():
     return sys.stdin.isatty() or len(sys.argv) > 1
 
 
-def parse_ping(logger, dest_or_file, interface, count, deadline, is_parse_icmp_reply):
+def parse_ping(logger, dest_or_file, interface, count, deadline, timeout, is_parse_icmp_reply):
     if os.path.isfile(dest_or_file):
         with open(dest_or_file) as f:
             ping_result_text = f.read()
@@ -145,6 +157,7 @@ def parse_ping(logger, dest_or_file, interface, count, deadline, is_parse_icmp_r
         transmitter.interface = interface
         transmitter.count = count
         transmitter.deadline = deadline
+        transmitter.timeout = timeout
         transmitter.is_quiet = not is_parse_icmp_reply
 
         try:
@@ -169,11 +182,12 @@ def parse_ping(logger, dest_or_file, interface, count, deadline, is_parse_icmp_r
 def get_ping_param(options):
     count = options.count
     deadline = options.deadline
+    timeout = options.timeout
 
     if not options.count and not options.deadline:
         count = DEFAULT_COUNT
 
-    return (count, deadline)
+    return (count, deadline, timeout)
 
 
 def print_result(text):
@@ -214,8 +228,12 @@ def main():
         max_workers = (
             multiprocessing.cpu_count() * 2 if options.max_workers is None else options.max_workers
         )
-        count, deadline = get_ping_param(options)
-        logger.debug("max-workers={}, count={}, deadline={}".format(max_workers, count, deadline))
+        count, deadline, timeout = get_ping_param(options)
+        logger.debug(
+            "max-workers={}, count={}, deadline={}, timeout={}".format(
+                max_workers, count, deadline, timeout
+            )
+        )
 
         try:
             with futures.ProcessPoolExecutor(max_workers) as executor:
@@ -230,6 +248,7 @@ def main():
                             options.interface,
                             count,
                             deadline,
+                            timeout,
                             options.icmp_reply,
                         )
                     )
