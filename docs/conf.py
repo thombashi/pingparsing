@@ -333,3 +333,27 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #
 # texinfo_no_detailmenu = False
+
+
+builtin = """
+.. |False| replace:: :py:obj:`False`
+.. |True| replace:: :py:obj:`True`
+.. |None| replace:: :py:obj:`None`
+
+.. |bool| replace:: :py:class:`bool`
+.. |dict| replace:: :py:class:`dict`
+.. |int| replace:: :py:class:`int`
+.. |list| replace:: :py:class:`list`
+.. |float| replace:: :py:class:`float`
+.. |str| replace:: :py:class:`str`
+.. |tuple| replace:: :py:obj:`tuple`
+"""
+
+module = u"""
+.. |datetime| replace:: :py:class:`datetime.datetime`
+.. |timedelta| replace:: :py:class:`datetime.timedelta`
+"""
+
+rst_prolog = builtin + module + """
+
+"""
