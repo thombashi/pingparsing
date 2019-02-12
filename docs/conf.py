@@ -335,7 +335,7 @@ texinfo_documents = [
 # texinfo_no_detailmenu = False
 
 
-builtin = """
+rp_builtin = """
 .. |False| replace:: :py:obj:`False`
 .. |True| replace:: :py:obj:`True`
 .. |None| replace:: :py:obj:`None`
@@ -349,11 +349,16 @@ builtin = """
 .. |tuple| replace:: :py:obj:`tuple`
 """
 
-module = u"""
+rp_module = """
 .. |datetime| replace:: :py:class:`datetime.datetime`
 .. |timedelta| replace:: :py:class:`datetime.timedelta`
 """
 
-rst_prolog = builtin + module + """
+rp_func = """
+.. |namedtuple| replace:: :py:func:`~collections.namedtuple`
+"""
 
+rst_prolog = rp_builtin + rp_module + rp_func + """
+.. |msec_unit| replace:: ``[msec]``
+.. |percent_unit| replace:: ``[%]``
 """
