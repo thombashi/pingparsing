@@ -441,7 +441,7 @@ class Test_PingParsing_parse(object):
 
         assert ping_parser.parser_name == parser_name
         assert stats.as_dict() == test_data.expected
-        assert stats.icmp_replies == test_data.reply
+        assert stats.icmp_replies == test_data.replies
 
     @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["test_data", "parser_name"], [[UBUNTU_SUCCESS_1, "Linux"]])
@@ -456,7 +456,7 @@ class Test_PingParsing_parse(object):
 
         assert ping_parser.parser_name == parser_name
         assert stats.as_dict() == test_data.expected
-        assert stats.icmp_replies == test_data.reply
+        assert stats.icmp_replies == test_data.replies
 
     def test_empty(self, ping_parser):
         ping_parser.parse(
