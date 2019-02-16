@@ -162,9 +162,7 @@ class LinuxPingParser(PingParser):
     @property
     def _icmp_reply_pattern(self):
         return (
-            r"(?P<timestamp>\[[0-9\.]+\])?\s?.+ from "
-            + self._IPADDR_PATTERN
-            + ".*"
+            r"(?P<timestamp>\[[0-9\.]+\])?\s?.+ from .+?: "
             + self._ICMP_SEQ_PATTERN
             + " "
             + self._TTL_PATTERN
@@ -247,7 +245,7 @@ class WindowsPingParser(PingParser):
 
     @property
     def _icmp_reply_pattern(self):
-        return " from " + self._IPADDR_PATTERN + ".*" + self._TTL_PATTERN + " " + self._TIME_PATTERN
+        return " from  .+?: " + self._TTL_PATTERN + " " + self._TIME_PATTERN
 
     @property
     def _stats_headline_pattern(self):
@@ -324,9 +322,7 @@ class MacOsPingParser(PingParser):
     @property
     def _icmp_reply_pattern(self):
         return (
-            " from "
-            + self._IPADDR_PATTERN
-            + ".*"
+            " from .+?: "
             + self._ICMP_SEQ_PATTERN
             + " "
             + self._TTL_PATTERN
@@ -410,13 +406,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
     @property
     def _icmp_reply_pattern(self):
         return (
-            " from "
-            + self._IPADDR_PATTERN
-            + ".*"
-            + r"seq=(?P<icmp_seq>\d+) "
-            + self._TTL_PATTERN
-            + " "
-            + self._TIME_PATTERN
+            " from .+?: " + r"seq=(?P<icmp_seq>\d+) " + self._TTL_PATTERN + " " + self._TIME_PATTERN
         )
 
     @property
