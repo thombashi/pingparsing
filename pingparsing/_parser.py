@@ -48,12 +48,12 @@ class PingParser(PingParserInterface):
     def _is_support_packet_duplicate(self):  # pragma: no cover
         pass
 
-    def _parse_icmp_reply(self, ping_line_list):
+    def _parse_icmp_reply(self, ping_lines):
         icmp_reply_regexp = re.compile(self._icmp_reply_pattern, re.IGNORECASE)
         duplicate_packet_regexp = re.compile(self._duplicate_packet_pattern)
         icmp_reply_list = []
 
-        for line in ping_line_list:
+        for line in ping_lines:
             match = icmp_reply_regexp.search(line)
             if not match:
                 continue
