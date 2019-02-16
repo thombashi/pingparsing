@@ -65,7 +65,7 @@ Parsing ``ping`` command output
         print(json.dumps(stats.as_dict(), indent=4))
 
         print("\n[extract icmp replies]")
-        for icmp_reply in stats.icmp_reply_list:
+        for icmp_reply in stats.icmp_replies:
             print(icmp_reply)
 
 :Output:

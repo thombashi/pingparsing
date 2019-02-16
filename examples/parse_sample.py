@@ -37,7 +37,7 @@ def main():
     print(json.dumps(stats.as_dict(), indent=4))
 
     print("\n[icmp reply]")
-    for icmp_reply in stats.icmp_reply_list:
+    for icmp_reply in stats.icmp_replies:
         print(icmp_reply)
 
     return 0

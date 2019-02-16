@@ -436,12 +436,12 @@ class Test_PingParsing_parse(object):
         print("[input text]\n{}\n".format(test_data.value))
         print("[expected]\n{}\n".format(test_data.expected))
         print("[actual]\n{}\n".format(stats.as_dict()))
-        for icmp_reply in stats.icmp_reply_list:
+        for icmp_reply in stats.icmp_replies:
             print(icmp_reply)
 
         assert ping_parser.parser_name == parser_name
         assert stats.as_dict() == test_data.expected
-        assert stats.icmp_reply_list == test_data.reply
+        assert stats.icmp_replies == test_data.reply
 
     @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["test_data", "parser_name"], [[UBUNTU_SUCCESS_1, "Linux"]])
@@ -451,12 +451,12 @@ class Test_PingParsing_parse(object):
         print("[input text]\n{}\n".format(test_data.value))
         print("[expected]\n{}\n".format(test_data.expected))
         print("[actual]\n{}\n".format(stats.as_dict()))
-        for icmp_reply in stats.icmp_reply_list:
+        for icmp_reply in stats.icmp_replies:
             print(icmp_reply)
 
         assert ping_parser.parser_name == parser_name
         assert stats.as_dict() == test_data.expected
-        assert stats.icmp_reply_list == test_data.reply
+        assert stats.icmp_replies == test_data.reply
 
     def test_empty(self, ping_parser):
         ping_parser.parse(
@@ -483,7 +483,7 @@ class Test_PingParsing_parse(object):
         assert stats.rtt_avg is None
         assert stats.rtt_max is None
         assert stats.rtt_mdev is None
-        assert stats.icmp_reply_list == []
+        assert stats.icmp_replies == []
 
     @pytest.mark.parametrize(
         ["value", "expected"],
@@ -510,4 +510,4 @@ class Test_PingParsing_as_tuple(object):
         assert result.rtt_avg == 99.731
         assert result.rtt_max == 212.597
         assert result.rtt_mdev == 27.566
-        assert stats.icmp_reply_list == []
+        assert stats.icmp_replies == []

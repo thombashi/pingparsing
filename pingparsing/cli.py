@@ -174,7 +174,7 @@ def parse_ping(logger, dest_or_file, interface, count, deadline, timeout, is_par
     stats = ping_parser.parse(ping_result_text)
     output = stats.as_dict()
     if is_parse_icmp_reply:
-        output["icmp_reply"] = stats.icmp_reply_list
+        output["icmp_reply"] = stats.icmp_replies
 
     return (dest_or_file, output)
 
@@ -265,7 +265,7 @@ def main():
         stats = ping_parser.parse(ping_result_text)
         output = stats.as_dict()
         if options.icmp_reply:
-            output["icmp_reply"] = stats.icmp_reply_list
+            output["icmp_reply"] = stats.icmp_replies
 
     if options.indent <= 0:
         result = json.dumps(output)

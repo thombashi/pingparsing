@@ -6,6 +6,8 @@
 
 from __future__ import absolute_import, division, unicode_literals
 
+import warnings
+
 
 class PingStats(object):
     def __init__(self, *args, **kwargs):
@@ -151,7 +153,7 @@ class PingStats(object):
             return None
 
     @property
-    def icmp_reply_list(self):
+    def icmp_replies(self):
         """
         ICMP packet reply information.
 
@@ -160,6 +162,12 @@ class PingStats(object):
         """
 
         return self.__icmp_replies
+
+    @property
+    def icmp_reply_list(self):
+        warnings.warn("'icmp_reply_list' has moved to 'icmp_replies'", DeprecationWarning)
+
+        return self.icmp_replies
 
     def as_dict(self):
         """
