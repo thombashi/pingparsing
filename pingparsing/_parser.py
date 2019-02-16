@@ -211,7 +211,7 @@ class LinuxPingParser(PingParser):
                 packet_transmit=packet_transmit,
                 packet_receive=packet_receive,
                 duplicates=duplicates,
-                icmp_reply_list=icmp_replies,
+                icmp_replies=icmp_replies,
             )
 
         rtt_pattern = (
@@ -236,7 +236,7 @@ class LinuxPingParser(PingParser):
             rtt_avg=float(parse_list[3]),
             rtt_max=float(parse_list[5]),
             rtt_mdev=float(parse_list[7]),
-            icmp_reply_list=icmp_replies,
+            icmp_replies=icmp_replies,
         )
 
 
@@ -288,7 +288,7 @@ class WindowsPingParser(PingParser):
                 packet_transmit=packet_transmit,
                 packet_receive=packet_receive,
                 duplicates=duplicates,
-                icmp_reply_list=icmp_replies,
+                icmp_replies=icmp_replies,
             )
 
         rtt_pattern = (
@@ -309,7 +309,7 @@ class WindowsPingParser(PingParser):
             rtt_min=float(parse_list[1]),
             rtt_avg=float(parse_list[5]),
             rtt_max=float(parse_list[3]),
-            icmp_reply_list=icmp_replies,
+            icmp_replies=icmp_replies,
         )
 
     def _parse_destination(self, stats_headline):
@@ -373,7 +373,7 @@ class MacOsPingParser(PingParser):
                 packet_transmit=packet_transmit,
                 packet_receive=packet_receive,
                 duplicates=duplicates,
-                icmp_reply_list=icmp_replies,
+                icmp_replies=icmp_replies,
             )
 
         rtt_pattern = (
@@ -398,7 +398,7 @@ class MacOsPingParser(PingParser):
             rtt_avg=float(parse_list[3]),
             rtt_max=float(parse_list[5]),
             rtt_mdev=float(parse_list[7]),
-            icmp_reply_list=icmp_replies,
+            icmp_replies=icmp_replies,
         )
 
 
@@ -454,7 +454,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
                 packet_transmit=packet_transmit,
                 packet_receive=packet_receive,
                 duplicates=duplicates,
-                icmp_reply_list=icmp_replies,
+                icmp_replies=icmp_replies,
             )
 
         rtt_pattern = (
@@ -476,7 +476,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             rtt_min=float(parse_list[1]),
             rtt_avg=float(parse_list[3]),
             rtt_max=float(parse_list[5]),
-            icmp_reply_list=icmp_replies,
+            icmp_replies=icmp_replies,
         )
 
     def _parse_duplicate(self, line):

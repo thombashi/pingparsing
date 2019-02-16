@@ -18,7 +18,7 @@ class PingStats(object):
         self.__rtt_mdev = kwargs.pop("rtt_mdev", None)
         self.__duplicates = kwargs.pop("duplicates", None)
 
-        self.__icmp_replies = kwargs.pop("icmp_reply_list", [])
+        self.__icmp_replies = kwargs.pop("icmp_replies", [])
 
     @property
     def destination(self):
