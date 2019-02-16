@@ -181,7 +181,7 @@ class LinuxPingParser(PingParser):
         return True
 
     def parse(self, ping_message):
-        icmp_reply_list = self._parse_icmp_reply(ping_message)
+        icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
         )
@@ -211,7 +211,7 @@ class LinuxPingParser(PingParser):
                 packet_transmit=packet_transmit,
                 packet_receive=packet_receive,
                 duplicates=duplicates,
-                icmp_reply_list=icmp_reply_list,
+                icmp_reply_list=icmp_replies,
             )
 
         rtt_pattern = (
@@ -236,7 +236,7 @@ class LinuxPingParser(PingParser):
             rtt_avg=float(parse_list[3]),
             rtt_max=float(parse_list[5]),
             rtt_mdev=float(parse_list[7]),
-            icmp_reply_list=icmp_reply_list,
+            icmp_reply_list=icmp_replies,
         )
 
 
@@ -258,7 +258,7 @@ class WindowsPingParser(PingParser):
         return False
 
     def parse(self, ping_message):
-        icmp_reply_list = self._parse_icmp_reply(ping_message)
+        icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
         )
@@ -288,7 +288,7 @@ class WindowsPingParser(PingParser):
                 packet_transmit=packet_transmit,
                 packet_receive=packet_receive,
                 duplicates=duplicates,
-                icmp_reply_list=icmp_reply_list,
+                icmp_reply_list=icmp_replies,
             )
 
         rtt_pattern = (
@@ -309,7 +309,7 @@ class WindowsPingParser(PingParser):
             rtt_min=float(parse_list[1]),
             rtt_avg=float(parse_list[5]),
             rtt_max=float(parse_list[3]),
-            icmp_reply_list=icmp_reply_list,
+            icmp_reply_list=icmp_replies,
         )
 
     def _parse_destination(self, stats_headline):
@@ -343,7 +343,7 @@ class MacOsPingParser(PingParser):
         return True
 
     def parse(self, ping_message):
-        icmp_reply_list = self._parse_icmp_reply(ping_message)
+        icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
         )
@@ -373,7 +373,7 @@ class MacOsPingParser(PingParser):
                 packet_transmit=packet_transmit,
                 packet_receive=packet_receive,
                 duplicates=duplicates,
-                icmp_reply_list=icmp_reply_list,
+                icmp_reply_list=icmp_replies,
             )
 
         rtt_pattern = (
@@ -398,7 +398,7 @@ class MacOsPingParser(PingParser):
             rtt_avg=float(parse_list[3]),
             rtt_max=float(parse_list[5]),
             rtt_mdev=float(parse_list[7]),
-            icmp_reply_list=icmp_reply_list,
+            icmp_reply_list=icmp_replies,
         )
 
 
@@ -424,7 +424,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
         return True
 
     def parse(self, ping_message):
-        icmp_reply_list = self._parse_icmp_reply(ping_message)
+        icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
         )
@@ -454,7 +454,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
                 packet_transmit=packet_transmit,
                 packet_receive=packet_receive,
                 duplicates=duplicates,
-                icmp_reply_list=icmp_reply_list,
+                icmp_reply_list=icmp_replies,
             )
 
         rtt_pattern = (
@@ -476,7 +476,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             rtt_min=float(parse_list[1]),
             rtt_avg=float(parse_list[3]),
             rtt_max=float(parse_list[5]),
-            icmp_reply_list=icmp_reply_list,
+            icmp_reply_list=icmp_replies,
         )
 
     def _parse_duplicate(self, line):
