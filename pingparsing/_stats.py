@@ -18,7 +18,7 @@ class PingStats(object):
         self.__rtt_mdev = kwargs.pop("rtt_mdev", None)
         self.__duplicates = kwargs.pop("duplicates", None)
 
-        self.__icmp_reply_list = kwargs.pop("icmp_reply_list", [])
+        self.__icmp_replies = kwargs.pop("icmp_reply_list", [])
 
     @property
     def destination(self):
@@ -159,7 +159,7 @@ class PingStats(object):
             |list| of |dict|:
         """
 
-        return self.__icmp_reply_list
+        return self.__icmp_replies
 
     def as_dict(self):
         """
