@@ -99,8 +99,8 @@ class PingParser(PingParserInterface):
     def _parse_destination(self, stats_headline):
         return stats_headline.lstrip("--- ").rstrip(" ping statistics ---")
 
-    def __find_stats_headline_idx(self, line_list, re_stats_header):
-        for i, line in enumerate(line_list):
+    def __find_stats_headline_idx(self, lines, re_stats_header):
+        for i, line in enumerate(lines):
             if re_stats_header.search(line):
                 break
         else:
