@@ -83,18 +83,18 @@ class PingParser(PingParserInterface):
 
         return icmp_reply_list
 
-    def _preprocess_parse_stats(self, line_list):
+    def _preprocess_parse_stats(self, lines):
         logger.debug("parsing as {:s} ping result format".format(self._parser_name))
 
         stats_headline_idx = self.__find_stats_headline_idx(
-            line_list, re.compile(self._stats_headline_pattern)
+            lines, re.compile(self._stats_headline_pattern)
         )
-        body_line_list = line_list[stats_headline_idx + 1 :]
+        body_line_list = lines[stats_headline_idx + 1 :]
         self.__validate_stats_body(body_line_list)
 
         packet_info_line = body_line_list[0]
 
-        return (line_list[stats_headline_idx], packet_info_line, body_line_list)
+        return (lines[stats_headline_idx], packet_info_line, body_line_list)
 
     def _parse_destination(self, stats_headline):
         return stats_headline.lstrip("--- ").rstrip(" ping statistics ---")
@@ -150,7 +150,7 @@ class NullPingParser(PingParser):
     def parse(self, ping_message):  # pragma: no cover
         pass
 
-    def _preprocess_parse_stats(self, line_list):  # pragma: no cover
+    def _preprocess_parse_stats(self, lines):  # pragma: no cover
         pass
 
 
@@ -183,7 +183,7 @@ class LinuxPingParser(PingParser):
     def parse(self, ping_message):
         icmp_reply_list = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
-            line_list=ping_message
+            lines=ping_message
         )
         packet_pattern = (
             pp.Word(pp.nums)
@@ -260,7 +260,7 @@ class WindowsPingParser(PingParser):
     def parse(self, ping_message):
         icmp_reply_list = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
-            line_list=ping_message
+            lines=ping_message
         )
         packet_pattern = (
             pp.Literal("Packets: Sent = ")
@@ -345,7 +345,7 @@ class MacOsPingParser(PingParser):
     def parse(self, ping_message):
         icmp_reply_list = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
-            line_list=ping_message
+            lines=ping_message
         )
         packet_pattern = (
             pp.Word(pp.nums)
@@ -426,7 +426,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
     def parse(self, ping_message):
         icmp_reply_list = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
-            line_list=ping_message
+            lines=ping_message
         )
         packet_pattern = (
             pp.Word(pp.nums)
