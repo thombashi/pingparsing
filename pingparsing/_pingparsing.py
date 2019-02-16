@@ -136,7 +136,7 @@ class PingParsing(PingParserInterface):
 
             return self.__stats
 
-        line_list = _to_unicode(ping_message).splitlines()
+        ping_lines = _to_unicode(ping_message).splitlines()
         parser_class_list = (
             LinuxPingParser,
             WindowsPingParser,
@@ -147,7 +147,7 @@ class PingParsing(PingParserInterface):
         for parser_class in parser_class_list:
             self.__parser = parser_class()
             try:
-                self.__stats = self.__parser.parse(line_list)
+                self.__stats = self.__parser.parse(ping_lines)
                 return self.__stats
             except ParseError as e:
                 if e.reason != ParseErrorReason.HEADER_NOT_FOUND:
