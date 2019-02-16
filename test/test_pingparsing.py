@@ -13,7 +13,13 @@ import six
 from pingparsing import ParseError
 
 from .common import PingTestData, ping_parser  # noqa: W0611
-from .data import DEBIAN_SUCCESS_0, UBUNTU_SUCCESS_0, UBUNTU_SUCCESS_1, WINDOWS7SP1_SUCCESS
+from .data import (
+    DEBIAN_SUCCESS_0,
+    UBUNTU_SUCCESS_0,
+    UBUNTU_SUCCESS_1,
+    UBUNTU_SUCCESS_2,
+    WINDOWS7SP1_SUCCESS,
+)
 
 
 PING_FEDORA_EMPTY_BODY = six.b(
@@ -443,8 +449,9 @@ class Test_PingParsing_parse(object):
         assert stats.as_dict() == test_data.expected
         assert stats.icmp_replies == test_data.replies
 
-    @pytest.mark.xfail(run=False)
-    @pytest.mark.parametrize(["test_data", "parser_name"], [[UBUNTU_SUCCESS_1, "Linux"]])
+    @pytest.mark.parametrize(
+        ["test_data", "parser_name"], [[UBUNTU_SUCCESS_1, "Linux"], [UBUNTU_SUCCESS_2, "Linux"]]
+    )
     def test_normal_timestamp(self, ping_parser, test_data, parser_name):
         stats = ping_parser.parse(test_data.value)
 

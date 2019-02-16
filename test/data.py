@@ -27,42 +27,6 @@ PING_DEBIAN_SUCCESS_0 = six.b(
         """
     )
 )
-
-# Ubuntu stretch
-#   $ ping -c 5 twitter.com
-PING_UBUNTU_SUCCESS_0 = six.b(
-    dedent(
-        """\
-        PING twitter.com (104.244.42.65) 56(84) bytes of data.
-        64 bytes from 104.244.42.65: icmp_seq=1 ttl=53 time=68.5 ms
-        64 bytes from 104.244.42.65: icmp_seq=2 ttl=53 time=67.7 ms
-        64 bytes from 104.244.42.65: icmp_seq=3 ttl=53 time=65.6 ms
-        64 bytes from 104.244.42.65: icmp_seq=4 ttl=53 time=65.6 ms
-        64 bytes from 104.244.42.65: icmp_seq=5 ttl=53 time=64.9 ms
-
-        --- twitter.com ping statistics ---
-        5 packets transmitted, 5 received, 0% packet loss, time 4003ms
-        rtt min/avg/max/mdev = 64.912/66.494/68.524/1.430 ms
-        """
-    )
-)
-
-#   $ ping -c 5 google.com -D
-PING_UBUNTU_SUCCESS_1 = dedent(
-    """\
-    PING google.com (74.125.24.100) 56(84) bytes of data.
-    [1524930937.003555] 64 bytes from 74.125.24.100: icmp_seq=1 ttl=39 time=148 ms
-    [1524930937.787175] 64 bytes from 74.125.24.100: icmp_seq=2 ttl=39 time=137 ms
-    [1524930938.787642] 64 bytes from 74.125.24.100: icmp_seq=3 ttl=39 time=137 ms
-    [1524930939.787653] 64 bytes from 74.125.24.100: icmp_seq=4 ttl=39 time=136 ms
-    [1524930940.788365] 64 bytes from 74.125.24.100: icmp_seq=5 ttl=39 time=136 ms
-
-    --- google.com ping statistics ---
-    5 packets transmitted, 5 received, 0% packet loss, time 4001ms
-    rtt min/avg/max/mdev = 136.537/139.174/148.006/4.425 ms
-    """
-)
-
 DEBIAN_SUCCESS_0 = PingTestData(
     PING_DEBIAN_SUCCESS_0,
     {
@@ -79,6 +43,26 @@ DEBIAN_SUCCESS_0 = PingTestData(
         "rtt_mdev": 27.566,
     },
     [],
+)
+
+
+# Ubuntu 16.04
+#   $ ping -c 5 twitter.com
+PING_UBUNTU_SUCCESS_0 = six.b(
+    dedent(
+        """\
+        PING twitter.com (104.244.42.65) 56(84) bytes of data.
+        64 bytes from 104.244.42.65: icmp_seq=1 ttl=53 time=68.5 ms
+        64 bytes from 104.244.42.65: icmp_seq=2 ttl=53 time=67.7 ms
+        64 bytes from 104.244.42.65: icmp_seq=3 ttl=53 time=65.6 ms
+        64 bytes from 104.244.42.65: icmp_seq=4 ttl=53 time=65.6 ms
+        64 bytes from 104.244.42.65: icmp_seq=5 ttl=53 time=64.9 ms
+
+        --- twitter.com ping statistics ---
+        5 packets transmitted, 5 received, 0% packet loss, time 4003ms
+        rtt min/avg/max/mdev = 64.912/66.494/68.524/1.430 ms
+        """
+    )
 )
 UBUNTU_SUCCESS_0 = PingTestData(
     PING_UBUNTU_SUCCESS_0,
@@ -102,6 +86,23 @@ UBUNTU_SUCCESS_0 = PingTestData(
         {"timestamp": None, "icmp_seq": 4, "ttl": 53, "time": 65.6, "duplicate": False},
         {"timestamp": None, "icmp_seq": 5, "ttl": 53, "time": 64.9, "duplicate": False},
     ],
+)
+
+# Ubuntu 16.04
+#   $ ping -c 5 google.com -D
+PING_UBUNTU_SUCCESS_1 = dedent(
+    """\
+    PING google.com (74.125.24.100) 56(84) bytes of data.
+    [1524930937.003555] 64 bytes from 74.125.24.100: icmp_seq=1 ttl=39 time=148 ms
+    [1524930937.787175] 64 bytes from 74.125.24.100: icmp_seq=2 ttl=39 time=137 ms
+    [1524930938.787642] 64 bytes from 74.125.24.100: icmp_seq=3 ttl=39 time=137 ms
+    [1524930939.787653] 64 bytes from 74.125.24.100: icmp_seq=4 ttl=39 time=136 ms
+    [1524930940.788365] 64 bytes from 74.125.24.100: icmp_seq=5 ttl=39 time=136 ms
+
+    --- google.com ping statistics ---
+    5 packets transmitted, 5 received, 0% packet loss, time 4001ms
+    rtt min/avg/max/mdev = 136.537/139.174/148.006/4.425 ms
+    """
 )
 UBUNTU_SUCCESS_1 = PingTestData(
     PING_UBUNTU_SUCCESS_1,
@@ -154,6 +155,42 @@ UBUNTU_SUCCESS_1 = PingTestData(
             "time": 136.0,
             "duplicate": False,
         },
+    ],
+)
+
+# Ubuntu 18.04
+#   $ ping google.com -c 3
+PING_UBUNTU_SUCCESS_2 = dedent(
+    """\
+    PING google.com (172.217.26.110) 56(84) bytes of data.
+    64 bytes from kix05s01-in-f14.1e100.net (172.217.26.110): icmp_seq=1 ttl=50 time=64.3 ms
+    64 bytes from kix05s01-in-f14.1e100.net (172.217.26.110): icmp_seq=2 ttl=50 time=49.7 ms
+    64 bytes from kix05s01-in-f14.1e100.net (172.217.26.110): icmp_seq=3 ttl=50 time=48.8 ms
+
+    --- google.com ping statistics ---
+    3 packets transmitted, 3 received, 0% packet loss, time 2002ms
+    rtt min/avg/max/mdev = 48.832/54.309/64.334/7.098 ms
+    """
+)
+UBUNTU_SUCCESS_2 = PingTestData(
+    PING_UBUNTU_SUCCESS_2,
+    {
+        "destination": "google.com",
+        "packet_transmit": 3,
+        "packet_receive": 3,
+        "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "packet_duplicate_rate": 0,
+        "packet_duplicate_count": 0,
+        "rtt_min": 48.832,
+        "rtt_avg": 54.309,
+        "rtt_max": 64.334,
+        "rtt_mdev": 7.098,
+    },
+    [
+        {"timestamp": None, "icmp_seq": 1, "ttl": 50, "time": 64.3, "duplicate": False},
+        {"timestamp": None, "icmp_seq": 2, "ttl": 50, "time": 49.7, "duplicate": False},
+        {"timestamp": None, "icmp_seq": 3, "ttl": 50, "time": 48.8, "duplicate": False},
     ],
 )
 
