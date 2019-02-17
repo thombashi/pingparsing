@@ -108,7 +108,7 @@ The parsed result outputted with JSON format.
             "rtt_mdev": 5.589,
             "packet_duplicate_count": 0,
             "packet_duplicate_rate": 0.0,
-            "icmp_reply": [
+            "icmp_replies": [
                 {
                     "timestamp": null,
                     "icmp_seq": 1,
@@ -207,7 +207,7 @@ Parse ping result file
                 "rtt_mdev": 27.566,
                 "packet_duplicate_count": 0,
                 "packet_duplicate_rate": 0.0,
-                "icmp_reply": []
+                "icmp_replies": []
             },
             "osx.txt": {
                 "destination": "google.com",
@@ -221,7 +221,7 @@ Parse ping result file
                 "rtt_mdev": 8.292,
                 "packet_duplicate_count": 0,
                 "packet_duplicate_rate": 0.0,
-                "icmp_reply": [
+                "icmp_replies": [
                     {
                         "icmp_seq": 0,
                         "ttl": 53,
@@ -389,7 +389,7 @@ Parsing ``ping`` command output
         print(json.dumps(stats.as_dict(), indent=4))
 
         print("\n[extract icmp replies]")
-        for icmp_reply in stats.icmp_reply_list:
+        for icmp_reply in stats.icmp_replies:
             print(icmp_reply)
 
 :Output:
