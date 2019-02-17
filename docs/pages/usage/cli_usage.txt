@@ -83,7 +83,7 @@ The parsed result outputted with JSON format.
             "rtt_mdev": 5.589,
             "packet_duplicate_count": 0,
             "packet_duplicate_rate": 0.0,
-            "icmp_reply": [
+            "icmp_replies": [
                 {
                     "timestamp": null,
                     "icmp_seq": 1,
@@ -184,7 +184,7 @@ Parse ping result file
                 "rtt_mdev": 27.566,
                 "packet_duplicate_count": 0,
                 "packet_duplicate_rate": 0.0,
-                "icmp_reply": []
+                "icmp_replies": []
             },
             "osx.txt": {
                 "destination": "google.com",
@@ -198,7 +198,7 @@ Parse ping result file
                 "rtt_mdev": 8.292,
                 "packet_duplicate_count": 0,
                 "packet_duplicate_rate": 0.0,
-                "icmp_reply": [
+                "icmp_replies": [
                     {
                         "icmp_seq": 0,
                         "ttl": 53,
@@ -238,7 +238,7 @@ Parse from the standard input
 --------------------------------------------
 .. code-block:: console
 
-    $ ping -i 0.2 -w 20 192.168.2.101 | pingparsing
+    $ ping -i 0.2 -w 20 192.168.2.101 | pingparsing -
     {
         "destination": "192.168.2.101",
         "packet_transmit": 99,
