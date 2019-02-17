@@ -46,8 +46,13 @@ def parse_option():
         "-V", "--version", action="version", version="%(prog)s {}".format(__version__)
     )
 
-    if is_use_stdin():
-        parser.add_argument("destination_or_file", nargs="+", help="")
+    use_stdin, found_stdin_specifier = is_use_stdin()
+    if not use_stdin or found_stdin_specifier:
+        parser.add_argument(
+            "destination_or_file",
+            nargs="+",
+            help="Destinations to send ping, or files to parse. '-' for parse the standard input.",
+        )
 
     parser.add_argument(
         "--max-workers",
@@ -144,7 +149,12 @@ def initialize_log_handler(log_level):
 
 
 def is_use_stdin():
-    return sys.stdin.isatty() or len(sys.argv) > 1
+    if sys.stdin.isatty():
+        return (False, False)
+
+    found_stdin_specifier = "-" in sys.argv[1:]
+
+    return (len(sys.argv) == 1 or found_stdin_specifier, found_stdin_specifier)
 
 
 def parse_ping(logger, dest_or_file, interface, count, deadline, timeout, is_parse_icmp_reply):
@@ -220,7 +230,8 @@ def main():
     set_log_level(options.log_level)
 
     output = {}
-    if is_use_stdin():
+    use_stdin, found_stdin_specifier = is_use_stdin()
+    if not use_stdin and not found_stdin_specifier:
         from concurrent import futures
 
         set_log_level(options.log_level)
