@@ -178,7 +178,8 @@ def parse_ping(logger, dest_or_file, interface, count, deadline, timeout, is_par
 
         ping_result_text = result.stdout
         if result.returncode != 0:
-            logger.error(result.stderr)
+            if result.stderr:
+                logger.error(result.stderr)
 
     ping_parser = PingParsing()
     stats = ping_parser.parse(ping_result_text)
