@@ -131,6 +131,8 @@ def parse_option():
 
 
 def initialize_log_handler(log_level):
+    from logbook.more import ColorizedStderrHandler
+
     debug_level_format_str = (
         "[{record.level_name}] {record.channel} {record.func_name} "
         "({record.lineno}): {record.message}"
@@ -140,10 +142,10 @@ def initialize_log_handler(log_level):
     else:
         info_level_format_str = "[{record.level_name}] {record.channel}: {record.message}"
 
-    logbook.StderrHandler(
+    ColorizedStderrHandler(
         level=logbook.DEBUG, format_string=debug_level_format_str
     ).push_application()
-    logbook.StderrHandler(
+    ColorizedStderrHandler(
         level=logbook.INFO, format_string=info_level_format_str
     ).push_application()
 
