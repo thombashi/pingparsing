@@ -237,8 +237,6 @@ def main():
     if not use_stdin and not found_stdin_specifier:
         from concurrent import futures
 
-        set_log_level(options.log_level)
-
         max_workers = (
             multiprocessing.cpu_count() * 2 if options.max_workers is None else options.max_workers
         )
