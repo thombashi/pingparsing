@@ -113,10 +113,12 @@ class PingParsing(PingParserInterface):
         """
         Parse ping command output.
 
-        :param ping_message: ping command output.
-        :type ping_message: str or :py:class:`~pingparsing.PingResult`
-        :return: Parsed result.
-        :rtype: :py:class:`~pingparsing.PingStats`
+        Args:
+            ping_message (str or :py:class:`~pingparsing.PingResult`):
+                ``ping`` command output.
+
+        Returns:
+            :py:class:`~pingparsing.PingStats`: Parsed result.
         """
 
         try:
