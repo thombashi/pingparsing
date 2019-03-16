@@ -261,7 +261,7 @@ Parse from the standard input
 --------------------------------------------
 .. code-block:: console
 
-    $ ping -i 0.2 -w 20 192.168.2.101 | pingparsing
+    $ ping -i 0.2 -w 20 192.168.2.101 | pingparsing -
     {
         "destination": "192.168.2.101",
         "packet_transmit": 99,
@@ -286,7 +286,8 @@ CLI help
                        destination_or_file [destination_or_file ...]
 
     positional arguments:
-      destination_or_file
+      destination_or_file   Destinations to send ping, or files to parse. '-' for
+                            parse the standard input.
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -306,13 +307,25 @@ CLI help
                             stop after sending the count. see also ping(8) [-c
                             count] option description.
       -w DEADLINE, --deadline DEADLINE
-                            timeout in seconds. see also ping(8) [-w deadline]
-                            option description. note: meaning of the 'deadline'
-                            may differ system to system.
-      --timeout TIMEOUT     Time to wait for a response, in milliseconds. If the
-                            system does not support timeout in milliseconds, round
-                            up as seconds. Use system default if not specified.
-                            Ignored if the system does not support timeout itself.
+                            Timeout before ping exits. valid time units are:
+                            d/day/days, h/hour/hours, m/min/mins/minute/minutes,
+                            s/sec/secs/second/seconds,
+                            ms/msec/msecs/millisecond/milliseconds,
+                            us/usec/usecs/microsecond/microseconds. if no unit
+                            string found, considered seconds as the time unit. see
+                            also ping(8) [-w deadline] option description. note:
+                            meaning of the 'deadline' may differ system to system.
+      --timeout TIMEOUT     Time to wait for a response per packet. Valid time
+                            units are: d/day/days, h/hour/hours,
+                            m/min/mins/minute/minutes, s/sec/secs/second/seconds,
+                            ms/msec/msecs/millisecond/milliseconds,
+                            us/usec/usecs/microsecond/microseconds. if no unit
+                            string found, considered milliseconds as the time
+                            unit. Attempt to send packets with milliseconds
+                            granularity in default. If the system does not support
+                            timeout in milliseconds, round up as seconds. Use
+                            system default if not specified. This option wll
+                            ignored if the system does not support timeout itself.
                             See also ping(8) [-W timeout] option description.
                             note: meaning of the 'timeout' may differ system to
                             system.
@@ -454,6 +467,7 @@ Dependencies
 ============
 Python 2.7+ or 3.4+
 
+- `humanreadable <https://github.com/thombashi/humanreadable>`__
 - `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `pyparsing <https://github.com/pyparsing/pyparsing//>`__
 - `six <https://pypi.org/project/six/>`__
