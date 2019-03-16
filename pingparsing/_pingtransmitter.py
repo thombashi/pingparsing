@@ -12,6 +12,7 @@ import platform
 import warnings
 from collections import namedtuple
 
+import humanreadable as hr
 import six
 import subprocrunner
 import typepy
@@ -50,20 +51,6 @@ class PingTransmitter(object):
 
         Hostname or IP-address (IPv4/IPv6) to sending ICMP packets.
 
-    .. py:attribute:: deadline
-
-        Time ``[second]`` of sending ICMP packets.
-        If both :py:attr:`~.deadline` and :py:attr:`~.count` are |None|,
-        :py:attr:`~.deadline` automatically set to the default value (``3``).
-        Defaults to |None|.
-
-    .. py:attribute:: timeout
-
-        Time to wait for a response, in ``milliseconds``.
-        If the system does not support timeout in milliseconds, round up as seconds.
-        Use system default if the value is |None|.
-        Defaults to |None|.
-
     .. py:attribute:: count
 
         Number of sending ICMP packets. This attribute ignored if the value is
@@ -86,6 +73,101 @@ class PingTransmitter(object):
     """
 
     @property
+    def timeout(self):
+        """
+        Time to wait for a response per packet.
+        You can specify either a number or a string (e.g. ``"1sec"``).
+        If a number is specified, the unit will be considered as milliseconds.
+
+            +------------+----------------------------------------------------------+
+            |    Unit    |                Available specifiers (str)                |
+            +============+==========================================================+
+            |days        |``d``/``day``/``days``                                    |
+            +------------+----------------------------------------------------------+
+            |hours       |``h``/``hour``/``hours``                                  |
+            +------------+----------------------------------------------------------+
+            |minutes     |``m``/``min``/``mins``/``minute``/``minutes``             |
+            +------------+----------------------------------------------------------+
+            |seconds     |``s``/``sec``/``secs``/``second``/``seconds``             |
+            +------------+----------------------------------------------------------+
+            |milliseconds|``ms``/``msec``/``msecs``/``millisecond``/``milliseconds``|
+            +------------+----------------------------------------------------------+
+            |microseconds|``us``/``usec``/``usecs``/``microsecond``/``microseconds``|
+            +------------+----------------------------------------------------------+
+
+        Use system default timeout if the value is |None|.
+        Defaults to |None|.
+        If the system does not support timeout in milliseconds, round up as seconds.
+
+        Returns:
+            humanreadable.Time: timeout
+        """
+
+        return self.__timeout
+
+    @timeout.setter
+    def timeout(self, value):
+        if value is None:
+            self.__timeout = value
+            return
+
+        timeout = hr.Time(str(value), default_unit=hr.Time.Unit.MILLISECOND)
+        if timeout <= hr.Time("0s"):
+            raise hr.ParameterError(
+                "timeout is too low", expected="greater than zero", value=timeout
+            )
+
+        self.__timeout = timeout
+
+    @property
+    def deadline(self):
+        """
+        Timeout before ping exits.
+        You can specify either a number or a string (e.g. ``"1sec"``).
+        If both :py:attr:`~.deadline` and :py:attr:`~.count` are |None|,
+        If a number is specified, the unit will be considered as seconds.
+
+            +------------+----------------------------------------------------------+
+            |    Unit    |                Available specifiers (str)                |
+            +============+==========================================================+
+            |days        |``d``/``day``/``days``                                    |
+            +------------+----------------------------------------------------------+
+            |hours       |``h``/``hour``/``hours``                                  |
+            +------------+----------------------------------------------------------+
+            |minutes     |``m``/``min``/``mins``/``minute``/``minutes``             |
+            +------------+----------------------------------------------------------+
+            |seconds     |``s``/``sec``/``secs``/``second``/``seconds``             |
+            +------------+----------------------------------------------------------+
+            |milliseconds|``ms``/``msec``/``msecs``/``millisecond``/``milliseconds``|
+            +------------+----------------------------------------------------------+
+            |microseconds|``us``/``usec``/``usecs``/``microsecond``/``microseconds``|
+            +------------+----------------------------------------------------------+
+
+        :py:attr:`~.deadline` automatically set to the default value (``3 seconds``).
+        Defaults to |None|.
+
+        Returns:
+            humanreadable.Time: deadline
+        """
+
+        return self.__deadline
+
+    @deadline.setter
+    def deadline(self, value):
+        if value is None:
+            self.__deadline = value
+            return
+
+        deadline = hr.Time(str(value), default_unit=hr.Time.Unit.SECOND)
+
+        if deadline <= hr.Time("0s"):
+            raise hr.ParameterError(
+                "deadline is too low", expected="greater than zero", value=deadline
+            )
+
+        self.__deadline = deadline
+
+    @property
     def waittime(self):
         warnings.warn(
             "waittime will be deleted in the future, use deadline instead.", DeprecationWarning
@@ -103,13 +185,14 @@ class PingTransmitter(object):
 
     def __init__(self):
         self.destination_host = ""
-        self.deadline = None
-        self.timeout = None
         self.count = None
         self.ping_option = ""
         self.is_quiet = False
         self.interface = None
         self.auto_codepage = True
+
+        self.timeout = None
+        self.deadline = None
 
     def ping(self):
         """
@@ -156,34 +239,8 @@ class PingTransmitter(object):
         if typepy.is_null_string(self.destination_host):
             raise ValueError("required destination_host")
 
-        self.__validate_deadline()
-        self.__validate_timeout()
         self.__validate_count()
         self.__validate_interface()
-
-    def __validate_deadline(self):
-        if self.deadline is None:
-            return
-
-        try:
-            deadline = Integer(self.deadline).convert()
-        except TypeConversionError as e:
-            raise ValueError("deadline must be an integer: {}".format(e))
-
-        if deadline <= 0:
-            raise ValueError("deadline must be greater than zero: actual={}".format(self.deadline))
-
-    def __validate_timeout(self):
-        if self.timeout is None:
-            return
-
-        try:
-            timeout = Integer(self.timeout).convert()
-        except TypeConversionError as e:
-            raise ValueError("timeout must be an integer: {}".format(e))
-
-        if timeout <= 0:
-            raise ValueError("timeout must be greater than zero: actual={}".format(self.timeout))
 
     def __validate_count(self):
         if self.count is None:
@@ -255,13 +312,13 @@ class PingTransmitter(object):
         return "-q"
 
     def __get_deadline_option(self):
-        try:
-            deadline = Integer(self.deadline).convert()
-        except TypeConversionError:
+        if self.deadline is None:
             if self.count:
                 return ""
 
             deadline = DEFAULT_DEADLINE
+        else:
+            deadline = int(math.ceil(self.deadline.seconds))
 
         if self.__is_windows():
             # ping for Windows does not have the option with equals to the deadline option.
@@ -277,17 +334,15 @@ class PingTransmitter(object):
         return "-w {:d}".format(deadline)
 
     def __get_timeout_option(self):
-        try:
-            timeout_ms = Integer(self.timeout).convert()
-        except TypeConversionError:
+        if self.timeout is None:
             return ""
 
         if self.__is_linux():
-            # timeout option value accept in seconds unit in Linux ping and float values
+            # timeout option value accept in seconds in Linux ping and float values
             # not accepted.
-            return "-W {:d}".format(int(math.ceil(timeout_ms / 1000.0)))
+            return "-W {:d}".format(int(math.ceil(self.timeout.seconds)))
         if self.__is_windows():
-            return "-w {:d}".format(timeout_ms)
+            return "-w {:d}".format(int(math.ceil(self.timeout.milliseconds)))
 
         return ""
 

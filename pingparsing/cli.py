@@ -20,6 +20,7 @@ from .__version__ import __version__
 from ._logger import set_log_level
 from ._pingparsing import PingParsing
 from ._pingtransmitter import PingTransmitter
+import humanreadable as hr
 
 
 try:
@@ -30,6 +31,9 @@ except ImportError:
 
 DEFAULT_COUNT = 10
 QUIET_LOG_LEVEL = logbook.NOTSET
+
+def _get_unit_help_msg():
+    return ", ".join(["/".join(values) for values in hr.Time.get_text_units().values()])
 
 
 def parse_option():
@@ -107,23 +111,33 @@ def parse_option():
     group.add_argument(
         "-w",
         "--deadline",
-        type=float,
-        help="""timeout in seconds.
+        type=str,
+        help="""Timeout before ping exits.
+        valid time units are: {units}. if no unit string found, considered seconds as
+        the time unit.
+
         see also ping(8) [-w deadline] option description.
         note: meaning of the 'deadline' may differ system to system.
-        """,
+        """.format(
+            units=_get_unit_help_msg(),
+        ),
     )
     group.add_argument(
         "--timeout",
-        type=float,
-        help="""Time to wait for a response, in milliseconds.
+        type=str,
+        help="""Time to wait for a response per packet.
+        Valid time units are: {units}. if no unit string found, considered milliseconds as
+        the time unit.
+        Attempt to send packets with milliseconds granularity in default.
         If the system does not support timeout in milliseconds, round up as seconds.
         Use system default if not specified.
-        Ignored if the system does not support timeout itself.
+        This option wll ignored if the system does not support timeout itself.
 
         See also ping(8) [-W timeout] option description.
         note: meaning of the 'timeout' may differ system to system.
-        """,
+        """.format(
+            units=_get_unit_help_msg(),
+        ),
     )
     group.add_argument("-I", "--interface", dest="interface", help="network interface")
 

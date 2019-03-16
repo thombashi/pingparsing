@@ -1,5 +1,6 @@
 enum34;python_version<"3.4"
 futures;python_version<"3.2"
+humanreadable>=0.0.3,<0.1.0
 ipaddress;python_version<"3.3"
 Logbook>=1.1.0,<2.0.0
 pyparsing>=2.2.2,<3.0.0
