@@ -13,6 +13,7 @@ import os
 import sys
 from textwrap import dedent
 
+import humanreadable as hr
 import logbook
 from subprocrunner import CommandError
 
@@ -20,7 +21,6 @@ from .__version__ import __version__
 from ._logger import set_log_level
 from ._pingparsing import PingParsing
 from ._pingtransmitter import PingTransmitter
-import humanreadable as hr
 
 
 try:
@@ -31,6 +31,7 @@ except ImportError:
 
 DEFAULT_COUNT = 10
 QUIET_LOG_LEVEL = logbook.NOTSET
+
 
 def _get_unit_help_msg():
     return ", ".join(["/".join(values) for values in hr.Time.get_text_units().values()])
@@ -119,7 +120,7 @@ def parse_option():
         see also ping(8) [-w deadline] option description.
         note: meaning of the 'deadline' may differ system to system.
         """.format(
-            units=_get_unit_help_msg(),
+            units=_get_unit_help_msg()
         ),
     )
     group.add_argument(
@@ -136,7 +137,7 @@ def parse_option():
         See also ping(8) [-W timeout] option description.
         note: meaning of the 'timeout' may differ system to system.
         """.format(
-            units=_get_unit_help_msg(),
+            units=_get_unit_help_msg()
         ),
     )
     group.add_argument("-I", "--interface", dest="interface", help="network interface")
