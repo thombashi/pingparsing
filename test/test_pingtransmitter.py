@@ -23,7 +23,7 @@ class Test_PingTransmitter_ping(object):
     @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["host"], [["localhost"], ["127.0.0.1"], ["::1"]])
     def test_normal_dest(self, transmitter, host):
-        transmitter.destination_host = host
+        transmitter.destination = host
         result = transmitter.ping()
 
         assert result.returncode == 0
@@ -32,7 +32,7 @@ class Test_PingTransmitter_ping(object):
     @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["host", "deadline"], [["localhost", 1]])
     def test_normal_deadline(self, transmitter, host, deadline):
-        transmitter.destination_host = host
+        transmitter.destination = host
         transmitter.deadline = deadline
         result = transmitter.ping()
 
@@ -42,7 +42,7 @@ class Test_PingTransmitter_ping(object):
     @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["host", "timeout"], [["localhost", 1]])
     def test_normal_timeout(self, transmitter, host, timeout):
-        transmitter.destination_host = host
+        transmitter.destination = host
         transmitter.timeout = timeout
         result = transmitter.ping()
 
@@ -54,7 +54,7 @@ class Test_PingTransmitter_ping(object):
         ["host", "count", "deadline"], [["localhost", 1, None], ["localhost", 1, 1000]]
     )
     def test_normal_count(self, transmitter, host, count, deadline):
-        transmitter.destination_host = host
+        transmitter.destination = host
         transmitter.deadline = deadline
         transmitter.count = count
         result = transmitter.ping()
@@ -65,7 +65,7 @@ class Test_PingTransmitter_ping(object):
     @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["host", "count"], [["localhost", 3]])
     def test_normal_send_parse(self, transmitter, ping_parser, host, count):
-        transmitter.destination_host = host
+        transmitter.destination = host
         transmitter.count = count
         result = transmitter.ping()
 
@@ -104,17 +104,23 @@ class Test_PingTransmitter_ping(object):
         assert transmitter._PingTransmitter__get_timeout_option() == expected
 
     @pytest.mark.parametrize(
+        ["dest", "expected"], [["", ValueError], [None, ValueError], [1, ValueError]]
+    )
+    def test_except_destination(self, transmitter, dest, expected):
+        with pytest.raises(expected):
+            transmitter.destination = dest
+
+    @pytest.mark.parametrize(
         ["host", "deadline", "expected"],
         [
-            ["", 1, ValueError],
             ["localhost", 0, ParameterError],
             ["localhost", -1, ParameterError],
             ["localhost", "a", ParameterError],
-            [None, 1, ValueError],
         ],
     )
     def test_except_deadline(self, transmitter, host, deadline, expected):
-        transmitter.destination_host = host
+        transmitter.destination = host
+
         with pytest.raises(expected):
             transmitter.deadline = deadline
             transmitter.ping()
@@ -122,15 +128,14 @@ class Test_PingTransmitter_ping(object):
     @pytest.mark.parametrize(
         ["host", "timeout", "expected"],
         [
-            ["", 1, ValueError],
             ["localhost", 0, ParameterError],
             ["localhost", -1, ParameterError],
             ["localhost", "a", ParameterError],
-            [None, 1, ValueError],
         ],
     )
     def test_except_timeout(self, transmitter, host, timeout, expected):
-        transmitter.destination_host = host
+        transmitter.destination = host
+
         with pytest.raises(expected):
             transmitter.timeout = timeout
             transmitter.ping()
@@ -144,7 +149,7 @@ class Test_PingTransmitter_ping(object):
         ],
     )
     def test_except_count(self, transmitter, host, count, expected):
-        transmitter.destination_host = host
+        transmitter.destination = host
         transmitter.count = count
         with pytest.raises(expected):
             transmitter.ping()

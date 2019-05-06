@@ -16,7 +16,7 @@ import humanreadable as hr
 import six
 import subprocrunner
 import typepy
-from typepy import Integer, TypeConversionError
+from typepy import Integer, StrictLevel, String, TypeConversionError
 
 from ._logger import logger
 
@@ -47,10 +47,6 @@ class PingTransmitter(object):
     Transmitter class to send ICMP packets by using the OS built-in ``ping``
     command.
 
-    .. py:attribute:: destination_host
-
-        Hostname or IP-address (IPv4/IPv6) to sending ICMP packets.
-
     .. py:attribute:: count
 
         Number of sending ICMP packets. This attribute ignored if the value is
@@ -63,7 +59,7 @@ class PingTransmitter(object):
     .. py:attribute:: interface
 
         Interface name or zone-id. The attribute required when
-        :py:attr:`~.destination_host` is IPv6 link-local scope address.
+        :py:attr:`~.destination` is IPv6 link-local scope address.
         Defaults to |None|.
 
     .. py:attribute:: auto_codepage
@@ -71,6 +67,36 @@ class PingTransmitter(object):
         [Only for Windows environment] Automatically change code page if
         ``True``. Defaults to ``True``.
     """
+
+    @property
+    def destination(self):
+        """
+        Hostname or IP-address (IPv4/IPv6) to sending ICMP packets.
+
+        Returns:
+            str: Destination
+        """
+
+        return self.__destination
+
+    @destination.setter
+    def destination(self, value):
+        if not String(value, strict_level=StrictLevel.MAX).is_type():
+            raise ValueError("empty destination")
+
+        self.__destination = value
+
+    @property
+    def destination_host(self):
+        """
+        Alias to :py:attr:`~.destination`
+        """
+
+        return self.destination
+
+    @destination_host.setter
+    def destination_host(self, value):
+        self.destination = value
 
     @property
     def timeout(self):
@@ -184,7 +210,7 @@ class PingTransmitter(object):
         self.deadline = value
 
     def __init__(self):
-        self.destination_host = ""
+        self.__destination = None
         self.count = None
         self.ping_option = ""
         self.is_quiet = False
@@ -224,21 +250,16 @@ class PingTransmitter(object):
 
     def __is_ipv6(self):
         try:
-            network = ipaddress.ip_address(six.text_type(self.destination_host))
+            network = ipaddress.ip_address(six.text_type(self.destination))
         except ValueError as e:
             logger.debug(e)
             return False
 
-        logger.debug(
-            "IP address: version={}, address={}".format(network.version, self.destination_host)
-        )
+        logger.debug("IP address: version={}, address={}".format(network.version, self.destination))
 
         return network.version == 6
 
     def __validate_ping_param(self):
-        if typepy.is_null_string(self.destination_host):
-            raise ValueError("required destination_host")
-
         self.__validate_count()
         self.__validate_interface()
 
@@ -258,7 +279,7 @@ class PingTransmitter(object):
         if not self.__is_ipv6():
             return
 
-        if not ipaddress.ip_network(six.text_type(self.destination_host)).is_link_local:
+        if not ipaddress.ip_network(six.text_type(self.destination)).is_link_local:
             return
 
         if typepy.is_null_string(self.interface):
@@ -292,9 +313,9 @@ class PingTransmitter(object):
 
     def __get_destination_host(self):
         if self.__is_windows() and self.__is_ipv6():
-            return "{:s}%{}".format(self.destination_host, self.interface)
+            return "{:s}%{}".format(self.destination, self.interface)
 
-        return self.destination_host
+        return self.destination
 
     def __get_builtin_ping_command(self):
         if self.__is_windows():

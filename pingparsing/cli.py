@@ -180,7 +180,7 @@ def parse_ping(logger, dest_or_file, interface, count, deadline, timeout, is_par
             ping_result_text = f.read()
     else:
         transmitter = PingTransmitter()
-        transmitter.destination_host = dest_or_file
+        transmitter.destination = dest_or_file
         transmitter.interface = interface
         transmitter.count = count
         transmitter.deadline = deadline
