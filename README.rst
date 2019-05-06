@@ -351,7 +351,7 @@ ping output as a string.
 
         ping_parser = pingparsing.PingParsing()
         transmitter = pingparsing.PingTransmitter()
-        transmitter.destination_host = "google.com"
+        transmitter.destination = "google.com"
         transmitter.count = 10
         result = transmitter.ping()
 
@@ -465,7 +465,7 @@ Installation
 
 Dependencies
 ============
-Python 2.7+ or 3.4+
+Python 2.7+ or 3.5+
 
 - `humanreadable <https://github.com/thombashi/humanreadable>`__
 - `logbook <https://logbook.readthedocs.io/en/stable/>`__
