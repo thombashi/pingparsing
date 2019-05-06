@@ -7,7 +7,7 @@ Installation
 
 Dependencies
 ============
-Python 2.7+ or 3.4+
+Python 2.7+ or 3.5+
 
 - `humanreadable <https://github.com/thombashi/humanreadable>`__
 - `logbook <https://logbook.readthedocs.io/en/stable/>`__

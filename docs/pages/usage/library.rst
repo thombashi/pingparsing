@@ -14,7 +14,7 @@ ping output as a string.
 
         ping_parser = pingparsing.PingParsing()
         transmitter = pingparsing.PingTransmitter()
-        transmitter.destination_host = "google.com"
+        transmitter.destination = "google.com"
         transmitter.count = 10
         result = transmitter.ping()
 
