@@ -76,6 +76,7 @@ def parse_option():
     )
     parser.add_argument(
         "--icmp-reply",
+        "--icmp-replies",
         action="store_true",
         default=False,
         help="print results for each ICMP packet reply.",
