@@ -281,8 +281,9 @@ CLI help
 ::
 
     usage: pingparsing [-h] [-V] [--max-workers MAX_WORKERS] [--indent INDENT]
-                       [--icmp-reply] [--debug | --quiet] [-c COUNT] [-w DEADLINE]
-                       [--timeout TIMEOUT] [-I INTERFACE]
+                       [--icmp-reply] [--debug | --quiet]
+                       [--timestamp {none,epoch,datetime}] [-c COUNT]
+                       [-w DEADLINE] [--timeout TIMEOUT] [-I INTERFACE]
                        destination_or_file [destination_or_file ...]
 
     positional arguments:
@@ -298,13 +299,18 @@ CLI help
                             cores.
       --indent INDENT       JSON output will be pretty-printed with the indent
                             level. (default= 4)
-      --icmp-reply          print results for each ICMP packet reply.
+      --icmp-reply, --icmp-replies
+                            print results for each ICMP packet reply.
       --debug               for debug print.
       --quiet               suppress execution log messages.
 
     Ping Options:
+      --timestamp {none,epoch,datetime}
+                            [Only for LINUX] none: no timestamps. epoch: add
+                            timestamps with UNIX epoch time format. datetime: add
+                            timestamps with ISO time format.
       -c COUNT, --count COUNT
-                            stop after sending the count. see also ping(8) [-c
+                            Stop after sending the count. see also ping(8) [-c
                             count] option description.
       -w DEADLINE, --deadline DEADLINE
                             Timeout before ping exits. valid time units are:
