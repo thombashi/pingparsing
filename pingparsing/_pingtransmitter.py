@@ -9,6 +9,7 @@ from __future__ import absolute_import
 import ipaddress
 import math
 import platform
+import re
 import warnings
 from collections import namedtuple
 
@@ -61,6 +62,11 @@ class PingTransmitter(object):
         Interface name or zone-id. The attribute required when
         :py:attr:`~.destination` is IPv6 link-local scope address.
         Defaults to |None|.
+
+    .. py:attribute:: timestamp
+
+        [Only for Linux environment] If |True|, add timestamp for each ping result.
+        Defaults to ``False``.
 
     .. py:attribute:: auto_codepage
 
@@ -219,6 +225,7 @@ class PingTransmitter(object):
 
         self.timeout = None
         self.deadline = None
+        self.timestamp = False
 
     def ping(self):
         """
@@ -297,6 +304,7 @@ class PingTransmitter(object):
                 self.__get_deadline_option(),
                 self.__get_timeout_option(),
                 self.__get_count_option(),
+                self.__get_timestamp_option(),
                 self.__get_quiet_option(),
             ]
         )
@@ -331,6 +339,12 @@ class PingTransmitter(object):
             return ""
 
         return "-q"
+
+    def __get_timestamp_option(self):
+        if not self.timestamp or self.__is_windows():
+            return ""
+
+        return "-D"
 
     def __get_deadline_option(self):
         if self.deadline is None:
