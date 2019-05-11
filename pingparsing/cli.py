@@ -266,7 +266,7 @@ def print_result(text):
 
 def _serialize_epoch(obj):
     if isinstance(obj, datetime):
-        return obj.strftime("%s.%f")
+        return float(obj.strftime("%s.%f"))
 
     if isinstance(obj, TIMESTAMP_TYPES):
         return obj
