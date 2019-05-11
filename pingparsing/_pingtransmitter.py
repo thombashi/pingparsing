@@ -286,12 +286,12 @@ class PingTransmitter(object):
             raise ValueError("interface required to ping to IPv6 link local address")
 
     def __get_ping_command(self):
-        command_list = []
+        command_items = []
 
         if self.__is_windows() and self.auto_codepage:
-            command_list.append("chcp 437 &")
+            command_items.append("chcp 437 &")
 
-        command_list.extend(
+        command_items.extend(
             [
                 self.__get_builtin_ping_command(),
                 self.__get_deadline_option(),
@@ -302,14 +302,14 @@ class PingTransmitter(object):
         )
 
         if self.__is_linux() and typepy.is_not_null_string(self.interface):
-            command_list.append("-I {}".format(self.interface))
+            command_items.append("-I {}".format(self.interface))
 
         if typepy.is_not_null_string(self.ping_option):
-            command_list.append(self.ping_option)
+            command_items.append(self.ping_option)
 
-        command_list.append(self.__get_destination_host())
+        command_items.append(self.__get_destination_host())
 
-        return " ".join(command_list)
+        return " ".join(command_items)
 
     def __get_destination_host(self):
         if self.__is_windows() and self.__is_ipv6():
