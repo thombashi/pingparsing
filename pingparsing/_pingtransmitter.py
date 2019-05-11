@@ -309,7 +309,7 @@ class PingTransmitter(object):
 
         command_items.append(self.__get_destination_host())
 
-        return " ".join(command_items)
+        return re.sub(r"[\s]{2,}", " ", " ".join(command_items))
 
     def __get_destination_host(self):
         if self.__is_windows() and self.__is_ipv6():
