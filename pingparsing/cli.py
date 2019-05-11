@@ -106,7 +106,7 @@ def parse_option():
         "-c",
         "--count",
         type=int,
-        help="""stop after sending the count.
+        help="""Stop after sending the count.
         see also ping(8) [-c count] option description.
         """,
     )
