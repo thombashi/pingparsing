@@ -8,11 +8,10 @@ from __future__ import absolute_import, division
 
 import abc
 import re
-from datetime import datetime
 
 import pyparsing as pp
 import typepy
-from typepy import Integer
+from typepy import DateTime
 
 from ._common import _to_unicode
 from ._interface import PingParserInterface
@@ -61,9 +60,9 @@ class PingParser(PingParserInterface):
             reply = match.groupdict()
 
             if reply.get("timestamp"):
-                reply["timestamp"] = datetime.fromtimestamp(
-                    Integer(reply["timestamp"].lstrip("[").rstrip("]")).force_convert()
-                )
+                reply["timestamp"] = DateTime(
+                    reply["timestamp"].lstrip("[").rstrip("]")
+                ).force_convert()
 
             if reply.get("icmp_seq"):
                 reply["icmp_seq"] = int(reply["icmp_seq"])
