@@ -11,10 +11,12 @@ import argparse
 import multiprocessing
 import os
 import sys
+from datetime import datetime
 from textwrap import dedent
 
 import humanreadable as hr
 import logbook
+import six
 from subprocrunner import CommandError
 
 from .__version__ import __version__
@@ -31,6 +33,14 @@ except ImportError:
 
 DEFAULT_COUNT = 10
 QUIET_LOG_LEVEL = logbook.NOTSET
+TIMESTAMP_TYPES = (int, float, six.text_type)
+
+
+class TimestampFormat(object):
+    NONE = "none"
+    EPOCH = "epoch"
+    DATETIME = "datetime"
+    LIST = (NONE, EPOCH, DATETIME)
 
 
 def _get_unit_help_msg():
@@ -102,6 +112,18 @@ def parse_option():
     )
 
     group = parser.add_argument_group("Ping Options")
+    group.add_argument(
+        "--timestamp",
+        choices=TimestampFormat.LIST,
+        default=TimestampFormat.NONE,
+        help="""[Only for LINUX]
+        {}: no timestamps.
+        {}: add timestamps with UNIX epoch time format.
+        {}: add timestamps with ISO time format.
+        """.format(
+            TimestampFormat.NONE, TimestampFormat.EPOCH, TimestampFormat.DATETIME
+        ),
+    )
     group.add_argument(
         "-c",
         "--count",
@@ -175,7 +197,9 @@ def is_use_stdin():
     return (len(sys.argv) == 1 or found_stdin_specifier, found_stdin_specifier)
 
 
-def parse_ping(logger, dest_or_file, interface, count, deadline, timeout, is_parse_icmp_reply):
+def parse_ping(
+    logger, dest_or_file, interface, count, deadline, timeout, is_parse_icmp_reply, timestamp
+):
     if os.path.isfile(dest_or_file):
         with open(dest_or_file) as f:
             ping_result_text = f.read()
@@ -187,6 +211,7 @@ def parse_ping(logger, dest_or_file, interface, count, deadline, timeout, is_par
         transmitter.deadline = deadline
         transmitter.timeout = timeout
         transmitter.is_quiet = not is_parse_icmp_reply
+        transmitter.timestamp = timestamp != TimestampFormat.NONE
 
         try:
             result = transmitter.ping()
@@ -239,6 +264,42 @@ def print_result(text):
         print(text)
 
 
+def _serialize_epoch(obj):
+    if isinstance(obj, datetime):
+        return obj.strftime("%s.%f")
+
+    if isinstance(obj, TIMESTAMP_TYPES):
+        return obj
+
+    raise TypeError("not supported type to convert: {}".format(type(obj)))
+
+
+def _serialize_datetime(obj):
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+
+    if isinstance(obj, TIMESTAMP_TYPES):
+        return obj
+
+    raise TypeError("not supported type to convert: {}".format(type(obj)))
+
+
+timestamp_serialize_map = {
+    TimestampFormat.NONE: None,
+    TimestampFormat.EPOCH: _serialize_epoch,
+    TimestampFormat.DATETIME: _serialize_datetime,
+}
+
+
+def dumps_dict(obj, timestamp_format, indent=0):
+    serialize_func = timestamp_serialize_map[timestamp_format]
+
+    if indent <= 0:
+        return json.dumps(obj, default=serialize_func)
+
+    return json.dumps(obj, indent=indent, default=serialize_func)
+
+
 def main():
     options = parse_option()
 
@@ -278,6 +339,7 @@ def main():
                             deadline,
                             timeout,
                             options.icmp_reply,
+                            options.timestamp,
                         )
                     )
 
@@ -295,12 +357,7 @@ def main():
         if options.icmp_reply:
             output["icmp_replies"] = stats.icmp_replies
 
-    if options.indent <= 0:
-        result = json.dumps(output)
-    else:
-        result = json.dumps(output, indent=options.indent)
-
-    print_result(result)
+    print_result(dumps_dict(output, timestamp_format=options.timestamp, indent=options.indent))
 
     return 0
 
