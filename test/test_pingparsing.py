@@ -10,7 +10,8 @@ from textwrap import dedent
 
 import pytest
 import six
-from pingparsing import ParseError
+
+from pingparsing import ParseError, PingResult
 
 from .common import PingTestData, ping_parser  # noqa: W0611
 from .data import (

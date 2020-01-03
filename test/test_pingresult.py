@@ -7,6 +7,7 @@
 from __future__ import absolute_import
 
 import pytest
+
 from pingparsing import PingResult
 
 from .common import ping_parser  # noqa: W0611

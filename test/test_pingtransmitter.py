@@ -8,8 +8,9 @@ import platform as m_platform  # noqa: W0611
 
 import pytest
 from humanreadable import ParameterError
-from pingparsing import PingTransmitter
 from typepy import RealNumber
+
+from pingparsing import PingTransmitter
 
 from .common import ping_parser  # noqa: W0611
 
