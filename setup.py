@@ -59,7 +59,6 @@ setuptools.setup(
     name=MODULE_NAME,
     version=pkg_info["__version__"],
     url=REPOSITORY_URL,
-
     author=pkg_info["__author__"],
     author_email=pkg_info["__email__"],
     description=summary,
@@ -73,7 +72,6 @@ setuptools.setup(
         "Source": REPOSITORY_URL,
         "Tracker": "{:s}/issues".format(REPOSITORY_URL),
     },
-
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=setuptools_require + install_requires,
     setup_requires=setuptools_require + pytest_runner_require,
@@ -85,7 +83,6 @@ setuptools.setup(
         + docs_requires,
         "test": tests_requires,
     },
-
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -108,8 +105,5 @@ setuptools.setup(
         "Topic :: Text Processing",
     ],
     cmdclass=get_release_command_class(),
-    entry_points={
-        "console_scripts": [
-            "pingparsing=pingparsing.cli:main",
-        ],
-    })
+    entry_points={"console_scripts": ["pingparsing=pingparsing.cli:main",],},
+)
