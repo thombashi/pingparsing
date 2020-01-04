@@ -79,9 +79,10 @@ setuptools.setup(
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
     extras_require={
-        "build": ["twine", "wheel"],
-        "docs": docs_requires,
-        "release": ["releasecmd>=0.0.18,<0.1.0"],
+        "dev": ["releasecmd>=0.1.0,<1", "twine", "wheel"]
+        + ["autoflake", "black", "isort"]
+        + ["codespell", "pylama"]
+        + docs_requires,
         "test": tests_requires,
     },
 
