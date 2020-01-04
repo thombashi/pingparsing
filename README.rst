@@ -14,6 +14,10 @@ Summary
     :target: https://pypi.org/project/pingparsing
     :alt: Supported Python versions
 
+.. image:: https://img.shields.io/pypi/implementation/pingparsing.svg
+    :target: https://pypi.org/project/pingparsing
+    :alt: Supported Python implementations
+
 .. image:: https://img.shields.io/travis/thombashi/pingparsing/master.svg?label=Linux/macOS%20CI
     :target: https://travis-ci.org/thombashi/pingparsing
     :alt: Linux/macOS CI status
@@ -330,7 +334,7 @@ CLI help
                             unit. Attempt to send packets with milliseconds
                             granularity in default. If the system does not support
                             timeout in milliseconds, round up as seconds. Use
-                            system default if not specified. This option wll
+                            system default if not specified. This option will be
                             ignored if the system does not support timeout itself.
                             See also ping(8) [-W timeout] option description.
                             note: meaning of the 'timeout' may differ system to
