@@ -481,18 +481,23 @@ class Test_PingParsing_parse(object):
         )
         stats = ping_parser.parse("")
 
-        assert stats.destination is None
-        assert stats.packet_transmit is None
-        assert stats.packet_receive is None
-        assert stats.packet_loss_count is None
-        assert stats.packet_loss_rate is None
-        assert stats.packet_duplicate_count is None
-        assert stats.packet_duplicate_rate is None
-        assert stats.rtt_min is None
-        assert stats.rtt_avg is None
-        assert stats.rtt_max is None
-        assert stats.rtt_mdev is None
-        assert stats.icmp_replies == []
+        assert stats.is_empty()
+
+    @pytest.mark.parametrize(
+        ["value"],
+        [
+            [
+                PingResult(
+                    stdout="",
+                    stderr="ping: unknown: Temporary failure in name resolution\n",
+                    returncode=2,
+                )
+            ]
+        ],
+    )
+    def test_ping_failure(self, ping_parser, value):
+        stats = ping_parser.parse(value)
+        assert stats.is_empty()
 
     @pytest.mark.parametrize(
         ["value", "expected"],

@@ -125,6 +125,8 @@ class PingParsing(PingParserInterface):
             # accept PingResult instance as an input
             if typepy.is_not_null_string(ping_message.stdout):
                 ping_message = ping_message.stdout
+            else:
+                ping_message = ""
         except AttributeError:
             pass
 
