@@ -155,7 +155,7 @@ def parse_option():
         Attempt to send packets with milliseconds granularity in default.
         If the system does not support timeout in milliseconds, round up as seconds.
         Use system default if not specified.
-        This option wll ignored if the system does not support timeout itself.
+        This option will be ignored if the system does not support timeout itself.
 
         See also ping(8) [-W timeout] option description.
         note: meaning of the 'timeout' may differ system to system.
