@@ -169,6 +169,24 @@ class PingStats(object):
 
         return self.icmp_replies
 
+    def is_empty(self):
+        return all(
+            [
+                self.destination is None,
+                self.packet_transmit is None,
+                self.packet_receive is None,
+                self.packet_loss_count is None,
+                self.packet_loss_rate is None,
+                self.packet_duplicate_count is None,
+                self.packet_duplicate_rate is None,
+                self.rtt_min is None,
+                self.rtt_avg is None,
+                self.rtt_max is None,
+                self.rtt_mdev is None,
+                not self.icmp_replies,
+            ]
+        )
+
     def as_dict(self):
         """
         ping statistics.
