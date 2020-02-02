@@ -1,15 +1,10 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-
 from textwrap import dedent
 
 import pytest
-import six
 
 from pingparsing import ParseError, PingResult
 
@@ -23,26 +18,20 @@ from .data import (
 )
 
 
-PING_FEDORA_EMPTY_BODY = six.b(
-    dedent(
-        """\
-    PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
+PING_FEDORA_EMPTY_BODY = b"""\
+PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
 
-    --- 192.168.0.1 ping statistics ---
-    """
-    )
-)
-PING_WINDOWS_INVALID = dedent(
-    """\
-    Pinging 192.168.207.100 with 32 bytes of data:
-    Request timed out.
-    Request timed out.
-    Request timed out.
-    Request timed out.
+--- 192.168.0.1 ping statistics ---
+"""
+PING_WINDOWS_INVALID = b"""\
+Pinging 192.168.207.100 with 32 bytes of data:
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
 
-    Ping statistics for 192.168.207.100:
-    """
-)
+Ping statistics for 192.168.207.100:
+"""
 
 DEBIAN_UNREACHABLE_0 = PingTestData(
     dedent(

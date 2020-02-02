@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import absolute_import
 
 import ipaddress
 import math
@@ -14,7 +10,6 @@ import warnings
 from collections import namedtuple
 
 import humanreadable as hr
-import six
 import subprocrunner
 import typepy
 from typepy import Integer, StrictLevel, String, TypeConversionError
@@ -257,7 +252,7 @@ class PingTransmitter(object):
 
     def __is_ipv6(self):
         try:
-            network = ipaddress.ip_address(six.text_type(self.destination))
+            network = ipaddress.ip_address(str(self.destination))
         except ValueError as e:
             logger.debug(e)
             return False
@@ -286,7 +281,7 @@ class PingTransmitter(object):
         if not self.__is_ipv6():
             return
 
-        if not ipaddress.ip_network(six.text_type(self.destination)).is_link_local:
+        if not ipaddress.ip_network(str(self.destination)).is_link_local:
             return
 
         if typepy.is_null_string(self.interface):

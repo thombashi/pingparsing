@@ -1,32 +1,22 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-
 from datetime import datetime
 from textwrap import dedent
-
-import six
 
 from .common import PingTestData
 
 
 # ping google.com -q -c 60:
 #   - Debian 8.2 w/ iputils-ping 20121221-5+b2
-PING_DEBIAN_SUCCESS_0 = six.b(
-    dedent(
-        """\
-        PING google.com (216.58.196.238) 56(84) bytes of data.
+PING_DEBIAN_SUCCESS_0 = b"""\
+PING google.com (216.58.196.238) 56(84) bytes of data.
 
-        --- google.com ping statistics ---
-        60 packets transmitted, 60 received, 0% packet loss, time 59153ms
-        rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
-        """
-    )
-)
+--- google.com ping statistics ---
+60 packets transmitted, 60 received, 0% packet loss, time 59153ms
+rtt min/avg/max/mdev = 61.425/99.731/212.597/27.566 ms
+"""
 DEBIAN_SUCCESS_0 = PingTestData(
     PING_DEBIAN_SUCCESS_0,
     {
@@ -48,22 +38,18 @@ DEBIAN_SUCCESS_0 = PingTestData(
 
 # Ubuntu 16.04
 #   $ ping -c 5 twitter.com
-PING_UBUNTU_SUCCESS_0 = six.b(
-    dedent(
-        """\
-        PING twitter.com (104.244.42.65) 56(84) bytes of data.
-        64 bytes from 104.244.42.65: icmp_seq=1 ttl=53 time=68.5 ms
-        64 bytes from 104.244.42.65: icmp_seq=2 ttl=53 time=67.7 ms
-        64 bytes from 104.244.42.65: icmp_seq=3 ttl=53 time=65.6 ms
-        64 bytes from 104.244.42.65: icmp_seq=4 ttl=53 time=65.6 ms
-        64 bytes from 104.244.42.65: icmp_seq=5 ttl=53 time=64.9 ms
+PING_UBUNTU_SUCCESS_0 = b"""\
+PING twitter.com (104.244.42.65) 56(84) bytes of data.
+64 bytes from 104.244.42.65: icmp_seq=1 ttl=53 time=68.5 ms
+64 bytes from 104.244.42.65: icmp_seq=2 ttl=53 time=67.7 ms
+64 bytes from 104.244.42.65: icmp_seq=3 ttl=53 time=65.6 ms
+64 bytes from 104.244.42.65: icmp_seq=4 ttl=53 time=65.6 ms
+64 bytes from 104.244.42.65: icmp_seq=5 ttl=53 time=64.9 ms
 
-        --- twitter.com ping statistics ---
-        5 packets transmitted, 5 received, 0% packet loss, time 4003ms
-        rtt min/avg/max/mdev = 64.912/66.494/68.524/1.430 ms
-        """
-    )
-)
+--- twitter.com ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4003ms
+rtt min/avg/max/mdev = 64.912/66.494/68.524/1.430 ms
+"""
 UBUNTU_SUCCESS_0 = PingTestData(
     PING_UBUNTU_SUCCESS_0,
     {
@@ -90,22 +76,18 @@ UBUNTU_SUCCESS_0 = PingTestData(
 
 # Ubuntu 16.04
 #   $ ping -c 5 google.com -D
-PING_UBUNTU_SUCCESS_1 = six.b(
-    dedent(
-        """\
-        PING google.com (74.125.24.100) 56(84) bytes of data.
-        [1524930937.003555] 64 bytes from 74.125.24.100: icmp_seq=1 ttl=39 time=148 ms
-        [1524930937.787175] 64 bytes from 74.125.24.100: icmp_seq=2 ttl=39 time=137 ms
-        [1524930938.787642] 64 bytes from 74.125.24.100: icmp_seq=3 ttl=39 time=137 ms
-        [1524930939.787653] 64 bytes from 74.125.24.100: icmp_seq=4 ttl=39 time=136 ms
-        [1524930940.788365] 64 bytes from 74.125.24.100: icmp_seq=5 ttl=39 time=136 ms
+PING_UBUNTU_SUCCESS_1 = b"""\
+PING google.com (74.125.24.100) 56(84) bytes of data.
+[1524930937.003555] 64 bytes from 74.125.24.100: icmp_seq=1 ttl=39 time=148 ms
+[1524930937.787175] 64 bytes from 74.125.24.100: icmp_seq=2 ttl=39 time=137 ms
+[1524930938.787642] 64 bytes from 74.125.24.100: icmp_seq=3 ttl=39 time=137 ms
+[1524930939.787653] 64 bytes from 74.125.24.100: icmp_seq=4 ttl=39 time=136 ms
+[1524930940.788365] 64 bytes from 74.125.24.100: icmp_seq=5 ttl=39 time=136 ms
 
-        --- google.com ping statistics ---
-        5 packets transmitted, 5 received, 0% packet loss, time 4001ms
-        rtt min/avg/max/mdev = 136.537/139.174/148.006/4.425 ms
-        """
-    )
-)
+--- google.com ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4001ms
+rtt min/avg/max/mdev = 136.537/139.174/148.006/4.425 ms
+"""
 UBUNTU_SUCCESS_1 = PingTestData(
     PING_UBUNTU_SUCCESS_1,
     {
@@ -162,20 +144,16 @@ UBUNTU_SUCCESS_1 = PingTestData(
 
 # Ubuntu 18.04
 #   $ ping google.com -c 3
-PING_UBUNTU_SUCCESS_2 = six.b(
-    dedent(
-        """\
-        PING google.com (172.217.26.110) 56(84) bytes of data.
-        64 bytes from kix05s01-in-f14.1e100.net (172.217.26.110): icmp_seq=1 ttl=50 time=64.3 ms
-        64 bytes from kix05s01-in-f14.1e100.net (172.217.26.110): icmp_seq=2 ttl=50 time=49.7 ms
-        64 bytes from kix05s01-in-f14.1e100.net (172.217.26.110): icmp_seq=3 ttl=50 time=48.8 ms
+PING_UBUNTU_SUCCESS_2 = b"""\
+PING google.com (172.217.26.110) 56(84) bytes of data.
+64 bytes from kix05s01-in-f14.1e100.net (172.217.26.110): icmp_seq=1 ttl=50 time=64.3 ms
+64 bytes from kix05s01-in-f14.1e100.net (172.217.26.110): icmp_seq=2 ttl=50 time=49.7 ms
+64 bytes from kix05s01-in-f14.1e100.net (172.217.26.110): icmp_seq=3 ttl=50 time=48.8 ms
 
-        --- google.com ping statistics ---
-        3 packets transmitted, 3 received, 0% packet loss, time 2002ms
-        rtt min/avg/max/mdev = 48.832/54.309/64.334/7.098 ms
-        """
-    )
-)
+--- google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2002ms
+rtt min/avg/max/mdev = 48.832/54.309/64.334/7.098 ms
+"""
 UBUNTU_SUCCESS_2 = PingTestData(
     PING_UBUNTU_SUCCESS_2,
     {

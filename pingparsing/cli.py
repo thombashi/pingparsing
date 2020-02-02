@@ -1,11 +1,8 @@
-#!/usr/bin/env python
-# encoding: utf-8
+#!/usr/bin/env python3
 
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import print_function
 
 import argparse
 import multiprocessing
@@ -16,7 +13,6 @@ from textwrap import dedent
 
 import humanreadable as hr
 import logbook
-import six
 from subprocrunner import CommandError
 
 from .__version__ import __version__
@@ -33,7 +29,7 @@ except ImportError:
 
 DEFAULT_COUNT = 10
 QUIET_LOG_LEVEL = logbook.NOTSET
-TIMESTAMP_TYPES = (int, float, six.text_type)
+TIMESTAMP_TYPES = (int, float, str)
 
 
 class TimestampFormat(object):

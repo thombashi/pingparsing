@@ -7,12 +7,11 @@ Installation
 
 Dependencies
 ============
-Python 2.7+ or 3.5+
+Python 3.5+
 
 - `humanreadable <https://github.com/thombashi/humanreadable>`__
 - `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `pyparsing <https://github.com/pyparsing/pyparsing>`__
-- `six <https://pypi.org/project/six/>`__
 - `subprocrunner <https://github.com/thombashi/subprocrunner>`__
 - `typepy <https://github.com/thombashi/typepy>`__
 
