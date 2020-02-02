@@ -19,6 +19,7 @@ exclude = '''
 [tool.isort]
 dont_skip="*/**/__init__.py"
 known_third_party= [
+    "logbook",
     "humanreadable",
     "readmemaker",
     "typepy",
