@@ -15,6 +15,7 @@ build:
 check:
 	python setup.py check
 	codespell $(PACKAGE) docs examples test -q 2 --check-filenames --ignore-words-list followings
+	travis lint
 	pylama
 
 .PHONY: clean
@@ -45,7 +46,7 @@ idocs:
 .PHONY: fmt
 fmt:
 	@black $(CURDIR)
-	@autoflake --in-place --recursive --remove-all-unused-imports --exclude "__init__.py" .
+	@autoflake --in-place --recursive --remove-all-unused-imports --ignore-init-module-imports .
 	@isort --apply --recursive
 
 .PHONY: readme
