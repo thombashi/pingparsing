@@ -23,7 +23,7 @@ clean:
 .PHONY: docs
 docs:
 	@cd docs && ./update_command_help.py
-	@python setup.py build_sphinx --source-dir=$(DOCS_DIR)/ --build-dir=$(DOCS_BUILD_DIR) --all-files
+	@tox -e docs
 
 .PHONY: idocs
 idocs:
