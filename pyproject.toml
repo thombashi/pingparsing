@@ -21,7 +21,11 @@ dont_skip="*/**/__init__.py"
 known_third_party= [
     "logbook",
     "humanreadable",
+    "path",
+    "pytest",
     "readmemaker",
+    "simplejson",
+    "sphinx_rtd_theme",
     "typepy",
 ]
 include_trailing_comma = true
