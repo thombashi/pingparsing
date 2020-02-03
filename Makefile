@@ -1,8 +1,3 @@
-PACKAGE := pingparsing
-DOCS_DIR := docs
-DOCS_BUILD_DIR := $(DOCS_DIR)/_build
-
-
 .PHONY: build
 build:
 	@make clean
