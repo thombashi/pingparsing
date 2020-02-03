@@ -74,7 +74,6 @@ setuptools.setup(
     tests_require=tests_requires,
     extras_require={
         "dev": ["twine", "wheel"]
-        + ["codespell", "pylama"]
         + docs_requires,
         "test": tests_requires,
     },
