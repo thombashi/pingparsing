@@ -4,6 +4,7 @@
 
 import os.path
 import sys
+from typing import Dict, List  # noqa
 
 import setuptools
 
@@ -13,11 +14,14 @@ REPOSITORY_URL = "https://github.com/thombashi/{:s}".format(MODULE_NAME)
 REQUIREMENT_DIR = "requirements"
 ENCODING = "utf8"
 
-pkg_info = {}
+pkg_info = {}  # type: Dict[str, str]
 
 
-def need_pytest():
-    return set(["pytest", "test", "ptr"]).intersection(sys.argv)
+def pytest_runner_requires() -> List[str]:
+    if set(["pytest", "test", "ptr"]).intersection(sys.argv):
+        return ["pytest-runner"]
+
+    return []
 
 
 def get_release_command_class():
@@ -45,7 +49,6 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_requires = [line.strip() for line in f if line.strip()]
 
 setuptools_require = ["setuptools>=38.3.0"]
-pytest_runner_require = ["pytest-runner"] if need_pytest() else []
 
 setuptools.setup(
     name=MODULE_NAME,
@@ -67,7 +70,7 @@ setuptools.setup(
     },
     python_requires=">=3.5",
     install_requires=setuptools_require + install_requires,
-    setup_requires=setuptools_require + pytest_runner_require,
+    setup_requires=setuptools_require + pytest_runner_requires(),
     tests_require=tests_requires,
     extras_require={"test": tests_requires},
     classifiers=[
