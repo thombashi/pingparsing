@@ -68,18 +68,18 @@ class Test_PingTransmitter_ping(object):
         transmitter.count = count
         result = transmitter.ping()
 
-        ping_parser.parse(result.stdout)
+        stats = ping_parser.parse(result.stdout)
 
-        assert ping_parser.packet_transmit >= count
-        assert RealNumber(ping_parser.packet_receive).is_type()
-        assert RealNumber(ping_parser.packet_loss_rate).is_type()
-        assert RealNumber(ping_parser.packet_loss_count).is_type()
-        assert RealNumber(ping_parser.packet_duplicate_rate).is_type()
-        assert RealNumber(ping_parser.packet_duplicate_count).is_type()
-        assert RealNumber(ping_parser.rtt_min).is_type()
-        assert RealNumber(ping_parser.rtt_avg).is_type()
-        assert RealNumber(ping_parser.rtt_max).is_type()
-        assert RealNumber(ping_parser.rtt_mdev).is_type()
+        assert stats.packet_transmit >= count
+        assert RealNumber(stats.packet_receive).is_type()
+        assert RealNumber(stats.packet_loss_rate).is_type()
+        assert RealNumber(stats.packet_loss_count).is_type()
+        assert RealNumber(stats.packet_duplicate_rate).is_type()
+        assert RealNumber(stats.packet_duplicate_count).is_type()
+        assert RealNumber(stats.rtt_min).is_type()
+        assert RealNumber(stats.rtt_avg).is_type()
+        assert RealNumber(stats.rtt_max).is_type()
+        assert RealNumber(stats.rtt_mdev).is_type()
 
     @pytest.mark.parametrize(
         ["system", "timeout", "expected"],

@@ -6,7 +6,6 @@ import ipaddress
 import math
 import platform
 import re
-import warnings
 from collections import namedtuple
 
 import humanreadable as hr
@@ -193,22 +192,6 @@ class PingTransmitter(object):
             )
 
         self.__deadline = deadline
-
-    @property
-    def waittime(self):
-        warnings.warn(
-            "waittime will be deleted in the future, use deadline instead.", DeprecationWarning
-        )
-
-        return self.deadline
-
-    @waittime.setter
-    def waittime(self, value):
-        warnings.warn(
-            "waittime will be deleted in the future, use deadline instead.", DeprecationWarning
-        )
-
-        self.deadline = value
 
     def __init__(self):
         self.__destination = None

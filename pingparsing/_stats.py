@@ -2,8 +2,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-import warnings
-
 
 class PingStats(object):
     def __init__(self, *args, **kwargs):
@@ -158,12 +156,6 @@ class PingStats(object):
         """
 
         return self.__icmp_replies
-
-    @property
-    def icmp_reply_list(self):
-        warnings.warn("'icmp_reply_list' has moved to 'icmp_replies'", DeprecationWarning)
-
-        return self.icmp_replies
 
     def is_empty(self):
         return all(

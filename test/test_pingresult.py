@@ -16,8 +16,5 @@ class Test_PingResult(object):
         [[PingResult(DEBIAN_SUCCESS_0.value, "", 0), DEBIAN_SUCCESS_0.expected]],
     )
     def test_normal_pingresult(self, ping_parser, pingresult, expected):
-        ping_parser.parse(pingresult.stdout)
-        assert ping_parser.as_dict() == expected
-
-        ping_parser.parse(pingresult)
-        assert ping_parser.as_dict() == expected
+        assert ping_parser.parse(pingresult.stdout).as_dict() == expected
+        assert ping_parser.parse(pingresult).as_dict() == expected
