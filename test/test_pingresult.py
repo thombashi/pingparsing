@@ -10,7 +10,7 @@ from .common import ping_parser  # noqa: W0611
 from .data import DEBIAN_SUCCESS_0
 
 
-class Test_PingResult(object):
+class Test_PingResult:
     @pytest.mark.parametrize(
         ["pingresult", "expected"],
         [[PingResult(DEBIAN_SUCCESS_0.value, "", 0), DEBIAN_SUCCESS_0.expected]],

@@ -8,13 +8,13 @@ import pytest
 from pingparsing import set_log_level, set_logger
 
 
-class Test_set_logger(object):
+class Test_set_logger:
     @pytest.mark.parametrize(["value"], [[True], [False]])
     def test_smoke(self, value):
         set_logger(value)
 
 
-class Test_set_log_level(object):
+class Test_set_log_level:
     @pytest.mark.parametrize(
         ["value"],
         [

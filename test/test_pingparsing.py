@@ -401,7 +401,7 @@ WINDOWS_UNREACHABLE_2 = PingTestData(
 )
 
 
-class Test_PingParsing_parse(object):
+class Test_PingParsing_parse:
     @pytest.mark.parametrize(
         ["test_data", "parser_name"],
         [
@@ -497,7 +497,7 @@ class Test_PingParsing_parse(object):
             ping_parser.parse(value)
 
 
-class Test_PingParsing_as_tuple(object):
+class Test_PingParsing_as_tuple:
     def test_normal(self, ping_parser):
         stats = ping_parser.parse(DEBIAN_SUCCESS_0.value)
         result = stats.as_tuple()

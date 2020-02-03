@@ -17,7 +17,7 @@ def transmitter():
     return PingTransmitter()
 
 
-class Test_PingTransmitter_ping(object):
+class Test_PingTransmitter_ping:
     @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(["host"], [["localhost"], ["127.0.0.1"], ["::1"]])
     def test_normal_dest(self, transmitter, host):

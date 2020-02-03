@@ -37,7 +37,7 @@ class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
     """
 
 
-class PingTransmitter(object):
+class PingTransmitter:
     """
     Transmitter class to send ICMP packets by using the OS built-in ``ping``
     command.

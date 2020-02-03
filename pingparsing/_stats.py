@@ -3,7 +3,7 @@
 """
 
 
-class PingStats(object):
+class PingStats:
     def __init__(self, *args, **kwargs):
         self.__destination = kwargs.pop("destination", None)
         self.__packet_transmit = kwargs.pop("packet_transmit", None)

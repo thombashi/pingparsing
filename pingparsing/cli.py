@@ -32,7 +32,7 @@ QUIET_LOG_LEVEL = logbook.NOTSET
 TIMESTAMP_TYPES = (int, float, str)
 
 
-class TimestampFormat(object):
+class TimestampFormat:
     NONE = "none"
     EPOCH = "epoch"
     DATETIME = "datetime"

@@ -20,7 +20,7 @@ def print_result(stdout, stderr, expected=None):
 
 
 @pytest.mark.xfail(run=False)
-class Test_cli_file(object):
+class Test_cli_file:
     def test_normal_single(self, tmpdir):
         tmp_ping_file = tmpdir.join("ping_deb.txt")
         tmp_ping_file.write(DEBIAN_SUCCESS_0.value)
@@ -56,7 +56,7 @@ class Test_cli_file(object):
 
 
 @pytest.mark.xfail(run=False)
-class Test_cli_pipe(object):
+class Test_cli_pipe:
     def test_normal(self, tmpdir):
         runner = SubprocessRunner(["pingparsing"])
         runner.run(input=DEBIAN_SUCCESS_0.value)
@@ -117,7 +117,7 @@ class Test_cli_pipe(object):
 
 
 @pytest.mark.xfail(run=False)
-class Test_PingParsing_ping(object):
+class Test_PingParsing_ping:
     def test_normal_single(self):
         count = 1
         dest = "localhost"
