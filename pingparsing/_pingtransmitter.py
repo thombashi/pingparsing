@@ -216,10 +216,10 @@ class PingTransmitter(object):
 
         self.__validate_ping_param()
 
-        ping_proc = subprocrunner.SubprocessRunner(self.__get_ping_command())
-        ping_proc.run()
+        ping_runner = subprocrunner.SubprocessRunner(self.__get_ping_command())
+        ping_runner.run()
 
-        return PingResult(ping_proc.stdout, ping_proc.stderr, ping_proc.returncode)
+        return PingResult(ping_runner.stdout, ping_runner.stderr, ping_runner.returncode)
 
     @staticmethod
     def __is_linux():
