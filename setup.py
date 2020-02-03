@@ -69,10 +69,7 @@ setuptools.setup(
     install_requires=setuptools_require + install_requires,
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
-    extras_require={
-        "dev": ["twine", "wheel"],
-        "test": tests_requires,
-    },
+    extras_require={"test": tests_requires},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
