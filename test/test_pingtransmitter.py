@@ -5,7 +5,6 @@
 import platform as m_platform  # noqa: W0611
 
 import pytest
-from humanreadable import ParameterError
 from typepy import RealNumber
 
 from pingparsing import PingTransmitter
@@ -112,9 +111,9 @@ class Test_PingTransmitter_ping(object):
     @pytest.mark.parametrize(
         ["host", "deadline", "expected"],
         [
-            ["localhost", 0, ParameterError],
-            ["localhost", -1, ParameterError],
-            ["localhost", "a", ParameterError],
+            ["localhost", 0, ValueError],
+            ["localhost", -1, ValueError],
+            ["localhost", "a", ValueError],
         ],
     )
     def test_except_deadline(self, transmitter, host, deadline, expected):
@@ -127,9 +126,9 @@ class Test_PingTransmitter_ping(object):
     @pytest.mark.parametrize(
         ["host", "timeout", "expected"],
         [
-            ["localhost", 0, ParameterError],
-            ["localhost", -1, ParameterError],
-            ["localhost", "a", ParameterError],
+            ["localhost", 0, ValueError],
+            ["localhost", -1, ValueError],
+            ["localhost", "a", ValueError],
         ],
     )
     def test_except_timeout(self, transmitter, host, timeout, expected):

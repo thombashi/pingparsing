@@ -139,9 +139,7 @@ class PingTransmitter(object):
 
         timeout = hr.Time(str(value), default_unit=hr.Time.Unit.MILLISECOND)
         if timeout <= hr.Time("0s"):
-            raise hr.ParameterError(
-                "timeout is too low", expected="greater than zero", value=timeout
-            )
+            raise ValueError("timeout must be greater than zero")
 
         self.__timeout = timeout
 
@@ -187,9 +185,7 @@ class PingTransmitter(object):
         deadline = hr.Time(str(value), default_unit=hr.Time.Unit.SECOND)
 
         if deadline <= hr.Time("0s"):
-            raise hr.ParameterError(
-                "deadline is too low", expected="greater than zero", value=deadline
-            )
+            raise ValueError("deadline must be greater than zero")
 
         self.__deadline = deadline
 
