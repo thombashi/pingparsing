@@ -103,7 +103,7 @@ class PingTransmitter:
         """
         Time to wait for a response per packet.
         You can specify either a number or a string (e.g. ``"1sec"``).
-        If a number is specified, the unit will be considered as milliseconds.
+        If only a number is specified and a unit not found, the unit will be considered as seconds.
 
             +------------+----------------------------------------------------------+
             |    Unit    |                Available specifiers (str)                |
@@ -149,7 +149,7 @@ class PingTransmitter:
         Timeout before ping exits.
         You can specify either a number or a string (e.g. ``"1sec"``).
         If both :py:attr:`~.deadline` and :py:attr:`~.count` are |None|,
-        If a number is specified, the unit will be considered as seconds.
+        If only a number is specified and a unit not found, the unit will be considered as seconds.
 
             +------------+----------------------------------------------------------+
             |    Unit    |                Available specifiers (str)                |

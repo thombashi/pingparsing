@@ -1,6 +1,6 @@
 CLI Usage
 ====================
-CLI included in the ``pingparsing`` packaged. The ``pingparsing`` command could do the followings:
+A CLI command included in the ``pingparsing`` packaged. The ``pingparsing`` command could do the following:
 
 - Execute ping and parse the result
 - Parse ping result file(s)
