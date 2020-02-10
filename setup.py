@@ -17,13 +17,6 @@ ENCODING = "utf8"
 pkg_info = {}  # type: Dict[str, str]
 
 
-def pytest_runner_requires() -> List[str]:
-    if set(["pytest", "test", "ptr"]).intersection(sys.argv):
-        return ["pytest-runner"]
-
-    return []
-
-
 def get_release_command_class():
     try:
         from releasecmd import ReleaseCommand
@@ -70,8 +63,6 @@ setuptools.setup(
     },
     python_requires=">=3.5",
     install_requires=setuptools_require + install_requires,
-    setup_requires=setuptools_require + pytest_runner_requires(),
-    tests_require=tests_requires,
     extras_require={"test": tests_requires},
     classifiers=[
         "Development Status :: 4 - Beta",
