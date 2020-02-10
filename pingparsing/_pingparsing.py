@@ -26,7 +26,6 @@ class PingParsing(PingParserInterface):
 
     def __init__(self):
         self.__parser = NullPingParser()
-        self.__stats = None
 
     @property
     def parser_name(self):
@@ -59,9 +58,8 @@ class PingParsing(PingParserInterface):
 
         if typepy.is_null_string(ping_message):
             logger.debug("ping_message is empty")
-            self.__stats = PingStats()
 
-            return self.__stats
+            return PingStats()
 
         ping_lines = _to_unicode(ping_message).splitlines()
         parser_class_list = (
@@ -74,8 +72,7 @@ class PingParsing(PingParserInterface):
         for parser_class in parser_class_list:
             self.__parser = parser_class()
             try:
-                self.__stats = self.__parser.parse(ping_lines)
-                return self.__stats
+                return self.__parser.parse(ping_lines)
             except ParseError as e:
                 if e.reason != ParseErrorReason.HEADER_NOT_FOUND:
                     raise e
@@ -84,4 +81,4 @@ class PingParsing(PingParserInterface):
 
         self.__parser = NullPingParser()
 
-        return self.__stats
+        return PingStats()
