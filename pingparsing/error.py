@@ -23,4 +23,4 @@ class ParseError(Exception):
     def __init__(self, *args, **kwargs):
         self.__reason = kwargs.pop("reason", None)
 
-        super(ParseError, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
