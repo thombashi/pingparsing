@@ -3,7 +3,6 @@
 """
 
 import os.path
-import sys
 from typing import Dict, List  # noqa
 
 import setuptools
