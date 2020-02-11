@@ -19,7 +19,7 @@ from ._stats import PingStats
 from .error import ParseError, ParseErrorReason
 
 
-class PingParsing(PingParserInterface):
+class PingParsing:
     """
     Parser class to parsing ping command output.
     """
