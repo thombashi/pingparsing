@@ -66,11 +66,11 @@ UBUNTU_SUCCESS_0 = PingTestData(
         "rtt_mdev": 1.430,
     },
     [
-        {"timestamp": None, "icmp_seq": 1, "ttl": 53, "time": 68.5, "duplicate": False},
-        {"timestamp": None, "icmp_seq": 2, "ttl": 53, "time": 67.7, "duplicate": False},
-        {"timestamp": None, "icmp_seq": 3, "ttl": 53, "time": 65.6, "duplicate": False},
-        {"timestamp": None, "icmp_seq": 4, "ttl": 53, "time": 65.6, "duplicate": False},
-        {"timestamp": None, "icmp_seq": 5, "ttl": 53, "time": 64.9, "duplicate": False},
+        {"icmp_seq": 1, "ttl": 53, "time": 68.5, "duplicate": False},
+        {"icmp_seq": 2, "ttl": 53, "time": 67.7, "duplicate": False},
+        {"icmp_seq": 3, "ttl": 53, "time": 65.6, "duplicate": False},
+        {"icmp_seq": 4, "ttl": 53, "time": 65.6, "duplicate": False},
+        {"icmp_seq": 5, "ttl": 53, "time": 64.9, "duplicate": False},
     ],
 )
 
@@ -170,9 +170,9 @@ UBUNTU_SUCCESS_2 = PingTestData(
         "rtt_mdev": 7.098,
     },
     [
-        {"timestamp": None, "icmp_seq": 1, "ttl": 50, "time": 64.3, "duplicate": False},
-        {"timestamp": None, "icmp_seq": 2, "ttl": 50, "time": 49.7, "duplicate": False},
-        {"timestamp": None, "icmp_seq": 3, "ttl": 50, "time": 48.8, "duplicate": False},
+        {"icmp_seq": 1, "ttl": 50, "time": 64.3, "duplicate": False},
+        {"icmp_seq": 2, "ttl": 50, "time": 49.7, "duplicate": False},
+        {"icmp_seq": 3, "ttl": 50, "time": 48.8, "duplicate": False},
     ],
 )
 

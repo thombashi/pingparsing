@@ -56,21 +56,22 @@ class PingParser(PingParserInterface):
             if not match:
                 continue
 
-            reply = match.groupdict()
+            results = match.groupdict()
+            reply = {}  # type: Dict[str, Union[bool, float, int, DateTime]]
 
-            if reply.get("timestamp"):
+            if results.get("timestamp"):
                 reply["timestamp"] = DateTime(
-                    reply["timestamp"].lstrip("[").rstrip("]")
+                    results["timestamp"].lstrip("[").rstrip("]")
                 ).force_convert()
 
-            if reply.get("icmp_seq"):
-                reply["icmp_seq"] = int(reply["icmp_seq"])
+            if results.get("icmp_seq"):
+                reply["icmp_seq"] = int(results["icmp_seq"])
 
-            if reply.get("ttl"):
-                reply["ttl"] = int(reply["ttl"])
+            if results.get("ttl"):
+                reply["ttl"] = int(results["ttl"])
 
-            if reply.get("time"):
-                reply["time"] = float(reply["time"])
+            if results.get("time"):
+                reply["time"] = float(results["time"])
 
             if duplicate_packet_regexp.search(line):
                 reply["duplicate"] = True
