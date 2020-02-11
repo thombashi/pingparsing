@@ -7,6 +7,7 @@ import math
 import platform
 import re
 from collections import namedtuple
+from typing import Optional, cast
 
 import humanreadable as hr
 import subprocrunner
@@ -69,25 +70,22 @@ class PingTransmitter:
     """
 
     @property
-    def destination(self):
+    def destination(self) -> str:
         """
         Hostname or IP-address (IPv4/IPv6) to sending ICMP packets.
-
-        Returns:
-            str: Destination
         """
 
         return self.__destination
 
     @destination.setter
-    def destination(self, value):
+    def destination(self, value: str) -> None:
         if not String(value, strict_level=StrictLevel.MAX).is_type():
             raise ValueError("empty destination")
 
         self.__destination = value
 
     @property
-    def destination_host(self):
+    def destination_host(self) -> str:
         """
         Alias to :py:attr:`~.destination`
         """
@@ -95,11 +93,11 @@ class PingTransmitter:
         return self.destination
 
     @destination_host.setter
-    def destination_host(self, value):
+    def destination_host(self, value: str) -> None:
         self.destination = value
 
     @property
-    def timeout(self):
+    def timeout(self) -> Optional[hr.Time]:
         """
         Time to wait for a response per packet.
         You can specify either a number or a string (e.g. ``"1sec"``).
@@ -132,16 +130,16 @@ class PingTransmitter:
         return self.__timeout
 
     @timeout.setter
-    def timeout(self, value):
+    def timeout(self, value: Optional[str]):
         if value is None:
-            self.__timeout = value
+            self.__timeout = value  # type: Optional[hr.Time]
             return
 
         timeout = hr.Time(str(value), default_unit=hr.Time.Unit.MILLISECOND)
         if timeout.milliseconds <= 0:
             raise ValueError("timeout must be greater than zero")
 
-        self.__timeout = timeout
+        self.__timeout = cast(hr.Time, timeout)
 
     @property
     def deadline(self):
@@ -189,8 +187,8 @@ class PingTransmitter:
 
         self.__deadline = deadline
 
-    def __init__(self):
-        self.__destination = None
+    def __init__(self) -> None:
+        self.__destination = ""
         self.count = None
         self.ping_option = ""
         self.is_quiet = False
@@ -201,7 +199,7 @@ class PingTransmitter:
         self.deadline = None
         self.timestamp = False
 
-    def ping(self):
+    def ping(self) -> PingResult:
         """
         Sending ICMP packets.
 
@@ -240,11 +238,11 @@ class PingTransmitter:
 
         return network.version == 6
 
-    def __validate_ping_param(self):
+    def __validate_ping_param(self) -> None:
         self.__validate_count()
         self.__validate_interface()
 
-    def __validate_count(self):
+    def __validate_count(self) -> None:
         if self.count is None:
             return
 
@@ -256,7 +254,7 @@ class PingTransmitter:
         if count <= 0:
             raise ValueError("count must be greater than zero")
 
-    def __validate_interface(self):
+    def __validate_interface(self) -> None:
         if not self.__is_ipv6():
             return
 
@@ -266,7 +264,7 @@ class PingTransmitter:
         if typepy.is_null_string(self.interface):
             raise ValueError("interface required to ping to IPv6 link local address")
 
-    def __get_ping_command(self):
+    def __get_ping_command(self) -> str:
         command_items = []
 
         if self.__is_windows() and self.auto_codepage:
@@ -293,13 +291,13 @@ class PingTransmitter:
 
         return re.sub(r"[\s]{2,}", " ", " ".join(command_items))
 
-    def __get_destination_host(self):
+    def __get_destination_host(self) -> str:
         if self.__is_windows() and self.__is_ipv6():
             return "{:s}%{}".format(self.destination, self.interface)
 
         return self.destination
 
-    def __get_builtin_ping_command(self):
+    def __get_builtin_ping_command(self) -> str:
         if self.__is_windows():
             return "ping"
 
@@ -308,19 +306,19 @@ class PingTransmitter:
 
         return "ping"
 
-    def __get_quiet_option(self):
+    def __get_quiet_option(self) -> str:
         if not self.is_quiet or self.__is_windows():
             return ""
 
         return "-q"
 
-    def __get_timestamp_option(self):
+    def __get_timestamp_option(self) -> str:
         if not self.timestamp or self.__is_windows():
             return ""
 
         return "-D"
 
-    def __get_deadline_option(self):
+    def __get_deadline_option(self) -> str:
         if self.deadline is None:
             if self.count:
                 return ""
@@ -342,7 +340,7 @@ class PingTransmitter:
 
         return "-w {:d}".format(deadline)
 
-    def __get_timeout_option(self):
+    def __get_timeout_option(self) -> str:
         if self.timeout is None:
             return ""
 
@@ -355,7 +353,7 @@ class PingTransmitter:
 
         return ""
 
-    def __get_count_option(self):
+    def __get_count_option(self) -> str:
         try:
             count = Integer(self.count).convert()
         except TypeConversionError:

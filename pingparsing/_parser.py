@@ -4,6 +4,7 @@
 
 import abc
 import re
+from typing import Dict, List, Optional, Pattern, Sequence, Tuple, Union
 
 import pyparsing as pp
 import typepy
@@ -24,26 +25,28 @@ class PingParser(PingParserInterface):
     _TIME_PATTERN = r"time=(?P<time>[0-9\.]+)"
 
     @abc.abstractproperty
-    def _parser_name(self):  # pragma: no cover
+    def _parser_name(self) -> str:  # pragma: no cover
         pass
 
     @abc.abstractproperty
-    def _icmp_reply_pattern(self):  # pragma: no cover
+    def _icmp_reply_pattern(self) -> str:  # pragma: no cover
         pass
 
     @property
-    def _duplicate_packet_pattern(self):
+    def _duplicate_packet_pattern(self) -> str:
         return r".+ \(DUP!\)$"
 
     @abc.abstractproperty
-    def _stats_headline_pattern(self):  # pragma: no cover
+    def _stats_headline_pattern(self) -> str:  # pragma: no cover
         pass
 
     @abc.abstractproperty
-    def _is_support_packet_duplicate(self):  # pragma: no cover
+    def _is_support_packet_duplicate(self) -> bool:  # pragma: no cover
         pass
 
-    def _parse_icmp_reply(self, ping_lines):
+    def _parse_icmp_reply(
+        self, ping_lines: Sequence[str]
+    ) -> Sequence[Dict[str, Union[bool, float, int, DateTime]]]:
         icmp_reply_regexp = re.compile(self._icmp_reply_pattern, re.IGNORECASE)
         duplicate_packet_regexp = re.compile(self._duplicate_packet_pattern)
         icmp_reply_list = []
@@ -78,7 +81,7 @@ class PingParser(PingParserInterface):
 
         return icmp_reply_list
 
-    def _preprocess_parse_stats(self, lines):
+    def _preprocess_parse_stats(self, lines: Sequence[str]) -> Tuple[str, str, Sequence[str]]:
         logger.debug("parsing as {:s} ping result format".format(self._parser_name))
 
         stats_headline_idx = self.__find_stats_headline_idx(
@@ -91,10 +94,10 @@ class PingParser(PingParserInterface):
 
         return (lines[stats_headline_idx], packet_info_line, body_line_list)
 
-    def _parse_destination(self, stats_headline):
+    def _parse_destination(self, stats_headline: str) -> str:
         return stats_headline.lstrip("--- ").rstrip(" ping statistics ---")
 
-    def __find_stats_headline_idx(self, lines, re_stats_header):
+    def __find_stats_headline_idx(self, lines: Sequence[str], re_stats_header: Pattern) -> int:
         for i, line in enumerate(lines):
             if re_stats_header.search(line):
                 break
@@ -103,11 +106,11 @@ class PingParser(PingParserInterface):
 
         return i
 
-    def __validate_stats_body(self, body_line_list):
+    def __validate_stats_body(self, body_line_list: Sequence[str]) -> None:
         if typepy.is_empty_sequence(body_line_list):
             raise ParseError(reason=ParseErrorReason.EMPTY_STATISTICS)
 
-    def _parse_duplicate(self, line):
+    def _parse_duplicate(self, line: str) -> Optional[int]:
         if not self._is_support_packet_duplicate:
             return None
 
@@ -127,19 +130,19 @@ class PingParser(PingParserInterface):
 
 class NullPingParser(PingParser):
     @property
-    def _parser_name(self):
+    def _parser_name(self) -> str:
         return "null"
 
     @property
-    def _icmp_reply_pattern(self):
+    def _icmp_reply_pattern(self) -> str:
         return ""
 
     @property
-    def _stats_headline_pattern(self):
+    def _stats_headline_pattern(self) -> str:
         return ""
 
     @property
-    def _is_support_packet_duplicate(self):  # pragma: no cover
+    def _is_support_packet_duplicate(self) -> bool:  # pragma: no cover
         return False
 
     def parse(self, ping_message: List[str]) -> PingStats:  # pragma: no cover
@@ -153,11 +156,11 @@ class NullPingParser(PingParser):
 
 class LinuxPingParser(PingParser):
     @property
-    def _parser_name(self):
+    def _parser_name(self) -> str:
         return "Linux"
 
     @property
-    def _icmp_reply_pattern(self):
+    def _icmp_reply_pattern(self) -> str:
         return (
             r"(?P<timestamp>\[[0-9\.]+\])?\s?.+ from .+?: "
             + self._ICMP_SEQ_PATTERN
@@ -168,14 +171,14 @@ class LinuxPingParser(PingParser):
         )
 
     @property
-    def _stats_headline_pattern(self):
+    def _stats_headline_pattern(self) -> str:
         return "--- .* ping statistics ---"
 
     @property
-    def _is_support_packet_duplicate(self):
+    def _is_support_packet_duplicate(self) -> bool:
         return True
 
-    def parse(self, ping_message):
+    def parse(self, ping_message: List[str]) -> PingStats:
         icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
@@ -237,22 +240,22 @@ class LinuxPingParser(PingParser):
 
 class WindowsPingParser(PingParser):
     @property
-    def _parser_name(self):
+    def _parser_name(self) -> str:
         return "Windows"
 
     @property
-    def _icmp_reply_pattern(self):
+    def _icmp_reply_pattern(self) -> str:
         return " from  .+?: " + self._TTL_PATTERN + " " + self._TIME_PATTERN
 
     @property
-    def _stats_headline_pattern(self):
+    def _stats_headline_pattern(self) -> str:
         return "^Ping statistics for "
 
     @property
-    def _is_support_packet_duplicate(self):
+    def _is_support_packet_duplicate(self) -> bool:
         return False
 
-    def parse(self, ping_message):
+    def parse(self, ping_message: List[str]) -> PingStats:
         icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
@@ -313,11 +316,11 @@ class WindowsPingParser(PingParser):
 
 class MacOsPingParser(PingParser):
     @property
-    def _parser_name(self):
+    def _parser_name(self) -> str:
         return "macOS"
 
     @property
-    def _icmp_reply_pattern(self):
+    def _icmp_reply_pattern(self) -> str:
         return (
             " from .+?: "
             + self._ICMP_SEQ_PATTERN
@@ -328,14 +331,14 @@ class MacOsPingParser(PingParser):
         )
 
     @property
-    def _stats_headline_pattern(self):
+    def _stats_headline_pattern(self) -> str:
         return "--- .* ping statistics ---"
 
     @property
-    def _is_support_packet_duplicate(self):
+    def _is_support_packet_duplicate(self) -> bool:
         return True
 
-    def parse(self, ping_message):
+    def parse(self, ping_message: List[str]) -> PingStats:
         icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
@@ -397,20 +400,20 @@ class MacOsPingParser(PingParser):
 
 class AlpineLinuxPingParser(LinuxPingParser):
     @property
-    def _parser_name(self):
+    def _parser_name(self) -> str:
         return "AlpineLinux"
 
     @property
-    def _icmp_reply_pattern(self):
+    def _icmp_reply_pattern(self) -> str:
         return (
             " from .+?: " + r"seq=(?P<icmp_seq>\d+) " + self._TTL_PATTERN + " " + self._TIME_PATTERN
         )
 
     @property
-    def _is_support_packet_duplicate(self):
+    def _is_support_packet_duplicate(self) -> bool:
         return True
 
-    def parse(self, ping_message):
+    def parse(self, ping_message: List[str]) -> PingStats:
         icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
@@ -466,7 +469,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             icmp_replies=icmp_replies,
         )
 
-    def _parse_duplicate(self, line):
+    def _parse_duplicate(self, line: str) -> int:
         packet_pattern = (
             pp.SkipTo(pp.Word(pp.nums) + pp.Literal("duplicates,"))
             + pp.Word(pp.nums)

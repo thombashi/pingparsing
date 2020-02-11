@@ -2,12 +2,14 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+from typing import Union
+
 import pyparsing as pp
 import typepy
 
 from ._common import _to_unicode
-from ._interface import PingParserInterface
 from ._logger import logger
+from ._parser import PingParser  # noqa
 from ._parser import (
     AlpineLinuxPingParser,
     LinuxPingParser,
@@ -15,6 +17,7 @@ from ._parser import (
     NullPingParser,
     WindowsPingParser,
 )
+from ._pingtransmitter import PingResult
 from ._stats import PingStats
 from .error import ParseError, ParseErrorReason
 
@@ -24,14 +27,14 @@ class PingParsing:
     Parser class to parsing ping command output.
     """
 
-    def __init__(self):
-        self.__parser = NullPingParser()
+    def __init__(self) -> None:
+        self.__parser = NullPingParser()  # type: PingParser
 
     @property
-    def parser_name(self):
+    def parser_name(self) -> str:
         return self.__parser._parser_name
 
-    def parse(self, ping_message):
+    def parse(self, ping_message: Union[str, PingResult]) -> PingStats:
         """
         Parse ping command output.
 
@@ -43,25 +46,25 @@ class PingParsing:
             :py:class:`~pingparsing.PingStats`: Parsed result.
         """
 
-        try:
+        if isinstance(ping_message, PingResult):
             # accept PingResult instance as an input
             if typepy.is_not_null_string(ping_message.stdout):
-                ping_message = ping_message.stdout
+                ping_text = ping_message.stdout
             else:
-                ping_message = ""
-        except AttributeError:
-            pass
+                ping_text = ""
+        else:
+            ping_text = ping_message
 
-        logger.debug("parsing ping result: {}".format(ping_message))
+        logger.debug("parsing ping result: {}".format(ping_text))
 
         self.__parser = NullPingParser()
 
-        if typepy.is_null_string(ping_message):
+        if typepy.is_null_string(ping_text):
             logger.debug("ping_message is empty")
 
             return PingStats()
 
-        ping_lines = _to_unicode(ping_message).splitlines()
+        ping_lines = _to_unicode(ping_text).splitlines()
         parser_class_list = (
             LinuxPingParser,
             WindowsPingParser,
@@ -70,7 +73,7 @@ class PingParsing:
         )
 
         for parser_class in parser_class_list:
-            self.__parser = parser_class()
+            self.__parser = parser_class()  # type: ignore
             try:
                 return self.__parser.parse(ping_lines)
             except ParseError as e:

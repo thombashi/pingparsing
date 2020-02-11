@@ -3,8 +3,11 @@
 """
 
 
+from typing import Dict, List, Optional, Tuple, Union, cast
+
+
 class PingStats:
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.__destination = kwargs.pop("destination", None)
         self.__packet_transmit = kwargs.pop("packet_transmit", None)
         self.__packet_receive = kwargs.pop("packet_receive", None)
@@ -17,7 +20,7 @@ class PingStats:
         self.__icmp_replies = kwargs.pop("icmp_replies", [])
 
     @property
-    def destination(self):
+    def destination(self) -> str:
         """
         The ping destination.
 
@@ -28,7 +31,7 @@ class PingStats:
         return self.__destination
 
     @property
-    def packet_transmit(self):
+    def packet_transmit(self) -> Optional[int]:
         """
         Number of packets transmitted.
 
@@ -39,7 +42,7 @@ class PingStats:
         return self.__packet_transmit
 
     @property
-    def packet_receive(self):
+    def packet_receive(self) -> Optional[int]:
         """
         Number of packets received.
 
@@ -50,7 +53,7 @@ class PingStats:
         return self.__packet_receive
 
     @property
-    def packet_loss_count(self):
+    def packet_loss_count(self) -> Optional[int]:
         """
         Number of packet losses.
 
@@ -59,12 +62,12 @@ class PingStats:
         """
 
         try:
-            return self.packet_transmit - self.packet_receive
+            return cast(int, self.packet_transmit) - cast(int, self.packet_receive)
         except TypeError:
             return None
 
     @property
-    def packet_loss_rate(self):
+    def packet_loss_rate(self) -> Optional[float]:
         """
         Percentage of packet loss |percent_unit|.
 
@@ -73,12 +76,12 @@ class PingStats:
         """
 
         try:
-            return (self.packet_loss_count / self.packet_transmit) * 100
+            return (cast(int, self.packet_loss_count) / cast(int, self.packet_transmit)) * 100
         except (TypeError, ZeroDivisionError, OverflowError):
             return None
 
     @property
-    def rtt_min(self):
+    def rtt_min(self) -> Optional[float]:
         """
         Minimum round trip time of transmitted ICMP packets |msec_unit|.
 
@@ -89,7 +92,7 @@ class PingStats:
         return self.__rtt_min
 
     @property
-    def rtt_avg(self):
+    def rtt_avg(self) -> Optional[float]:
         """
         Average round trip time of transmitted ICMP packets |msec_unit|.
 
@@ -100,7 +103,7 @@ class PingStats:
         return self.__rtt_avg
 
     @property
-    def rtt_max(self):
+    def rtt_max(self) -> Optional[float]:
         """
         Maximum round trip time of transmitted ICMP packets |msec_unit|.
 
@@ -111,7 +114,7 @@ class PingStats:
         return self.__rtt_max
 
     @property
-    def rtt_mdev(self):
+    def rtt_mdev(self) -> Optional[float]:
         """
         Standard deviation of transmitted ICMP packets.
 
@@ -122,7 +125,7 @@ class PingStats:
         return self.__rtt_mdev
 
     @property
-    def packet_duplicate_count(self):
+    def packet_duplicate_count(self) -> Optional[int]:
         """
         Number of duplicated packets.
 
@@ -133,7 +136,7 @@ class PingStats:
         return self.__duplicates
 
     @property
-    def packet_duplicate_rate(self):
+    def packet_duplicate_rate(self) -> Optional[float]:
         """
         Percentage of duplicated packets |percent_unit|.
 
@@ -142,12 +145,12 @@ class PingStats:
         """
 
         try:
-            return (self.packet_duplicate_count / self.packet_receive) * 100
+            return (cast(int, self.packet_duplicate_count) / cast(int, self.packet_receive)) * 100
         except (TypeError, ZeroDivisionError, OverflowError):
             return None
 
     @property
-    def icmp_replies(self):
+    def icmp_replies(self) -> List[Dict]:
         """
         ICMP packet reply information.
 
@@ -175,7 +178,7 @@ class PingStats:
             ]
         )
 
-    def as_dict(self):
+    def as_dict(self) -> Dict[str, Union[str, Optional[int], Optional[float]]]:
         """
         ping statistics.
 
@@ -216,7 +219,7 @@ class PingStats:
             "packet_duplicate_rate": self.packet_duplicate_rate,
         }
 
-    def as_tuple(self):
+    def as_tuple(self) -> Tuple:
         """
         ping statistics.
 
@@ -235,4 +238,4 @@ class PingStats:
 
         ping_result = self.as_dict()
 
-        return namedtuple("PingStatsTuple", ping_result.keys())(**ping_result)
+        return namedtuple("PingStatsTuple", ping_result.keys())(**ping_result)  # type: ignore
