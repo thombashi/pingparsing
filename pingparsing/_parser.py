@@ -142,11 +142,13 @@ class NullPingParser(PingParser):
     def _is_support_packet_duplicate(self):  # pragma: no cover
         return False
 
-    def parse(self, ping_message):  # pragma: no cover
-        pass
+    def parse(self, ping_message: List[str]) -> PingStats:  # pragma: no cover
+        return PingStats()
 
-    def _preprocess_parse_stats(self, lines):  # pragma: no cover
-        pass
+    def _preprocess_parse_stats(
+        self, lines: Sequence[str]
+    ) -> Tuple[str, str, List[str]]:  # pragma: no cover
+        return ("", "", [])
 
 
 class LinuxPingParser(PingParser):
