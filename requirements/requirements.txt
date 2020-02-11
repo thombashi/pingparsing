@@ -1,5 +1,5 @@
 humanreadable>=0.0.7,<1
 Logbook>=0.12.3,<2
 pyparsing>=2.0.3,<3
-subprocrunner>=0.17.0,<2
+subprocrunner>=1.0.0,<2
 typepy>=0.6.4,<2
