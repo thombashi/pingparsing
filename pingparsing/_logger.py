@@ -2,59 +2,72 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-import logbook
 import subprocrunner
 
 
-def _disable_logger(l):
-    try:
-        l.disable()
-    except AttributeError:
-        l.disabled = True  # to support Logbook<1.0.0
+MODULE_NAME = "pingparsing"
 
 
-logger = logbook.Logger("pingparsing lib")
-_disable_logger(logger)
+class NullLogger(object):
+    level_name = None
+
+    def critical(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def debug(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def disable(self, name):  # pragma: no cover
+        pass
+
+    def enable(self, name):  # pragma: no cover
+        pass
+
+    def error(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def exception(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def info(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def log(self, level, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def notice(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def success(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def trace(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def warning(self, *args, **kwargs):  # pragma: no cover
+        pass
 
 
-def set_logger(is_enable):
-    if is_enable != logger.disabled:
-        # logger setting have not changed
+try:
+    from loguru import logger
+
+    logger.disable(MODULE_NAME)
+except ImportError:
+    logger = NullLogger()  # type: ignore
+
+
+def set_logger(is_enable, propagation_depth=1):
+    if is_enable:
+        logger.enable(MODULE_NAME)
+    else:
+        logger.disable(MODULE_NAME)
+
+    if propagation_depth <= 0:
         return
 
-    if is_enable:
-        try:
-            logger.enable()
-        except AttributeError:
-            logger.disabled = False  # to support Logbook<1.0.0
-    else:
-        _disable_logger(logger)
-
-    subprocrunner.set_logger(is_enable)
+    subprocrunner.set_logger(is_enable, propagation_depth - 1)
 
 
 def set_log_level(log_level):
-    """
-    Set logging level of this module. The module using
-    `logbook <https://logbook.readthedocs.io/en/stable/>`__ module for logging.
-
-    :param int log_level:
-        One of the log level of the
-        `logbook <https://logbook.readthedocs.io/en/stable/api/base.html>`__.
-        Disabled logging if the ``log_level`` is ``logbook.NOTSET``.
-    :raises LookupError: If ``log_level`` is an invalid value.
-    """
-
-    # validate log level
-    logbook.get_level_name(log_level)
-
-    if log_level == logger.level:
-        return
-
-    if log_level == logbook.NOTSET:
-        set_logger(is_enable=False)
-    else:
-        set_logger(is_enable=True)
-
-    logger.level = log_level
-    subprocrunner.set_log_level(log_level)
+    # deprecated
+    return

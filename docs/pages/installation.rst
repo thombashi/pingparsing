@@ -10,13 +10,14 @@ Dependencies
 Python 3.5+
 
 - `humanreadable <https://github.com/thombashi/humanreadable>`__
-- `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `pyparsing <https://github.com/pyparsing/pyparsing>`__
 - `subprocrunner <https://github.com/thombashi/subprocrunner>`__
 - `typepy <https://github.com/thombashi/typepy>`__
 
 Optional Dependencies
 ------------------------------------
+- `loguru <https://github.com/Delgan/loguru>`__
+    - Used for logging if the package installed
 - `Pygments <http://pygments.org/>`__
     - Syntax highlighting to ``pingparsing`` command output when installed
 
