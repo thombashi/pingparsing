@@ -83,21 +83,18 @@ class Test_cli_pipe:
                 "packet_duplicate_rate": 0.0,
                 "icmp_replies": [
                     {
-                        "timestamp": null,
                         "icmp_seq": 1,
                         "ttl": 50,
                         "time": 64.3,
                         "duplicate": false
                     },
                     {
-                        "timestamp": null,
                         "icmp_seq": 2,
                         "ttl": 50,
                         "time": 49.7,
                         "duplicate": false
                     },
                     {
-                        "timestamp": null,
                         "icmp_seq": 3,
                         "ttl": 50,
                         "time": 48.8,
