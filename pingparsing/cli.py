@@ -24,7 +24,7 @@ from ._pingtransmitter import PingTransmitter
 try:
     import simplejson as json
 except ImportError:
-    import json
+    import json  # type: ignore
 
 
 DEFAULT_COUNT = 10
