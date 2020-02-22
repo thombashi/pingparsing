@@ -12,11 +12,11 @@ from datetime import datetime
 from textwrap import dedent
 
 import humanreadable as hr
-import logbook
 from subprocrunner import CommandError
 
+from pingparsing._logger import logger, set_logger
+
 from .__version__ import __version__
-from ._logger import set_log_level
 from ._pingparsing import PingParsing
 from ._pingtransmitter import PingTransmitter
 
@@ -28,7 +28,7 @@ except ImportError:
 
 
 DEFAULT_COUNT = 10
-QUIET_LOG_LEVEL = logbook.NOTSET
+QUIET_LOG_LEVEL = "QUIET"
 TIMESTAMP_TYPES = (int, float, str)
 
 
@@ -39,7 +39,12 @@ class TimestampFormat:
     LIST = (NONE, EPOCH, DATETIME)
 
 
-def _get_unit_help_msg():
+class LogLevel:
+    DEBUG = "DEBUG"
+    INFO = "INFO"
+
+
+def _get_unit_help_msg() -> str:
     return ", ".join(["/".join(values) for values in hr.Time.get_text_units().values()])
 
 
@@ -94,8 +99,8 @@ def parse_option():
         "--debug",
         dest=loglevel_dest,
         action="store_const",
-        const=logbook.DEBUG,
-        default=logbook.INFO,
+        const=LogLevel.DEBUG,
+        default=LogLevel.INFO,
         help="for debug print.",
     )
     group.add_argument(
@@ -103,7 +108,7 @@ def parse_option():
         dest=loglevel_dest,
         action="store_const",
         const=QUIET_LOG_LEVEL,
-        default=logbook.INFO,
+        default=LogLevel.INFO,
         help="suppress execution log messages.",
     )
 
@@ -164,24 +169,23 @@ def parse_option():
     return parser.parse_args()
 
 
-def initialize_log_handler(log_level):
-    from logbook.more import ColorizedStderrHandler
+def initialize_logger(log_level):
+    logger.remove()
 
-    debug_level_format_str = (
-        "[{record.level_name}] {record.channel} {record.func_name} "
-        "({record.lineno}): {record.message}"
-    )
-    if log_level == logbook.DEBUG:
-        info_level_format_str = debug_level_format_str
+    if log_level == QUIET_LOG_LEVEL:
+        set_logger(is_enable=False)
+        return
+
+    if log_level == "DEBUG":
+        log_format = (
+            "<level>{level: <8}</level> | "
+            "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
+        )
     else:
-        info_level_format_str = "[{record.level_name}] {record.channel}: {record.message}"
+        log_format = "<level>[{level}]</level> {message}"
 
-    ColorizedStderrHandler(
-        level=logbook.DEBUG, format_string=debug_level_format_str
-    ).push_application()
-    ColorizedStderrHandler(
-        level=logbook.INFO, format_string=info_level_format_str
-    ).push_application()
+    logger.add(sys.stdout, colorize=True, format=log_format, level=log_level, enqueue=True)
+    set_logger(is_enable=True)
 
 
 def is_use_stdin():
@@ -193,9 +197,7 @@ def is_use_stdin():
     return (len(sys.argv) == 1 or found_stdin_specifier, found_stdin_specifier)
 
 
-def parse_ping(
-    logger, dest_or_file, interface, count, deadline, timeout, is_parse_icmp_reply, timestamp
-):
+def parse_ping(dest_or_file, interface, count, deadline, timeout, is_parse_icmp_reply, timestamp):
     if os.path.isfile(dest_or_file):
         with open(dest_or_file) as f:
             ping_result_text = f.read()
@@ -299,11 +301,7 @@ def dumps_dict(obj, timestamp_format, indent=0):
 def main():
     options = parse_option()
 
-    initialize_log_handler(options.log_level)
-
-    logger = logbook.Logger("pingparsing cli")
-    logger.level = options.log_level
-    set_log_level(options.log_level)
+    initialize_logger(options.log_level)
 
     output = {}
     use_stdin, found_stdin_specifier = is_use_stdin()
@@ -324,11 +322,9 @@ def main():
             with futures.ProcessPoolExecutor(max_workers) as executor:
                 future_list = []
                 for dest_or_file in options.destination_or_file:
-                    logger.debug("start {}".format(dest_or_file))
                     future_list.append(
                         executor.submit(
                             parse_ping,
-                            logger,
                             dest_or_file,
                             options.interface,
                             count,
@@ -343,7 +339,6 @@ def main():
                     key, ping_data = future.result()
                     output[key] = ping_data
         finally:
-            logger.debug("shutdown ProcessPoolExecutor")
             executor.shutdown()
     else:
         ping_result_text = sys.stdin.read()
