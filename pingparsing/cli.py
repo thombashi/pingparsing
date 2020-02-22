@@ -10,6 +10,7 @@ import os
 import sys
 from datetime import datetime
 from textwrap import dedent
+from typing import Any, Dict, Tuple
 
 import humanreadable as hr
 from subprocrunner import CommandError
@@ -48,7 +49,7 @@ def _get_unit_help_msg() -> str:
     return ", ".join(["/".join(values) for values in hr.Time.get_text_units().values()])
 
 
-def parse_option():
+def parse_option() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=dedent(
@@ -112,7 +113,7 @@ def parse_option():
         help="suppress execution log messages.",
     )
 
-    group = parser.add_argument_group("Ping Options")
+    group = parser.add_argument_group("Ping Options")  # type: ignore
     group.add_argument(
         "--timestamp",
         choices=TimestampFormat.LIST,
@@ -169,7 +170,7 @@ def parse_option():
     return parser.parse_args()
 
 
-def initialize_logger(log_level):
+def initialize_logger(log_level: str) -> None:
     logger.remove()
 
     if log_level == QUIET_LOG_LEVEL:
@@ -188,7 +189,7 @@ def initialize_logger(log_level):
     set_logger(is_enable=True)
 
 
-def is_use_stdin():
+def is_use_stdin() -> Tuple[bool, bool]:
     if sys.stdin.isatty():
         return (False, False)
 
@@ -197,7 +198,15 @@ def is_use_stdin():
     return (len(sys.argv) == 1 or found_stdin_specifier, found_stdin_specifier)
 
 
-def parse_ping(dest_or_file, interface, count, deadline, timeout, is_parse_icmp_reply, timestamp):
+def parse_ping(
+    dest_or_file: str,
+    interface: str,
+    count: int,
+    deadline,
+    timeout,
+    is_parse_icmp_reply: bool,
+    timestamp,
+) -> Tuple[str, Any]:
     if os.path.isfile(dest_or_file):
         with open(dest_or_file) as f:
             ping_result_text = f.read()
@@ -226,7 +235,7 @@ def parse_ping(dest_or_file, interface, count, deadline, timeout, is_parse_icmp_
     stats = ping_parser.parse(ping_result_text)
     output = stats.as_dict()
     if is_parse_icmp_reply:
-        output["icmp_replies"] = stats.icmp_replies
+        output["icmp_replies"] = stats.icmp_replies  # type: ignore
 
     return (dest_or_file, output)
 
@@ -289,7 +298,7 @@ timestamp_serialize_map = {
 }
 
 
-def dumps_dict(obj, timestamp_format, indent=0):
+def dumps_dict(obj: Dict, timestamp_format: str, indent: int = 0):
     serialize_func = timestamp_serialize_map[timestamp_format]
 
     if indent <= 0:
@@ -298,7 +307,7 @@ def dumps_dict(obj, timestamp_format, indent=0):
     return json.dumps(obj, indent=indent, default=serialize_func)
 
 
-def main():
+def main() -> int:
     options = parse_option()
 
     initialize_logger(options.log_level)
@@ -346,7 +355,7 @@ def main():
         stats = ping_parser.parse(ping_result_text)
         output = stats.as_dict()
         if options.icmp_reply:
-            output["icmp_replies"] = stats.icmp_replies
+            output["icmp_replies"] = stats.icmp_replies  # type: ignore
 
     print_result(dumps_dict(output, timestamp_format=options.timestamp, indent=options.indent))
 

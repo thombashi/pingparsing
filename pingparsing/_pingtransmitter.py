@@ -142,7 +142,7 @@ class PingTransmitter:
         self.__timeout = cast(hr.Time, timeout)
 
     @property
-    def deadline(self):
+    def deadline(self) -> hr.Time:
         """
         Timeout before ping exits.
         You can specify either a number or a string (e.g. ``"1sec"``).
@@ -175,7 +175,7 @@ class PingTransmitter:
         return self.__deadline
 
     @deadline.setter
-    def deadline(self, value):
+    def deadline(self, value) -> None:
         if value is None:
             self.__deadline = value
             return
@@ -189,10 +189,10 @@ class PingTransmitter:
 
     def __init__(self) -> None:
         self.__destination = ""
-        self.count = None
+        self.count = None  # type: Optional[int]
         self.ping_option = ""
         self.is_quiet = False
-        self.interface = None
+        self.interface = None  # type: Optional[str]
         self.auto_codepage = True
 
         self.timeout = None

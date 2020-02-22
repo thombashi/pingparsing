@@ -3,6 +3,7 @@
 """
 
 import enum
+from typing import Union
 
 
 @enum.unique
@@ -17,7 +18,7 @@ class ParseError(Exception):
     """
 
     @property
-    def reason(self):
+    def reason(self) -> Union[str]:
         return self.__reason
 
     def __init__(self, *args, **kwargs):

@@ -59,7 +59,7 @@ except ImportError:
     logger = NullLogger()  # type: ignore
 
 
-def set_logger(is_enable, propagation_depth=1):
+def set_logger(is_enable: bool, propagation_depth: int = 1) -> None:
     if is_enable:
         logger.enable(MODULE_NAME)
     else:
