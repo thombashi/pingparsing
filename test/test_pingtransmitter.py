@@ -2,7 +2,7 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-import platform as m_platform  # noqa: W0611
+import platform as m_platform
 
 import pytest
 from typepy import RealNumber
