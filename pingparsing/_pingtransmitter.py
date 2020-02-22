@@ -7,7 +7,7 @@ import math
 import platform
 import re
 from collections import namedtuple
-from typing import Optional, cast
+from typing import Optional, Union, cast
 
 import humanreadable as hr
 import subprocrunner
@@ -130,12 +130,16 @@ class PingTransmitter:
         return self.__timeout
 
     @timeout.setter
-    def timeout(self, value: Optional[str]):
+    def timeout(self, value: Union[hr.Time, int, str, None]) -> None:
         if value is None:
             self.__timeout = value  # type: Optional[hr.Time]
             return
 
-        timeout = hr.Time(str(value), default_unit=hr.Time.Unit.MILLISECOND)
+        if isinstance(value, hr.Time):
+            timeout = cast(hr.Time, value)
+        else:
+            timeout = hr.Time(str(value), default_unit=hr.Time.Unit.MILLISECOND)
+
         if timeout.milliseconds <= 0:
             raise ValueError("timeout must be greater than zero")
 
@@ -175,12 +179,15 @@ class PingTransmitter:
         return self.__deadline
 
     @deadline.setter
-    def deadline(self, value) -> None:
+    def deadline(self, value: Union[hr.Time, int, str, None]) -> None:
         if value is None:
             self.__deadline = value
             return
 
-        deadline = hr.Time(str(value), default_unit=hr.Time.Unit.SECOND)
+        if isinstance(value, hr.Time):
+            deadline = cast(hr.Time, value)
+        else:
+            deadline = hr.Time(str(value), default_unit=hr.Time.Unit.SECOND)
 
         if deadline.milliseconds <= 0:
             raise ValueError("deadline must be greater than zero")
