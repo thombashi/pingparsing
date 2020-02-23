@@ -13,8 +13,8 @@ class Test_CmdMaker_make_cmd:
     @pytest.mark.parametrize(
         ["maker_class", "host", "expected"],
         [
-            [LinuxPingCmdMaker, "127.0.0.1", "ping -w 3 -D -q 127.0.0.1"],
-            [MacosPingCmdMaker, "127.0.0.1", "ping -t 3 -D -q 127.0.0.1"],
+            [LinuxPingCmdMaker, "127.0.0.1", "ping -w 3 127.0.0.1"],
+            [MacosPingCmdMaker, "127.0.0.1", "ping -t 3 127.0.0.1"],
             [WindowsPingCmdMaker, "127.0.0.1", "ping -n 3 127.0.0.1"],
         ],
     )
@@ -23,7 +23,7 @@ class Test_CmdMaker_make_cmd:
 
     @pytest.mark.parametrize(
         ["maker_class", "host", "deadline", "expected"],
-        [[LinuxPingCmdMaker, "localhost", "1sec", "ping -w 1 -D -q localhost"],],
+        [[LinuxPingCmdMaker, "localhost", "1sec", "ping -w 1 localhost"],],
     )
     def test_normal_deadline(self, maker_class, host, deadline, expected):
         assert maker_class(deadline=Time(deadline)).make_cmd(destination=host) == expected
@@ -31,10 +31,10 @@ class Test_CmdMaker_make_cmd:
     @pytest.mark.parametrize(
         ["maker_class", "host", "ipv6", "timeout", "expected"],
         [
-            [LinuxPingCmdMaker, "localhost", False, "1sec", "ping -w 3 -W 1 -D -q localhost"],
-            [LinuxPingCmdMaker, "localhost", True, "1sec", "ping6 -w 3 -W 1 -D -q localhost"],
-            [MacosPingCmdMaker, "localhost", False, "1sec", "ping -t 3 -D -q localhost"],
-            [MacosPingCmdMaker, "localhost", True, "1sec", "ping6 -i 1 -c 3 -D -q localhost"],
+            [LinuxPingCmdMaker, "localhost", False, "1sec", "ping -w 3 -W 1 localhost"],
+            [LinuxPingCmdMaker, "localhost", True, "1sec", "ping6 -w 3 -W 1 localhost"],
+            [MacosPingCmdMaker, "localhost", False, "1sec", "ping -t 3 localhost"],
+            [MacosPingCmdMaker, "localhost", True, "1sec", "ping6 -i 1 -c 3 localhost"],
             [WindowsPingCmdMaker, "localhost", False, "1sec", "ping -n 3 -w 1000 localhost"],
             [WindowsPingCmdMaker, "localhost", True, "1sec", "ping -n 3 -w 1000 localhost%eth0"],
         ],
@@ -50,8 +50,8 @@ class Test_CmdMaker_make_cmd:
     @pytest.mark.parametrize(
         ["maker_class", "host", "count", "expected"],
         [
-            [LinuxPingCmdMaker, "localhost", 1, "ping -c 1 -D -q localhost"],
-            [MacosPingCmdMaker, "localhost", 1, "ping -c 1 -D -q localhost"],
+            [LinuxPingCmdMaker, "localhost", 1, "ping -c 1 localhost"],
+            [MacosPingCmdMaker, "localhost", 1, "ping -c 1 localhost"],
             [WindowsPingCmdMaker, "localhost", 1, "ping -n 1 localhost"],
         ],
     )
@@ -61,8 +61,19 @@ class Test_CmdMaker_make_cmd:
     @pytest.mark.parametrize(
         ["maker_class", "host", "expected"],
         [
-            [LinuxPingCmdMaker, "localhost", "ping -c 1 -D -q localhost"],
-            [MacosPingCmdMaker, "localhost", "ping -c 1 -D -q localhost"],
+            [LinuxPingCmdMaker, "localhost", "ping -c 1 -D localhost"],
+            [MacosPingCmdMaker, "localhost", "ping -c 1 -D localhost"],
+            [WindowsPingCmdMaker, "localhost", "ping -n 1 localhost"],
+        ],
+    )
+    def test_normal_timestamp(self, maker_class, host, expected):
+        assert maker_class(timestamp=True, count=1).make_cmd(destination=host) == expected
+
+    @pytest.mark.parametrize(
+        ["maker_class", "host", "expected"],
+        [
+            [LinuxPingCmdMaker, "localhost", "ping -c 1 localhost"],
+            [MacosPingCmdMaker, "localhost", "ping -c 1 localhost"],
             [WindowsPingCmdMaker, "localhost", "chcp 437 & ping -n 1 localhost"],
         ],
     )
@@ -72,8 +83,8 @@ class Test_CmdMaker_make_cmd:
     @pytest.mark.parametrize(
         ["maker_class", "host", "expected"],
         [
-            [LinuxPingCmdMaker, "localhost", "ping -c 1 -D -q -a localhost"],
-            [MacosPingCmdMaker, "localhost", "ping -c 1 -D -q -a localhost"],
+            [LinuxPingCmdMaker, "localhost", "ping -c 1 -a localhost"],
+            [MacosPingCmdMaker, "localhost", "ping -c 1 -a localhost"],
             [WindowsPingCmdMaker, "localhost", "ping -n 1 -a localhost"],
         ],
     )

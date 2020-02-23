@@ -19,6 +19,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         timeout: Optional[hr.Time] = None,
         interface: Optional[str] = None,
         is_ipv6: bool = False,
+        timestamp: bool = False,
         auto_codepage: bool = False,
         ping_option: Optional[str] = None,
     ):
@@ -27,6 +28,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         self.timeout = timeout
         self.interface = interface
         self._is_ipv6 = is_ipv6
+        self._timestamp = timestamp
         self.auto_codepage = auto_codepage
         self.ping_option = ping_option
 
@@ -38,10 +40,11 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
                 self._get_deadline_option(),
                 self._get_timeout_option(),
                 self._get_count_option(),
-                self._get_timestamp_option(),
-                self._get_quiet_option(),
             ]
         )
+
+        if self._timestamp:
+            command_items.append(self._get_timestamp_option())
 
         if typepy.is_not_null_string(self.ping_option):
             command_items.append(self.ping_option)

@@ -291,6 +291,7 @@ class PingTransmitter:
             timeout=self.timeout,
             interface=self.interface,
             is_ipv6=self.__is_ipv6(),
+            timestamp=self.timestamp,
             auto_codepage=self.auto_codepage,
             ping_option=self.ping_option,
         ).make_cmd(destination=self.destination)
