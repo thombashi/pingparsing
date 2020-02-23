@@ -80,45 +80,6 @@ def parse_option() -> argparse.Namespace:
         """,
     )
 
-    group = parser.add_argument_group("Output Options")  # type: ignore
-    group.add_argument(
-        "--indent",
-        type=int,
-        default=4,
-        help="""JSON output will be pretty-printed with the indent level.
-        (default= %(default)s)
-        """,
-    )
-    group.add_argument(
-        "--icmp-reply",
-        "--icmp-replies",
-        action="store_true",
-        default=False,
-        help="print results for each ICMP packet reply.",
-    )
-    group.add_argument(
-        "--no-color", action="store_true", default=False, help="Turn off colors.",
-    )
-
-    loglevel_dest = "log_level"
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument(
-        "--debug",
-        dest=loglevel_dest,
-        action="store_const",
-        const=LogLevel.DEBUG,
-        default=LogLevel.INFO,
-        help="for debug print.",
-    )
-    group.add_argument(
-        "--quiet",
-        dest=loglevel_dest,
-        action="store_const",
-        const=QUIET_LOG_LEVEL,
-        default=LogLevel.INFO,
-        help="suppress execution log messages.",
-    )
-
     group = parser.add_argument_group("Ping Options")  # type: ignore
     group.add_argument(
         "--timestamp",
@@ -175,6 +136,45 @@ def parse_option() -> argparse.Namespace:
         ),
     )
     group.add_argument("-I", "--interface", dest="interface", help="network interface")
+
+    group = parser.add_argument_group("Output Options")  # type: ignore
+    group.add_argument(
+        "--indent",
+        type=int,
+        default=4,
+        help="""JSON output will be pretty-printed with the indent level.
+        (default= %(default)s)
+        """,
+    )
+    group.add_argument(
+        "--icmp-reply",
+        "--icmp-replies",
+        action="store_true",
+        default=False,
+        help="print results for each ICMP packet reply.",
+    )
+    group.add_argument(
+        "--no-color", action="store_true", default=False, help="Turn off colors.",
+    )
+
+    loglevel_dest = "log_level"
+    group = parser.add_mutually_exclusive_group()  # type: ignore
+    group.add_argument(
+        "--debug",
+        dest=loglevel_dest,
+        action="store_const",
+        const=LogLevel.DEBUG,
+        default=LogLevel.INFO,
+        help="for debug print.",
+    )
+    group.add_argument(
+        "--quiet",
+        dest=loglevel_dest,
+        action="store_const",
+        const=QUIET_LOG_LEVEL,
+        default=LogLevel.INFO,
+        help="suppress execution log messages.",
+    )
 
     return parser.parse_args()
 
