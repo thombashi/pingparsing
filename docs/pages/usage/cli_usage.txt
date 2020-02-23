@@ -77,32 +77,29 @@ The parsed result outputted with JSON format.
             "packet_receive": 3,
             "packet_loss_count": 0,
             "packet_loss_rate": 0.0,
-            "rtt_min": 136.097,
-            "rtt_avg": 140.476,
-            "rtt_max": 148.341,
-            "rtt_mdev": 5.589,
+            "rtt_min": 19.885,
+            "rtt_avg": 38.829,
+            "rtt_max": 57.751,
+            "rtt_mdev": 15.459,
             "packet_duplicate_count": 0,
             "packet_duplicate_rate": 0.0,
             "icmp_replies": [
                 {
-                    "timestamp": null,
                     "icmp_seq": 1,
-                    "ttl": 39,
-                    "time": 148.0,
+                    "ttl": 53,
+                    "time": 19.8,
                     "duplicate": false
                 },
                 {
-                    "timestamp": null,
                     "icmp_seq": 2,
-                    "ttl": 39,
-                    "time": 136.0,
+                    "ttl": 53,
+                    "time": 38.8,
                     "duplicate": false
                 },
                 {
-                    "timestamp": null,
                     "icmp_seq": 3,
-                    "ttl": 39,
-                    "time": 136.0,
+                    "ttl": 53,
+                    "time": 57.7,
                     "duplicate": false
                 }
             ]
