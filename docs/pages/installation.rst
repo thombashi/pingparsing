@@ -24,7 +24,6 @@ Optional Dependencies
 Test Dependencies
 -----------------
 - `pytest <https://pypi.org/project/pytest>`__
-- `pytest-runner <https://github.com/pytest-dev/pytest-runner>`__
 - `tox <https://pypi.org/project/tox>`__
 
 
