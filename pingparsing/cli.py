@@ -10,7 +10,7 @@ import os
 import sys
 from datetime import datetime
 from textwrap import dedent
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import humanreadable as hr
 from subprocrunner import CommandError
@@ -214,7 +214,7 @@ def is_use_stdin() -> Tuple[bool, bool]:
 
 def parse_ping(
     dest_or_file: str,
-    interface: str,
+    interface: Optional[str],
     count: int,
     deadline: TimeArg,
     timeout: TimeArg,
