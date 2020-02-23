@@ -17,6 +17,14 @@ from ._stats import PingStats
 from .error import ParseError, ParseErrorReason
 
 
+class IcmpReplyKey:
+    TIMESTAMP = "timestamp"
+    SEQUENCE_NO = "icmp_seq"
+    TTL = "ttl"
+    TIME = "time"
+    DUPLICATE = "duplicate"
+
+
 class PingParser(PingParserInterface):
 
     _IPADDR_PATTERN = r"(\d{1,3}\.){3}\d{1,3}"
@@ -59,24 +67,24 @@ class PingParser(PingParserInterface):
             results = match.groupdict()
             reply = {}  # type: Dict[str, Union[bool, float, int, DateTime]]
 
-            if results.get("timestamp"):
-                reply["timestamp"] = DateTime(
-                    results["timestamp"].lstrip("[").rstrip("]")
+            if results.get(IcmpReplyKey.TIMESTAMP):
+                reply[IcmpReplyKey.TIMESTAMP] = DateTime(
+                    results[IcmpReplyKey.TIMESTAMP].lstrip("[").rstrip("]")
                 ).force_convert()
 
-            if results.get("icmp_seq"):
-                reply["icmp_seq"] = int(results["icmp_seq"])
+            if results.get(IcmpReplyKey.SEQUENCE_NO):
+                reply[IcmpReplyKey.SEQUENCE_NO] = int(results[IcmpReplyKey.SEQUENCE_NO])
 
-            if results.get("ttl"):
-                reply["ttl"] = int(results["ttl"])
+            if results.get(IcmpReplyKey.TTL):
+                reply[IcmpReplyKey.TTL] = int(results[IcmpReplyKey.TTL])
 
-            if results.get("time"):
-                reply["time"] = float(results["time"])
+            if results.get(IcmpReplyKey.TIME):
+                reply[IcmpReplyKey.TIME] = float(results[IcmpReplyKey.TIME])
 
             if duplicate_packet_regexp.search(line):
-                reply["duplicate"] = True
+                reply[IcmpReplyKey.DUPLICATE] = True
             else:
-                reply["duplicate"] = False
+                reply[IcmpReplyKey.DUPLICATE] = False
 
             icmp_reply_list.append(reply)
 
