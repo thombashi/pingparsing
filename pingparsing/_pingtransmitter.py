@@ -52,6 +52,10 @@ class PingTransmitter:
 
         Specifies the number of data bytes to be sent.
 
+    .. py:attribute:: ttl
+
+        Specifies the Time to Live.
+
     .. py:attribute:: ping_option
 
         Additional ``ping`` command option.
@@ -202,6 +206,7 @@ class PingTransmitter:
         self.__destination = ""
         self.count = None  # type: Optional[int]
         self.packet_size = None  # type: Optional[int]
+        self.ttl = None  # type: Optional[int]
         self.ping_option = ""
         self.is_quiet = False
         self.interface = None  # type: Optional[str]
@@ -293,6 +298,7 @@ class PingTransmitter:
         return maker_class(
             count=self.count,
             packet_size=self.packet_size,
+            ttl=self.ttl,
             deadline=self.deadline,
             timeout=self.timeout,
             interface=self.interface,

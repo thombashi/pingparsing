@@ -70,6 +70,17 @@ class Test_CmdMaker_make_cmd:
         assert maker_class(packet_size=packet_size, count=1).make_cmd(destination=host) == expected
 
     @pytest.mark.parametrize(
+        ["maker_class", "host", "ttl", "expected"],
+        [
+            [LinuxPingCmdMaker, "localhost", 32, "ping -c 1 -t 32 localhost"],
+            [MacosPingCmdMaker, "localhost", 32, "ping -c 1 -T 32 localhost"],
+            [WindowsPingCmdMaker, "localhost", 32, "ping -n 1 -i 32 localhost"],
+        ],
+    )
+    def test_normal_ttl(self, maker_class, host, ttl, expected):
+        assert maker_class(ttl=ttl, count=1).make_cmd(destination=host) == expected
+
+    @pytest.mark.parametrize(
         ["maker_class", "host", "expected"],
         [
             [LinuxPingCmdMaker, "localhost", "ping -c 1 -D localhost"],

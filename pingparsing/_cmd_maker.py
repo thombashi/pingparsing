@@ -18,6 +18,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         deadline: Optional[hr.Time] = None,
         timeout: Optional[hr.Time] = None,
         packet_size: Optional[int] = None,
+        ttl: Optional[int] = None,
         interface: Optional[str] = None,
         is_ipv6: bool = False,
         timestamp: bool = False,
@@ -28,6 +29,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         self.deadline = deadline
         self.timeout = timeout
         self._packet_size = packet_size
+        self._ttl = ttl
         self.interface = interface
         self._is_ipv6 = is_ipv6
         self._timestamp = timestamp
@@ -47,6 +49,9 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
 
         if self._packet_size:
             command_items.extend(self._get_packet_size_option())
+
+        if self._ttl:
+            command_items.extend(self._get_ttl_option())
 
         if self._timestamp:
             command_items.append(self._get_timestamp_option())
@@ -93,6 +98,10 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
     def _get_packet_size_option(self) -> List:
         raise NotImplementedError()
 
+    @abc.abstractmethod
+    def _get_ttl_option(self) -> List:
+        raise NotImplementedError()
+
 
 class PosixPingCmdMaker(PingCmdMaker):
     def _get_destination_host(self, destination: str) -> str:
@@ -123,6 +132,9 @@ class PosixPingCmdMaker(PingCmdMaker):
 
 
 class MacosPingCmdMaker(PosixPingCmdMaker):
+    def _get_ttl_option(self) -> List:
+        return ["-T", str(self._ttl)]
+
     def _get_deadline_option(self) -> str:
         if self.deadline is None:
             if self.count:
@@ -144,6 +156,9 @@ class MacosPingCmdMaker(PosixPingCmdMaker):
 
 
 class LinuxPingCmdMaker(PosixPingCmdMaker):
+    def _get_ttl_option(self) -> List:
+        return ["-t", str(self._ttl)]
+
     def _get_deadline_option(self) -> str:
         if self.deadline is None:
             if self.count:
@@ -212,3 +227,6 @@ class WindowsPingCmdMaker(PingCmdMaker):
 
     def _get_packet_size_option(self) -> List:
         return ["-l", str(self._packet_size)]
+
+    def _get_ttl_option(self) -> List:
+        return ["-i", str(self._ttl)]
