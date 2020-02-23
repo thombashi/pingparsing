@@ -214,7 +214,7 @@ def parse_ping(
     deadline: TimeArg,
     timeout: TimeArg,
     is_parse_icmp_reply: bool,
-    timestamp,
+    timestamp: str,
 ) -> Tuple[str, Any]:
     if os.path.isfile(dest_or_file):
         with open(dest_or_file) as f:
@@ -249,7 +249,7 @@ def parse_ping(
     return (dest_or_file, output)
 
 
-def get_ping_param(options):
+def get_ping_param(options) -> Tuple:
     count = options.count
     deadline = options.deadline
     timeout = options.timeout
@@ -260,7 +260,7 @@ def get_ping_param(options):
     return (count, deadline, timeout)
 
 
-def print_result(text):
+def print_result(text: str) -> None:
     if not sys.stdout.isatty():
         # avoid to colorized when piped or redirected
         print(text)
@@ -307,7 +307,7 @@ timestamp_serialize_map = {
 }
 
 
-def dumps_dict(obj: Dict, timestamp_format: str, indent: int = 0):
+def dumps_dict(obj: Dict, timestamp_format: str, indent: int = 0) -> str:
     serialize_func = timestamp_serialize_map[timestamp_format]
 
     if indent <= 0:
