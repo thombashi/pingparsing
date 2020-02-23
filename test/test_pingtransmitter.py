@@ -2,7 +2,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-import platform as m_platform
 
 import pytest
 from typepy import RealNumber
@@ -79,27 +78,6 @@ class Test_PingTransmitter_ping:
         assert RealNumber(stats.rtt_avg).is_type()
         assert RealNumber(stats.rtt_max).is_type()
         assert RealNumber(stats.rtt_mdev).is_type()
-
-    @pytest.mark.parametrize(
-        ["system", "timeout", "expected"],
-        [
-            ["Linux", 1, "-W 1"],
-            ["Linux", 1500, "-W 2"],
-            ["Windows", 1, "-w 1"],
-            ["Windows", 1500, "-w 1500"],
-            ["macos", 1, ""],
-            ["macos", 1500, ""],
-        ],
-    )
-    def test_normal_get_timeout_option(self, monkeypatch, transmitter, system, timeout, expected):
-        def platform_mock():
-            return system
-
-        monkeypatch.setattr(m_platform, "system", platform_mock)
-
-        transmitter.timeout = timeout
-
-        assert transmitter._PingTransmitter__get_timeout_option() == expected
 
     @pytest.mark.parametrize(
         ["dest", "expected"], [["", ValueError], [None, ValueError], [1, ValueError]]

@@ -3,9 +3,7 @@
 """
 
 import ipaddress
-import math
 import platform
-import re
 from collections import namedtuple
 from typing import Optional, Union, cast
 
@@ -14,6 +12,7 @@ import subprocrunner
 import typepy
 from typepy import Integer, StrictLevel, String, TypeConversionError
 
+from ._cmd_maker import LinuxPingCmdMaker, MacosPingCmdMaker, WindowsPingCmdMaker
 from ._logger import logger
 
 
@@ -272,101 +271,25 @@ class PingTransmitter:
             raise ValueError("interface required to ping to IPv6 link local address")
 
     def __get_ping_command(self) -> str:
-        command_items = []
+        from typing import Any  # noqa
 
-        if self.__is_windows() and self.auto_codepage:
-            command_items.append("chcp 437 &")
-
-        command_items.extend(
-            [
-                self.__get_builtin_ping_command(),
-                self.__get_deadline_option(),
-                self.__get_timeout_option(),
-                self.__get_count_option(),
-                self.__get_timestamp_option(),
-                self.__get_quiet_option(),
-            ]
-        )
-
-        if self.__is_linux() and typepy.is_not_null_string(self.interface):
-            command_items.append("-I {}".format(self.interface))
-
-        if typepy.is_not_null_string(self.ping_option):
-            command_items.append(self.ping_option)
-
-        command_items.append(self.__get_destination_host())
-
-        return re.sub(r"[\s]{2,}", " ", " ".join(command_items))
-
-    def __get_destination_host(self) -> str:
-        if self.__is_windows() and self.__is_ipv6():
-            return "{:s}%{}".format(self.destination, self.interface)
-
-        return self.destination
-
-    def __get_builtin_ping_command(self) -> str:
-        if self.__is_windows():
-            return "ping"
-
-        if self.__is_ipv6():
-            return "ping6"
-
-        return "ping"
-
-    def __get_quiet_option(self) -> str:
-        if not self.is_quiet or self.__is_windows():
-            return ""
-
-        return "-q"
-
-    def __get_timestamp_option(self) -> str:
-        if not self.timestamp or self.__is_windows():
-            return ""
-
-        return "-D"
-
-    def __get_deadline_option(self) -> str:
-        if self.deadline is None:
-            if self.count:
-                return ""
-
-            deadline = DEFAULT_DEADLINE
-        else:
-            deadline = int(math.ceil(self.deadline.seconds))
-
-        if self.__is_windows():
-            # ping for Windows does not have the option with equals to the deadline option.
-            return "-n {:d}".format(deadline)
-        elif self.__is_macos():
-            if self.__is_ipv6():
-                # there is no timeout option for macOS ping6.
-                # so, using -i and -c option to simulate timeout.
-                return "-i 1 -c {:d}".format(deadline)
-
-            return "-t {:d}".format(deadline)
-
-        return "-w {:d}".format(deadline)
-
-    def __get_timeout_option(self) -> str:
-        if self.timeout is None:
-            return ""
+        maker_class = None  # type: Any
 
         if self.__is_linux():
-            # timeout option value accept in seconds in Linux ping and float values
-            # not accepted.
-            return "-W {:d}".format(int(math.ceil(self.timeout.seconds)))
-        if self.__is_windows():
-            return "-w {:d}".format(int(math.ceil(self.timeout.milliseconds)))
+            maker_class = LinuxPingCmdMaker
+        elif self.__is_macos():
+            maker_class = MacosPingCmdMaker
+        elif self.__is_windows():
+            maker_class = WindowsPingCmdMaker
+        else:
+            raise RuntimeError("not supported platform: {}".format(platform.system()))
 
-        return ""
-
-    def __get_count_option(self) -> str:
-        try:
-            count = Integer(self.count).convert()
-        except TypeConversionError:
-            return ""
-
-        if self.__is_windows():
-            return "-n {:d}".format(count)
-
-        return "-c {:d}".format(count)
+        return maker_class(
+            count=self.count,
+            deadline=self.deadline,
+            timeout=self.timeout,
+            interface=self.interface,
+            is_ipv6=self.__is_ipv6(),
+            auto_codepage=self.auto_codepage,
+            ping_option=self.ping_option,
+        ).make_cmd(destination=self.destination)
