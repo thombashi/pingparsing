@@ -2,11 +2,11 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-
 import pytest
 from typepy import RealNumber
 
 from pingparsing import PingTransmitter
+from pingparsing._parser import IcmpReplyKey
 
 from .common import ping_parser  # noqa: W0611
 
@@ -78,6 +78,29 @@ class Test_PingTransmitter_ping:
         assert RealNumber(stats.rtt_avg).is_type()
         assert RealNumber(stats.rtt_max).is_type()
         assert RealNumber(stats.rtt_mdev).is_type()
+        assert IcmpReplyKey.TIMESTAMP not in stats.icmp_replies[0]
+
+    @pytest.mark.xfail(run=False)
+    @pytest.mark.parametrize(["host", "count"], [["localhost", 3]])
+    def test_normal_send_parse_timestamp(self, transmitter, ping_parser, host, count):
+        transmitter.destination = host
+        transmitter.count = count
+        transmitter.timestamp = True
+        result = transmitter.ping()
+
+        stats = ping_parser.parse(result.stdout)
+
+        assert stats.packet_transmit >= count
+        assert RealNumber(stats.packet_receive).is_type()
+        assert RealNumber(stats.packet_loss_rate).is_type()
+        assert RealNumber(stats.packet_loss_count).is_type()
+        assert RealNumber(stats.packet_duplicate_rate).is_type()
+        assert RealNumber(stats.packet_duplicate_count).is_type()
+        assert RealNumber(stats.rtt_min).is_type()
+        assert RealNumber(stats.rtt_avg).is_type()
+        assert RealNumber(stats.rtt_max).is_type()
+        assert RealNumber(stats.rtt_mdev).is_type()
+        assert IcmpReplyKey.TIMESTAMP in stats.icmp_replies[0]
 
     @pytest.mark.parametrize(
         ["dest", "expected"], [["", ValueError], [None, ValueError], [1, ValueError]]

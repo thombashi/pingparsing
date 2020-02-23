@@ -144,3 +144,24 @@ class Test_PingParsing_ping:
         for dest in dest_list:
             assert parsed_result[dest]["packet_transmit"] == count
             assert parsed_result[dest]["rtt_max"] > 0
+
+    def test_normal_single_icmp_timestamp(self):
+        count = 1
+        dest = "localhost"
+        runner = SubprocessRunner(
+            ["pingparsing", dest, "-c", count, "--icmp-reply", "--timestamp", "epoch"]
+        )
+        runner.run()
+
+        print_result(stdout=runner.stdout, stderr=runner.stderr)
+
+        assert runner.returncode == 0
+
+        parsed_result = json.loads(runner.stdout)
+
+        assert parsed_result[dest]["packet_transmit"] == count
+        assert parsed_result[dest]["rtt_max"] > 0
+
+        icmp_replies = parsed_result[dest]["icmp_replies"]
+        assert icmp_replies
+        assert icmp_replies[0]["timestamp"]

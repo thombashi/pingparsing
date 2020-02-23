@@ -178,7 +178,9 @@ class PingStats:
             ]
         )
 
-    def as_dict(self) -> Dict[str, Union[str, Optional[int], Optional[float]]]:
+    def as_dict(
+        self, include_icmp_replies: bool = False
+    ) -> Dict[str, Union[str, int, float, List[Dict], None]]:
         """
         ping statistics.
 
@@ -205,7 +207,7 @@ class PingStats:
             }
         """
 
-        return {
+        d = {
             "destination": self.destination,
             "packet_transmit": self.packet_transmit,
             "packet_receive": self.packet_receive,
@@ -217,7 +219,11 @@ class PingStats:
             "rtt_mdev": self.rtt_mdev,
             "packet_duplicate_count": self.packet_duplicate_count,
             "packet_duplicate_rate": self.packet_duplicate_rate,
-        }
+        }  # type: Dict[str, Union[str, int, float, List[Dict], None]]
+        if include_icmp_replies:
+            d["icmp_replies"] = self.icmp_replies
+
+        return d
 
     def as_tuple(self) -> Tuple:
         """

@@ -242,9 +242,7 @@ def parse_ping(
 
     ping_parser = PingParsing()
     stats = ping_parser.parse(ping_result_text)
-    output = stats.as_dict()
-    if is_parse_icmp_reply:
-        output["icmp_replies"] = stats.icmp_replies  # type: ignore
+    output = stats.as_dict(include_icmp_replies=is_parse_icmp_reply)
 
     return (dest_or_file, output)
 
@@ -362,9 +360,7 @@ def main() -> int:
         ping_result_text = sys.stdin.read()
         ping_parser = PingParsing()
         stats = ping_parser.parse(ping_result_text)
-        output = stats.as_dict()
-        if options.icmp_reply:
-            output["icmp_replies"] = stats.icmp_replies  # type: ignore
+        output = stats.as_dict(include_icmp_replies=options.icmp_reply)
 
     print_result(dumps_dict(output, timestamp_format=options.timestamp, indent=options.indent))
 
