@@ -6,7 +6,7 @@ build:
 
 .PHONY: check
 check:
-	@tox -e lint
+	@-tox -e lint
 	travis lint
 
 .PHONY: clean
@@ -29,6 +29,7 @@ fmt:
 
 .PHONY: readme
 readme:
+	@cd docs && ./update_command_help.py
 	@tox -e readme
 
 .PHONY: release
