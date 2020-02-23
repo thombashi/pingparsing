@@ -182,6 +182,14 @@ def initialize_logger(log_level: str) -> None:
             "<level>{level: <8}</level> | "
             "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
         )
+
+        try:
+            import loguru  # noqa
+        except ImportError:
+            print(
+                "required to install with 'pip install pingparsing[cli]' to debug print",
+                file=sys.stderr,
+            )
     else:
         log_format = "<level>[{level}]</level> {message}"
 
