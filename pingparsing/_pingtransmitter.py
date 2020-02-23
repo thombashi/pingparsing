@@ -217,7 +217,7 @@ class PingTransmitter:
 
         self.__validate_ping_param()
 
-        ping_runner = subprocrunner.SubprocessRunner(self.__get_ping_command())
+        ping_runner = subprocrunner.SubprocessRunner(self.__make_ping_command())
         ping_runner.run()
 
         return PingResult(ping_runner.stdout, ping_runner.stderr, ping_runner.returncode)
@@ -271,7 +271,7 @@ class PingTransmitter:
         if typepy.is_null_string(self.interface):
             raise ValueError("interface required to ping to IPv6 link local address")
 
-    def __get_ping_command(self) -> str:
+    def __make_ping_command(self) -> str:
         from typing import Any  # noqa
 
         maker_class = None  # type: Any
