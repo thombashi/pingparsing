@@ -48,6 +48,10 @@ class PingTransmitter:
         Number of sending ICMP packets. This attribute ignored if the value is
         |None|. Defaults to |None|.
 
+    .. py:attribute:: packet_size
+
+        Specifies the number of data bytes to be sent.
+
     .. py:attribute:: ping_option
 
         Additional ``ping`` command option.
@@ -197,6 +201,7 @@ class PingTransmitter:
     def __init__(self) -> None:
         self.__destination = ""
         self.count = None  # type: Optional[int]
+        self.packet_size = None  # type: Optional[int]
         self.ping_option = ""
         self.is_quiet = False
         self.interface = None  # type: Optional[str]
@@ -287,6 +292,7 @@ class PingTransmitter:
 
         return maker_class(
             count=self.count,
+            packet_size=self.packet_size,
             deadline=self.deadline,
             timeout=self.timeout,
             interface=self.interface,

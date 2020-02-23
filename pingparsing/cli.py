@@ -141,6 +141,9 @@ def parse_option() -> argparse.Namespace:
         """,
     )
     group.add_argument(
+        "-s", "--packet-size", type=int, help="Specifies the number of data bytes to be sent.",
+    )
+    group.add_argument(
         "-w",
         "--deadline",
         type=str,
@@ -216,6 +219,7 @@ def parse_ping(
     dest_or_file: str,
     interface: Optional[str],
     count: int,
+    packet_size: Optional[int],
     deadline: TimeArg,
     timeout: TimeArg,
     is_parse_icmp_reply: bool,
@@ -229,6 +233,7 @@ def parse_ping(
         transmitter.destination = dest_or_file
         transmitter.interface = interface
         transmitter.count = count
+        transmitter.packet_size = packet_size
         transmitter.deadline = deadline
         transmitter.timeout = timeout
         transmitter.is_quiet = not is_parse_icmp_reply
@@ -349,6 +354,7 @@ def main() -> int:
                             dest_or_file,
                             options.interface,
                             count,
+                            options.packet_size,
                             deadline,
                             timeout,
                             options.icmp_reply,

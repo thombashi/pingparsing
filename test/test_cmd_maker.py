@@ -59,6 +59,17 @@ class Test_CmdMaker_make_cmd:
         assert maker_class(count=count).make_cmd(destination=host) == expected
 
     @pytest.mark.parametrize(
+        ["maker_class", "host", "packet_size", "expected"],
+        [
+            [LinuxPingCmdMaker, "localhost", 6000, "ping -c 1 -s 6000 localhost"],
+            [MacosPingCmdMaker, "localhost", 6000, "ping -c 1 -s 6000 localhost"],
+            [WindowsPingCmdMaker, "localhost", 6000, "ping -n 1 -l 6000 localhost"],
+        ],
+    )
+    def test_normal_packet_size(self, maker_class, host, packet_size, expected):
+        assert maker_class(packet_size=packet_size, count=1).make_cmd(destination=host) == expected
+
+    @pytest.mark.parametrize(
         ["maker_class", "host", "expected"],
         [
             [LinuxPingCmdMaker, "localhost", "ping -c 1 -D localhost"],

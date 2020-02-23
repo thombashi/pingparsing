@@ -17,6 +17,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         count: Optional[int] = None,
         deadline: Optional[hr.Time] = None,
         timeout: Optional[hr.Time] = None,
+        packet_size: Optional[int] = None,
         interface: Optional[str] = None,
         is_ipv6: bool = False,
         timestamp: bool = False,
@@ -26,6 +27,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         self.count = count
         self.deadline = deadline
         self.timeout = timeout
+        self._packet_size = packet_size
         self.interface = interface
         self._is_ipv6 = is_ipv6
         self._timestamp = timestamp
@@ -42,6 +44,9 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
                 self._get_count_option(),
             ]
         )
+
+        if self._packet_size:
+            command_items.extend(self._get_packet_size_option())
 
         if self._timestamp:
             command_items.append(self._get_timestamp_option())
@@ -84,6 +89,10 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
     def _get_count_option(self) -> str:
         raise NotImplementedError()
 
+    @abc.abstractmethod
+    def _get_packet_size_option(self) -> List:
+        raise NotImplementedError()
+
 
 class PosixPingCmdMaker(PingCmdMaker):
     def _get_destination_host(self, destination: str) -> str:
@@ -108,6 +117,9 @@ class PosixPingCmdMaker(PingCmdMaker):
             return ""
 
         return "-c {:d}".format(count)
+
+    def _get_packet_size_option(self) -> List:
+        return ["-s", str(self._packet_size)]
 
 
 class MacosPingCmdMaker(PosixPingCmdMaker):
@@ -197,3 +209,6 @@ class WindowsPingCmdMaker(PingCmdMaker):
             return ""
 
         return "-n {:d}".format(count)
+
+    def _get_packet_size_option(self) -> List:
+        return ["-l", str(self._packet_size)]
