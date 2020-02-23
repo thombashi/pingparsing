@@ -96,6 +96,9 @@ def parse_option() -> argparse.Namespace:
         default=False,
         help="print results for each ICMP packet reply.",
     )
+    group.add_argument(
+        "--no-color", action="store_true", default=False, help="Turn off colors.",
+    )
 
     loglevel_dest = "log_level"
     group = parser.add_mutually_exclusive_group()
@@ -260,8 +263,8 @@ def get_ping_param(options) -> Tuple:
     return (count, deadline, timeout)
 
 
-def print_result(text: str) -> None:
-    if not sys.stdout.isatty():
+def print_result(text: str, colorize: bool) -> None:
+    if not sys.stdout.isatty() or not colorize:
         # avoid to colorized when piped or redirected
         print(text)
         return
@@ -364,7 +367,10 @@ def main() -> int:
         stats = ping_parser.parse(ping_result_text)
         output = stats.as_dict(include_icmp_replies=options.icmp_reply)
 
-    print_result(dumps_dict(output, timestamp_format=options.timestamp, indent=options.indent))
+    print_result(
+        dumps_dict(output, timestamp_format=options.timestamp, indent=options.indent),
+        colorize=not options.no_color,
+    )
 
     return 0
 

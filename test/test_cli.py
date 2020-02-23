@@ -28,9 +28,13 @@ class Test_cli_file:
 
         runner = SubprocessRunner(["pingparsing", tmp_ping_path])
         runner.run()
-
         print_result(stdout=runner.stdout, stderr=runner.stderr)
+        assert runner.returncode == 0
+        assert json.loads(runner.stdout)[tmp_ping_path] == DEBIAN_SUCCESS_0.expected
 
+        runner = SubprocessRunner(["pingparsing", tmp_ping_path, "--no-color"])
+        runner.run()
+        print_result(stdout=runner.stdout, stderr=runner.stderr)
         assert runner.returncode == 0
         assert json.loads(runner.stdout)[tmp_ping_path] == DEBIAN_SUCCESS_0.expected
 
