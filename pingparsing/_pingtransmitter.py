@@ -5,7 +5,7 @@
 import ipaddress
 import platform
 from collections import namedtuple
-from typing import Optional, Union, cast
+from typing import Optional, cast
 
 import humanreadable as hr
 import subprocrunner
@@ -14,6 +14,7 @@ from typepy import Integer, StrictLevel, String, TypeConversionError
 
 from ._cmd_maker import LinuxPingCmdMaker, MacosPingCmdMaker, WindowsPingCmdMaker
 from ._logger import logger
+from ._typing import TimeArg
 
 
 DEFAULT_DEADLINE = 3
@@ -129,7 +130,7 @@ class PingTransmitter:
         return self.__timeout
 
     @timeout.setter
-    def timeout(self, value: Union[hr.Time, int, str, None]) -> None:
+    def timeout(self, value: TimeArg) -> None:
         if value is None:
             self.__timeout = value  # type: Optional[hr.Time]
             return
@@ -178,7 +179,7 @@ class PingTransmitter:
         return self.__deadline
 
     @deadline.setter
-    def deadline(self, value: Union[hr.Time, int, str, None]) -> None:
+    def deadline(self, value: TimeArg) -> None:
         if value is None:
             self.__deadline = value
             return

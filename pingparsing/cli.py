@@ -20,6 +20,7 @@ from pingparsing._logger import logger, set_logger
 from .__version__ import __version__
 from ._pingparsing import PingParsing
 from ._pingtransmitter import PingTransmitter
+from ._typing import TimeArg
 
 
 try:
@@ -210,8 +211,8 @@ def parse_ping(
     dest_or_file: str,
     interface: str,
     count: int,
-    deadline,
-    timeout,
+    deadline: TimeArg,
+    timeout: TimeArg,
     is_parse_icmp_reply: bool,
     timestamp,
 ) -> Tuple[str, Any]:
