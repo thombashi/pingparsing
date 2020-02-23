@@ -79,7 +79,9 @@ def parse_option() -> argparse.Namespace:
         specified. defaults to equals to two times number of cores.
         """,
     )
-    parser.add_argument(
+
+    group = parser.add_argument_group("Output Options")  # type: ignore
+    group.add_argument(
         "--indent",
         type=int,
         default=4,
@@ -87,7 +89,7 @@ def parse_option() -> argparse.Namespace:
         (default= %(default)s)
         """,
     )
-    parser.add_argument(
+    group.add_argument(
         "--icmp-reply",
         "--icmp-replies",
         action="store_true",
