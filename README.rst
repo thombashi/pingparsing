@@ -284,10 +284,11 @@ CLI help
 --------------------------------------------
 ::
 
-    usage: pingparsing [-h] [-V] [--max-workers MAX_WORKERS] [--indent INDENT]
-                       [--icmp-reply] [--debug | --quiet]
+    usage: pingparsing [-h] [-V] [--max-workers MAX_WORKERS]
                        [--timestamp {none,epoch,datetime}] [-c COUNT]
-                       [-w DEADLINE] [--timeout TIMEOUT] [-I INTERFACE]
+                       [-s PACKET_SIZE] [--ttl TTL] [-w DEADLINE]
+                       [--timeout TIMEOUT] [-I INTERFACE] [--indent INDENT]
+                       [--icmp-reply] [--no-color] [--debug | --quiet]
                        destination_or_file [destination_or_file ...]
 
     positional arguments:
@@ -301,10 +302,6 @@ CLI help
                             Number of threads for when multiple destination/file
                             specified. defaults to equals to two times number of
                             cores.
-      --indent INDENT       JSON output will be pretty-printed with the indent
-                            level. (default= 4)
-      --icmp-reply, --icmp-replies
-                            print results for each ICMP packet reply.
       --debug               for debug print.
       --quiet               suppress execution log messages.
 
@@ -316,6 +313,9 @@ CLI help
       -c COUNT, --count COUNT
                             Stop after sending the count. see also ping(8) [-c
                             count] option description.
+      -s PACKET_SIZE, --packet-size PACKET_SIZE
+                            Specifies the number of data bytes to be sent.
+      --ttl TTL             Specifies the Time to Live.
       -w DEADLINE, --deadline DEADLINE
                             Timeout before ping exits. valid time units are:
                             d/day/days, h/hour/hours, m/min/mins/minute/minutes,
@@ -341,6 +341,13 @@ CLI help
                             system.
       -I INTERFACE, --interface INTERFACE
                             network interface
+
+    Output Options:
+      --indent INDENT       JSON output will be pretty-printed with the indent
+                            level. (default= 4)
+      --icmp-reply, --icmp-replies
+                            print results for each ICMP packet reply.
+      --no-color            Turn off colors.
 
     Documentation: https://pingparsing.rtfd.io/
     Issue tracker: https://github.com/thombashi/pingparsing/issues
@@ -478,20 +485,20 @@ Dependencies
 Python 3.5+
 
 - `humanreadable <https://github.com/thombashi/humanreadable>`__
-- `logbook <https://logbook.readthedocs.io/en/stable/>`__
 - `pyparsing <https://github.com/pyparsing/pyparsing>`__
 - `subprocrunner <https://github.com/thombashi/subprocrunner>`__
 - `typepy <https://github.com/thombashi/typepy>`__
 
 Optional Dependencies
 ------------------------------------
+- `loguru <https://github.com/Delgan/loguru>`__
+    - Used for logging if the package installed
 - `Pygments <http://pygments.org/>`__
     - Syntax highlighting to ``pingparsing`` command output when installed
 
 Test Dependencies
 -----------------
 - `pytest <https://pypi.org/project/pytest>`__
-- `pytest-runner <https://github.com/pytest-dev/pytest-runner>`__
 - `tox <https://pypi.org/project/tox>`__
 
 
