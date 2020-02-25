@@ -4,7 +4,7 @@
 
 Summary
 =========
-`pingparsing <https://github.com/thombashi/pingparsing>`__ is a CLI-tool/Python-library for parsing ping command output.
+`pingparsing <https://github.com/thombashi/pingparsing>`__ is a CLI-tool/Python-library parser and transmitter for ping command.
 
 .. image:: https://badge.fury.io/py/pingparsing.svg
     :target: https://badge.fury.io/py/pingparsing
@@ -32,11 +32,12 @@ Summary
 
 CLI Usage
 ====================
-A CLI command included in the ``pingparsing`` packaged. The ``pingparsing`` command could do the following:
+A CLI tool (``pingparsing`` command) included in the packaged. The command could do the following:
 
-- Execute ping and parse the result
-- Parse ping result file(s)
-- Parse from the standard input
+- Execute ``ping`` and parse the result
+- Parse ping results from:
+    - file(s)
+    - the standard input
 
 Execute ping and parse the result
 --------------------------------------------
