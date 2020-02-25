@@ -1,1 +1,1 @@
-pingparsing is a CLI-tool/Python-library for parsing ping command output.
+pingparsing is a CLI-tool/Python-library parser and transmitter for ping command.
