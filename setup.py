@@ -92,5 +92,5 @@ setuptools.setup(
         "Topic :: Text Processing",
     ],
     cmdclass=get_release_command_class(),
-    entry_points={"console_scripts": ["pingparsing=pingparsing.cli:main"]},
+    entry_points={"console_scripts": ["pingparsing=pingparsing.__main__:main"]},
 )
