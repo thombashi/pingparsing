@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 from textwrap import indent
 
 from subprocrunner import SubprocessRunner
 
 
 def main():
-    proc = SubprocessRunner(["pingparsing", "-h"])
+    proc = SubprocessRunner([sys.executable, "-m", "pingparsing", "-h"])
     proc.run(env=dict(os.environ, LC_ALL="C.UTF-8"))
     help_file_path = "pages/usage/cli_help.txt"
 

@@ -2,6 +2,7 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+import sys
 from textwrap import dedent
 
 import pytest
@@ -26,13 +27,15 @@ class Test_cli_file:
         tmp_ping_file.write(DEBIAN_SUCCESS_0.value)
         tmp_ping_path = str(tmp_ping_file)
 
-        runner = SubprocessRunner(["pingparsing", tmp_ping_path])
+        runner = SubprocessRunner([sys.executable, "-m", "pingparsing", tmp_ping_path])
         runner.run()
         print_result(stdout=runner.stdout, stderr=runner.stderr)
         assert runner.returncode == 0
         assert json.loads(runner.stdout)[tmp_ping_path] == DEBIAN_SUCCESS_0.expected
 
-        runner = SubprocessRunner(["pingparsing", tmp_ping_path, "--no-color"])
+        runner = SubprocessRunner(
+            [sys.executable, "-m", "pingparsing", tmp_ping_path, "--no-color"]
+        )
         runner.run()
         print_result(stdout=runner.stdout, stderr=runner.stderr)
         assert runner.returncode == 0
@@ -47,7 +50,9 @@ class Test_cli_file:
         tmp_ping_file_win.write(WINDOWS7SP1_SUCCESS.value)
         tmp_ping_path_win = str(tmp_ping_file_win)
 
-        runner = SubprocessRunner(["pingparsing", tmp_ping_path_deb, tmp_ping_path_win])
+        runner = SubprocessRunner(
+            [sys.executable, "-m", "pingparsing", tmp_ping_path_deb, tmp_ping_path_win]
+        )
         runner.run()
 
         print_result(stdout=runner.stdout, stderr=runner.stderr)
@@ -62,7 +67,7 @@ class Test_cli_file:
 @pytest.mark.xfail(run=False)
 class Test_cli_pipe:
     def test_normal(self, tmpdir):
-        runner = SubprocessRunner(["pingparsing"])
+        runner = SubprocessRunner([sys.executable, "-m", "pingparsing"])
         runner.run(input=DEBIAN_SUCCESS_0.value)
 
         print_result(stdout=runner.stdout, stderr=runner.stderr)
@@ -108,7 +113,7 @@ class Test_cli_pipe:
             }
             """
         )
-        runner = SubprocessRunner(["pingparsing", "-", "--icmp-reply"])
+        runner = SubprocessRunner([sys.executable, "-m", "pingparsing", "-", "--icmp-reply"])
         runner.run(input=UBUNTU_SUCCESS_2.value)
 
         print_result(stdout=runner.stdout, stderr=runner.stderr, expected=expected)
@@ -122,7 +127,7 @@ class Test_PingParsing_ping:
     def test_normal_single(self):
         count = 1
         dest = "localhost"
-        runner = SubprocessRunner(["pingparsing", dest, "-c", count])
+        runner = SubprocessRunner([sys.executable, "-m", "pingparsing", dest, "-c", count])
         runner.run()
 
         print_result(stdout=runner.stdout, stderr=runner.stderr)
@@ -137,7 +142,7 @@ class Test_PingParsing_ping:
     def test_normal_multi(self):
         count = 1
         dest_list = ["google.com", "twitter.com"]
-        runner = SubprocessRunner(["pingparsing"] + dest_list + ["-c", count])
+        runner = SubprocessRunner([sys.executable, "-m", "pingparsing"] + dest_list + ["-c", count])
         runner.run()
 
         print_result(stdout=runner.stdout, stderr=runner.stderr)
@@ -153,7 +158,17 @@ class Test_PingParsing_ping:
         count = 1
         dest = "localhost"
         runner = SubprocessRunner(
-            ["pingparsing", dest, "-c", count, "--icmp-reply", "--timestamp", "epoch"]
+            [
+                sys.executable,
+                "-m",
+                "pingparsing",
+                dest,
+                "-c",
+                count,
+                "--icmp-reply",
+                "--timestamp",
+                "epoch",
+            ]
         )
         runner.run()
 
