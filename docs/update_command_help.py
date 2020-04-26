@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 from textwrap import indent
 
 from subprocrunner import SubprocessRunner
