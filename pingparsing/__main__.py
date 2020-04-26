@@ -29,7 +29,6 @@ except ImportError:
 
 
 DEFAULT_COUNT = 10
-QUIET_LOG_LEVEL = "QUIET"
 TIMESTAMP_TYPES = (int, float, str)
 
 
@@ -43,6 +42,7 @@ class TimestampFormat:
 class LogLevel:
     DEBUG = "DEBUG"
     INFO = "INFO"
+    QUIET = "QUIET"
 
 
 def _get_unit_help_msg() -> str:
@@ -173,7 +173,7 @@ def parse_option() -> argparse.Namespace:
         "--quiet",
         dest=loglevel_dest,
         action="store_const",
-        const=QUIET_LOG_LEVEL,
+        const=LogLevel.QUIET,
         default=LogLevel.INFO,
         help="suppress execution log messages.",
     )
@@ -184,7 +184,7 @@ def parse_option() -> argparse.Namespace:
 def initialize_logger(log_level: str) -> None:
     logger.remove()
 
-    if log_level == QUIET_LOG_LEVEL:
+    if log_level == LogLevel.QUIET:
         set_logger(is_enable=False)
         return
 
