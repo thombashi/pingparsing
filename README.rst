@@ -32,7 +32,7 @@ Summary
 
 CLI Usage
 ====================
-A CLI tool (``pingparsing`` command) included in the packaged. The command could do the following:
+A CLI command (``pingparsing`` command) included in the packaged. The command could do the following:
 
 - Execute ``ping`` and parse the result
 - Parse ping results from:
