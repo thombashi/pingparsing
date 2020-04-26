@@ -4,7 +4,8 @@
 
 import abc
 import re
-from typing import Dict, List, Optional, Pattern, Sequence, Tuple, Union
+from datetime import datetime  # noqa
+from typing import Dict, List, Optional, Pattern, Sequence, Tuple, Union  # noqa
 
 import pyparsing as pp
 import typepy
@@ -14,6 +15,7 @@ from ._common import _to_unicode
 from ._interface import PingParserInterface
 from ._logger import logger
 from ._stats import PingStats
+from ._typing import IcmpReplies
 from .error import ParseError, ParseErrorReason
 
 
@@ -52,9 +54,7 @@ class PingParser(PingParserInterface):
     def _is_support_packet_duplicate(self) -> bool:  # pragma: no cover
         pass
 
-    def _parse_icmp_reply(
-        self, ping_lines: Sequence[str]
-    ) -> Sequence[Dict[str, Union[bool, float, int, DateTime]]]:
+    def _parse_icmp_reply(self, ping_lines: Sequence[str]) -> IcmpReplies:
         icmp_reply_regexp = re.compile(self._icmp_reply_pattern, re.IGNORECASE)
         duplicate_packet_regexp = re.compile(self._duplicate_packet_pattern)
         icmp_reply_list = []
@@ -65,7 +65,7 @@ class PingParser(PingParserInterface):
                 continue
 
             results = match.groupdict()
-            reply = {}  # type: Dict[str, Union[bool, float, int, DateTime]]
+            reply = {}  # type: Dict[str, Union[bool, float, int, datetime]]
 
             if results.get(IcmpReplyKey.TIMESTAMP):
                 reply[IcmpReplyKey.TIMESTAMP] = DateTime(

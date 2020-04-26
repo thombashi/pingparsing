@@ -1,11 +1,10 @@
 import abc
 import math
 import re
-from typing import Optional
+from typing import List, Optional
 
 import humanreadable as hr
-import typepy
-from typepy import Integer, List, TypeConversionError
+from typepy import Integer, TypeConversionError
 
 
 DEFAULT_DEADLINE = 3
@@ -56,14 +55,14 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         if self._timestamp:
             command_items.append(self._get_timestamp_option())
 
-        if typepy.is_not_null_string(self.ping_option):
+        if self.ping_option:
             command_items.append(self.ping_option)
 
         command_items.append(self._get_destination_host(destination))
 
         return re.sub(r"[\s]{2,}", " ", " ".join(command_items))
 
-    def _get_initial_options(self) -> List:
+    def _get_initial_options(self) -> List[str]:
         return []
 
     @abc.abstractmethod
@@ -95,11 +94,11 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def _get_packet_size_option(self) -> List:
+    def _get_packet_size_option(self) -> List[str]:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def _get_ttl_option(self) -> List:
+    def _get_ttl_option(self) -> List[str]:
         raise NotImplementedError()
 
 
@@ -127,12 +126,12 @@ class PosixPingCmdMaker(PingCmdMaker):
 
         return "-c {:d}".format(count)
 
-    def _get_packet_size_option(self) -> List:
+    def _get_packet_size_option(self) -> List[str]:
         return ["-s", str(self._packet_size)]
 
 
 class MacosPingCmdMaker(PosixPingCmdMaker):
-    def _get_ttl_option(self) -> List:
+    def _get_ttl_option(self) -> List[str]:
         return ["-T", str(self._ttl)]
 
     def _get_deadline_option(self) -> str:
@@ -156,7 +155,7 @@ class MacosPingCmdMaker(PosixPingCmdMaker):
 
 
 class LinuxPingCmdMaker(PosixPingCmdMaker):
-    def _get_ttl_option(self) -> List:
+    def _get_ttl_option(self) -> List[str]:
         return ["-t", str(self._ttl)]
 
     def _get_deadline_option(self) -> str:
@@ -178,7 +177,7 @@ class LinuxPingCmdMaker(PosixPingCmdMaker):
 
 
 class WindowsPingCmdMaker(PingCmdMaker):
-    def _get_initial_options(self) -> List:
+    def _get_initial_options(self) -> List[str]:
         if self.auto_codepage:
             return ["chcp 437 &"]
 
@@ -225,8 +224,8 @@ class WindowsPingCmdMaker(PingCmdMaker):
 
         return "-n {:d}".format(count)
 
-    def _get_packet_size_option(self) -> List:
+    def _get_packet_size_option(self) -> List[str]:
         return ["-l", str(self._packet_size)]
 
-    def _get_ttl_option(self) -> List:
+    def _get_ttl_option(self) -> List[str]:
         return ["-i", str(self._ttl)]

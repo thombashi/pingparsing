@@ -2,8 +2,9 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+from typing import Dict, Optional, Tuple, Union, cast
 
-from typing import Dict, List, Optional, Tuple, Union, cast
+from ._typing import IcmpReplies
 
 
 class PingStats:
@@ -150,7 +151,7 @@ class PingStats:
             return None
 
     @property
-    def icmp_replies(self) -> List[Dict]:
+    def icmp_replies(self) -> IcmpReplies:
         """
         ICMP packet reply information.
 
@@ -180,7 +181,7 @@ class PingStats:
 
     def as_dict(
         self, include_icmp_replies: bool = False
-    ) -> Dict[str, Union[str, int, float, List[Dict], None]]:
+    ) -> Dict[str, Union[str, int, float, IcmpReplies, None]]:
         """
         ping statistics.
 
@@ -219,7 +220,7 @@ class PingStats:
             "rtt_mdev": self.rtt_mdev,
             "packet_duplicate_count": self.packet_duplicate_count,
             "packet_duplicate_rate": self.packet_duplicate_rate,
-        }  # type: Dict[str, Union[str, int, float, List[Dict], None]]
+        }  # type: Dict[str, Union[str, int, float, IcmpReplies, None]]
         if include_icmp_replies:
             d["icmp_replies"] = self.icmp_replies
 
