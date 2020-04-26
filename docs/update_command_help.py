@@ -8,7 +8,7 @@ from subprocrunner import SubprocessRunner
 
 
 def main():
-    proc = SubprocessRunner([sys.executable, "-m", "pingparsing", "-h"])
+    proc = SubprocessRunner(["pingparsing", "-h"])
     proc.run(env=dict(os.environ, LC_ALL="C.UTF-8"))
     help_file_path = "pages/usage/cli_help.txt"
 
