@@ -15,9 +15,8 @@ from typing import Any, Dict, Optional, Tuple
 import humanreadable as hr
 from subprocrunner import CommandError
 
-from pingparsing._logger import logger, set_logger
-
 from .__version__ import __version__
+from ._logger import logger, set_logger
 from ._pingparsing import PingParsing
 from ._pingtransmitter import PingTransmitter
 from ._typing import TimeArg
