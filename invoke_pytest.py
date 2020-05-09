@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 Unit tests at Windows environments required to invoke from py module,
 because of multiprocessing:
