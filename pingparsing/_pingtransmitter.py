@@ -25,14 +25,17 @@ class PingResult(namedtuple("PingResult", "stdout stderr returncode")):
     Data class to store ``ping`` command execution result.
 
     .. py:attribute:: stdout
+        :type: Optional[str]
 
         Standard output of ``ping`` command execution result.
 
     .. py:attribute:: stderr
+        :type: Optional[str]
 
         Standard error of ``ping`` command execution result.
 
     .. py:attribute:: returncode
+        :type: int
 
         Return code of ``ping`` command execution result.
     """
@@ -44,34 +47,46 @@ class PingTransmitter:
     command.
 
     .. py:attribute:: count
+        :type: Optional[int]
+        :value: None
 
-        Number of sending ICMP packets. This attribute ignored if the value is
-        |None|. Defaults to |None|.
+        Number of sending ICMP packets. This attribute ignored if the value is |None|.
 
     .. py:attribute:: packet_size
+        :type: Optional[int]
+        :value: None
 
         Specifies the number of data bytes to be sent.
 
     .. py:attribute:: ttl
+        :type: Optional[int]
+        :value: None
 
         Specifies the Time to Live.
 
     .. py:attribute:: ping_option
+        :type: str
+        :value: ""
 
         Additional ``ping`` command option.
 
     .. py:attribute:: interface
+        :type: Optional[str]
+        :value: None
 
         Interface name or zone-id. The attribute required when
         :py:attr:`~.destination` is IPv6 link-local scope address.
-        Defaults to |None|.
 
     .. py:attribute:: timestamp
+        :type: bool
+        :value: False
 
         [Only for Linux environment] If |True|, add timestamp for each ping result.
         Defaults to ``False``.
 
     .. py:attribute:: auto_codepage
+        :type: bool
+        :value: True
 
         [Only for Windows environment] Automatically change code page if
         ``True``. Defaults to ``True``.
