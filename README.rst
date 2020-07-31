@@ -480,24 +480,16 @@ Installation
 
 Dependencies
 ============
-Python 3.5+
-
-- `humanreadable <https://github.com/thombashi/humanreadable>`__
-- `pyparsing <https://github.com/pyparsing/pyparsing>`__
-- `subprocrunner <https://github.com/thombashi/subprocrunner>`__
-- `typepy <https://github.com/thombashi/typepy>`__
+- Python 3.5+
+- `Python package dependencies (automatically installed) <https://github.com/thombashi/pingparsing/network/dependencies>`__
 
 Optional Dependencies
 ------------------------------------
-- `loguru <https://github.com/Delgan/loguru>`__
-    - Used for logging if the package installed
-- `Pygments <http://pygments.org/>`__
-    - Syntax highlighting to ``pingparsing`` command output when installed
-
-Test Dependencies
------------------
-- `pytest <https://pypi.org/project/pytest>`__
-- `tox <https://pypi.org/project/tox>`__
+- pingparsing[cli] extras
+    - `loguru <https://github.com/Delgan/loguru>`__
+        - Used for logging if the package installed
+    - `Pygments <http://pygments.org/>`__
+        - Syntax highlighting to ``pingparsing`` command output when installed
 
 
 Docker Image
@@ -538,4 +530,12 @@ This is because the output of the ``ping`` command will change depending on the 
 Documentation
 ===============
 https://pingparsing.rtfd.io/
+
+Sponsors
+====================================
+.. image:: https://avatars0.githubusercontent.com/u/44389260?s=48&u=6da7176e51ae2654bcfd22564772ef8a3bb22318&v=4
+   :target: https://github.com/chasbecker
+   :alt: Charles Becker (chasbecker)
+
+`Become a sponsor <https://github.com/sponsors/thombashi>`__
 
