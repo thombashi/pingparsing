@@ -2,11 +2,11 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+import json
 import sys
 from textwrap import dedent
 
 import pytest
-import simplejson as json
 from subprocrunner import SubprocessRunner
 
 from .data import DEBIAN_SUCCESS_0, UBUNTU_SUCCESS_2, WINDOWS7SP1_SUCCESS
