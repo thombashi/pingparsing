@@ -280,8 +280,8 @@ def print_result(text: str, colorize: bool) -> None:
 
     try:
         from pygments import highlight
-        from pygments.lexers import JsonLexer
         from pygments.formatters import TerminalTrueColorFormatter
+        from pygments.lexers import JsonLexer
 
         print(
             highlight(
