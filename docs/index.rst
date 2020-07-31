@@ -14,10 +14,8 @@ Welcome to pingparsing's documentation!
    :numbered:
 
    pages/introduction/index
-   pages/installation
    pages/usage/index
    pages/reference/index
-   pages/genindex
    pages/links
 
 
