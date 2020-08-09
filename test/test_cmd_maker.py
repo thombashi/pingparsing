@@ -83,8 +83,8 @@ class Test_CmdMaker_make_cmd:
     @pytest.mark.parametrize(
         ["maker_class", "host", "expected"],
         [
-            [LinuxPingCmdMaker, "localhost", "ping -c 1 -D localhost"],
-            [MacosPingCmdMaker, "localhost", "ping -c 1 -D localhost"],
+            [LinuxPingCmdMaker, "localhost", "ping -c 1 -D -O localhost"],
+            [MacosPingCmdMaker, "localhost", "ping -c 1 -D -O localhost"],
             [WindowsPingCmdMaker, "localhost", "ping -n 1 localhost"],
         ],
     )

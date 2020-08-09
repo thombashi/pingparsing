@@ -116,7 +116,7 @@ class PosixPingCmdMaker(PingCmdMaker):
         return "-q"
 
     def _get_timestamp_option(self) -> str:
-        return "-D"
+        return "-D -O"
 
     def _get_count_option(self) -> str:
         try:
