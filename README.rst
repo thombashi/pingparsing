@@ -285,8 +285,9 @@ CLI help
     usage: pingparsing [-h] [-V] [--max-workers MAX_WORKERS]
                        [--timestamp {none,epoch,datetime}] [-c COUNT]
                        [-s PACKET_SIZE] [--ttl TTL] [-w DEADLINE]
-                       [--timeout TIMEOUT] [-I INTERFACE] [--indent INDENT]
-                       [--icmp-reply] [--no-color] [--debug | --quiet]
+                       [--timeout TIMEOUT] [-I INTERFACE] [--addopts OPTIONS]
+                       [--indent INDENT] [--icmp-reply] [--no-color]
+                       [--debug | --quiet]
                        destination_or_file [destination_or_file ...]
 
     positional arguments:
@@ -339,6 +340,7 @@ CLI help
                             system.
       -I INTERFACE, --interface INTERFACE
                             network interface
+      --addopts OPTIONS     extra command line options
 
     Output Options:
       --indent INDENT       JSON output will be pretty-printed with the indent
