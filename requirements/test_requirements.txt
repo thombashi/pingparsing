@@ -1,2 +1,2 @@
-pytest
-pytest-md-report
+pytest>=6.0.1
+pytest-md-report>=0.0.12
