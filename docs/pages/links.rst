@@ -2,9 +2,12 @@ Changelog
 ==========
 https://github.com/thombashi/pingparsing/releases
 
+
 .. include:: sponsors.rst
 
+
 .. include:: genindex.rst
+
 
 Links
 =====
