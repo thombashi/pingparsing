@@ -313,7 +313,7 @@ def _serialize_datetime(obj):
 
 
 timestamp_serialize_map = {
-    TimestampFormat.NONE: None,
+    TimestampFormat.NONE: _serialize_datetime,
     TimestampFormat.EPOCH: _serialize_epoch,
     TimestampFormat.DATETIME: _serialize_datetime,
 }
