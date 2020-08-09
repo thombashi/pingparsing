@@ -2,6 +2,7 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+from datetime import datetime
 from textwrap import dedent
 
 import pytest
@@ -62,6 +63,66 @@ DEBIAN_UNREACHABLE_1 = PingTestData(
 )
 DEBIAN_UNREACHABLE_2 = PingTestData(
     DEBIAN_UNREACHABLE_1.value + "\n", DEBIAN_UNREACHABLE_0.expected, []
+)
+
+# Ubuntu 18.04
+UBUNTU_FAIL_0 = PingTestData(
+    # ping -D -O <ip addr>
+    dedent(
+        """\
+        PING 192.168.11.222 (192.168.11.222) 56(84) bytes of data.
+        [1596881133.081556] no answer yet for icmp_seq=1
+        [1596881133.081898] 64 bytes from 192.168.11.222: icmp_seq=2 ttl=64 time=0.262 ms
+        [1596881135.129517] no answer yet for icmp_seq=3
+        [1596881136.153055] no answer yet for icmp_seq=4
+        [1596881137.180056] no answer yet for icmp_seq=5
+        [1596881137.180326] 64 bytes from 192.168.11.222: icmp_seq=6 ttl=64 time=0.221 ms
+        [1596881138.201538] 64 bytes from 192.168.11.222: icmp_seq=7 ttl=64 time=0.257 ms
+        ^C
+        --- 192.168.11.222 ping statistics ---
+        8 packets transmitted, 3 received, 62.5% packet loss, time 154ms
+        """
+    ),
+    {
+        "destination": "192.168.11.222",
+        "packet_transmit": 8,
+        "packet_receive": 3,
+        "packet_loss_count": 5,
+        "packet_loss_rate": 62.5,
+        "rtt_min": None,
+        "rtt_avg": None,
+        "rtt_max": None,
+        "rtt_mdev": None,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": 0.0,
+    },
+    [
+        {"timestamp": datetime(2020, 8, 8, 19, 5, 33, 81556), "icmp_seq": 1, "duplicate": False,},
+        {
+            "timestamp": datetime(2020, 8, 8, 19, 5, 33, 81898),
+            "icmp_seq": 2,
+            "ttl": 64,
+            "time": 0.262,
+            "duplicate": False,
+        },
+        {"timestamp": datetime(2020, 8, 8, 19, 5, 35, 129517), "icmp_seq": 3, "duplicate": False,},
+        {"timestamp": datetime(2020, 8, 8, 19, 5, 36, 153055), "icmp_seq": 4, "duplicate": False,},
+        {"timestamp": datetime(2020, 8, 8, 19, 5, 37, 180056), "icmp_seq": 5, "duplicate": False,},
+        {
+            "timestamp": datetime(2020, 8, 8, 19, 5, 37, 180326),
+            "icmp_seq": 6,
+            "ttl": 64,
+            "time": 0.221,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2020, 8, 8, 19, 5, 38, 201538),
+            "icmp_seq": 7,
+            "ttl": 64,
+            "time": 0.257,
+            "duplicate": False,
+        },
+    ],
 )
 
 FEDORA_DUP_LOSS = PingTestData(
@@ -410,6 +471,7 @@ class Test_PingParsing_parse:
             [DEBIAN_UNREACHABLE_1, "Linux"],
             [DEBIAN_UNREACHABLE_2, "Linux"],
             [UBUNTU_SUCCESS_0, "Linux"],
+            [UBUNTU_FAIL_0, "Linux"],
             [FEDORA_DUP_LOSS, "Linux"],
             [FEDORA_UNREACHABLE, "Linux"],
             [MACOS_SUCCESS_0, "macOS"],

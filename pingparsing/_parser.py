@@ -21,6 +21,7 @@ from .error import ParseError, ParseErrorReason
 
 class IcmpReplyKey:
     TIMESTAMP = "timestamp"
+    TIMESTAMP_NO_ANS = "timestamp_no_ans"
     SEQUENCE_NO = "icmp_seq"
     TTL = "ttl"
     TIME = "time"
@@ -43,6 +44,10 @@ class PingParser(PingParserInterface):
         pass
 
     @property
+    def _icmp_no_ans_pattern(self) -> str:
+        return "(?!x)x"  # never matching anything
+
+    @property
     def _duplicate_packet_pattern(self) -> str:
         return r".+ \(DUP!\)$"
 
@@ -56,11 +61,14 @@ class PingParser(PingParserInterface):
 
     def _parse_icmp_reply(self, ping_lines: Sequence[str]) -> IcmpReplies:
         icmp_reply_regexp = re.compile(self._icmp_reply_pattern, re.IGNORECASE)
+        icmp_no_ans_regexp = re.compile(self._icmp_no_ans_pattern, re.IGNORECASE)
         duplicate_packet_regexp = re.compile(self._duplicate_packet_pattern)
         icmp_reply_list = []
 
         for line in ping_lines:
             match = icmp_reply_regexp.search(line)
+            if not match:
+                match = icmp_no_ans_regexp.search(line)
             if not match:
                 continue
 
@@ -68,9 +76,13 @@ class PingParser(PingParserInterface):
             reply = {}  # type: Dict[str, Union[bool, float, int, datetime]]
 
             if results.get(IcmpReplyKey.TIMESTAMP):
-                reply[IcmpReplyKey.TIMESTAMP] = DateTime(
-                    results[IcmpReplyKey.TIMESTAMP].lstrip("[").rstrip("]")
-                ).force_convert()
+                reply[IcmpReplyKey.TIMESTAMP] = self.__timestamp_to_datetime(
+                    results[IcmpReplyKey.TIMESTAMP]
+                )
+            elif results.get(IcmpReplyKey.TIMESTAMP_NO_ANS):
+                reply[IcmpReplyKey.TIMESTAMP] = self.__timestamp_to_datetime(
+                    results[IcmpReplyKey.TIMESTAMP_NO_ANS]
+                )
 
             if results.get(IcmpReplyKey.SEQUENCE_NO):
                 reply[IcmpReplyKey.SEQUENCE_NO] = int(results[IcmpReplyKey.SEQUENCE_NO])
@@ -114,6 +126,9 @@ class PingParser(PingParserInterface):
             raise ParseError(reason=ParseErrorReason.HEADER_NOT_FOUND)
 
         return i
+
+    def __timestamp_to_datetime(self, timestamp: str) -> datetime:
+        return DateTime(timestamp.lstrip("[").rstrip("]")).force_convert()
 
     def __validate_stats_body(self, body_line_list: Sequence[str]) -> None:
         if typepy.is_empty_sequence(body_line_list):
@@ -168,10 +183,18 @@ class LinuxPingParser(PingParser):
     def _parser_name(self) -> str:
         return "Linux"
 
+    _TIMESTAMP_PATTERN = r"(?P<timestamp>\[[0-9\.]+\])"
+    _NO_ANS_TIMESTAMP_PATTERN = r"(?P<timestamp_no_ans>\[[0-9\.]+\])"
+
+    @property
+    def _icmp_no_ans_pattern(self) -> str:
+        return self._NO_ANS_TIMESTAMP_PATTERN + " no answer yet for " + self._ICMP_SEQ_PATTERN
+
     @property
     def _icmp_reply_pattern(self) -> str:
         return (
-            r"(?P<timestamp>\[[0-9\.]+\])?\s?.+ from .+?: "
+            self._TIMESTAMP_PATTERN
+            + r"?\s?.+ from .+?: "
             + self._ICMP_SEQ_PATTERN
             + " "
             + self._TTL_PATTERN
