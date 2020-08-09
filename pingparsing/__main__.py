@@ -138,6 +138,7 @@ def parse_option() -> argparse.Namespace:
         ),
     )
     group.add_argument("-I", "--interface", dest="interface", help="network interface")
+    group.add_argument("--addopts", metavar="OPTIONS", help="extra command line options")
 
     group = parser.add_argument_group("Output Options")  # type: ignore
     group.add_argument(
@@ -227,6 +228,7 @@ def parse_ping(
     timeout: TimeArg,
     is_parse_icmp_reply: bool,
     timestamp: str,
+    addopts: str,
 ) -> Tuple[str, Any]:
     if os.path.isfile(dest_or_file):
         with open(dest_or_file) as f:
@@ -242,6 +244,7 @@ def parse_ping(
         transmitter.timeout = timeout
         transmitter.is_quiet = not is_parse_icmp_reply
         transmitter.timestamp = timestamp != TimestampFormat.NONE
+        transmitter.ping_option = addopts
 
         try:
             result = transmitter.ping()
@@ -364,6 +367,7 @@ def main() -> int:
                             timeout,
                             options.icmp_reply,
                             options.timestamp,
+                            options.addopts,
                         )
                     )
 
