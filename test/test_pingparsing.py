@@ -97,7 +97,11 @@ UBUNTU_FAIL_0 = PingTestData(
         "packet_duplicate_rate": 0.0,
     },
     [
-        {"timestamp": datetime(2020, 8, 8, 10, 5, 33, 81556), "icmp_seq": 1, "duplicate": False,},
+        {
+            "timestamp": datetime(2020, 8, 8, 10, 5, 33, 81556),
+            "icmp_seq": 1,
+            "duplicate": False,
+        },
         {
             "timestamp": datetime(2020, 8, 8, 10, 5, 33, 81898),
             "icmp_seq": 2,
@@ -105,9 +109,21 @@ UBUNTU_FAIL_0 = PingTestData(
             "time": 0.262,
             "duplicate": False,
         },
-        {"timestamp": datetime(2020, 8, 8, 10, 5, 35, 129517), "icmp_seq": 3, "duplicate": False,},
-        {"timestamp": datetime(2020, 8, 8, 10, 5, 36, 153055), "icmp_seq": 4, "duplicate": False,},
-        {"timestamp": datetime(2020, 8, 8, 10, 5, 37, 180056), "icmp_seq": 5, "duplicate": False,},
+        {
+            "timestamp": datetime(2020, 8, 8, 10, 5, 35, 129517),
+            "icmp_seq": 3,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2020, 8, 8, 10, 5, 36, 153055),
+            "icmp_seq": 4,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2020, 8, 8, 10, 5, 37, 180056),
+            "icmp_seq": 5,
+            "duplicate": False,
+        },
         {
             "timestamp": datetime(2020, 8, 8, 10, 5, 37, 180326),
             "icmp_seq": 6,

@@ -101,10 +101,15 @@ def parse_option() -> argparse.Namespace:
         """,
     )
     group.add_argument(
-        "-s", "--packet-size", type=int, help="Specifies the number of data bytes to be sent.",
+        "-s",
+        "--packet-size",
+        type=int,
+        help="Specifies the number of data bytes to be sent.",
     )
     group.add_argument(
-        "--ttl", type=int, help="Specifies the Time to Live.",
+        "--ttl",
+        type=int,
+        help="Specifies the Time to Live.",
     )
     group.add_argument(
         "-w",
@@ -157,7 +162,10 @@ def parse_option() -> argparse.Namespace:
         help="print results for each ICMP packet reply.",
     )
     group.add_argument(
-        "--no-color", action="store_true", default=False, help="Turn off colors.",
+        "--no-color",
+        action="store_true",
+        default=False,
+        help="Turn off colors.",
     )
 
     loglevel_dest = "log_level"

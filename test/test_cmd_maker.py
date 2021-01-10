@@ -23,7 +23,9 @@ class Test_CmdMaker_make_cmd:
 
     @pytest.mark.parametrize(
         ["maker_class", "host", "deadline", "expected"],
-        [[LinuxPingCmdMaker, "localhost", "1sec", "ping -w 1 localhost"],],
+        [
+            [LinuxPingCmdMaker, "localhost", "1sec", "ping -w 1 localhost"],
+        ],
     )
     def test_normal_deadline(self, maker_class, host, deadline, expected):
         assert maker_class(deadline=Time(deadline)).make_cmd(destination=host) == expected
