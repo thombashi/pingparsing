@@ -173,7 +173,6 @@ class PingTransmitter:
         """
         Timeout before ping exits.
         You can specify either a number or a string (e.g. ``"1sec"``).
-        If both :py:attr:`~.deadline` and :py:attr:`~.count` are |None|,
         If only a number is specified and a unit not found, the unit will be considered as seconds.
 
             +------------+----------------------------------------------------------+
@@ -192,7 +191,8 @@ class PingTransmitter:
             |microseconds|``us``/``usec``/``usecs``/``microsecond``/``microseconds``|
             +------------+----------------------------------------------------------+
 
-        :py:attr:`~.deadline` automatically set to the default value (``3 seconds``).
+        If both :py:attr:`~.deadline` and :py:attr:`~.count` are |None|,
+        :py:attr:`~.deadline` is automatically set to the default value (``3 seconds``).
         Defaults to |None|.
 
         Returns:
