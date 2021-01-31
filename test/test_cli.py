@@ -9,7 +9,7 @@ from textwrap import dedent
 import pytest
 from subprocrunner import SubprocessRunner
 
-from .data import DEBIAN_SUCCESS_0, UBUNTU_SUCCESS_2, WINDOWS7SP1_SUCCESS
+from .data import DEBIAN_SUCCESS_0, UBUNTU_SUCCESS_1, UBUNTU_SUCCESS_2, WINDOWS7SP1_SUCCESS
 
 
 def print_result(stdout, stderr, expected=None):
@@ -62,6 +62,77 @@ class Test_cli_file:
         parsed_result = json.loads(runner.stdout)
         assert parsed_result[tmp_ping_path_deb] == DEBIAN_SUCCESS_0.expected
         assert parsed_result[tmp_ping_path_win] == WINDOWS7SP1_SUCCESS.expected
+
+    def test_normal_timezone(self, tmpdir):
+        tmp_ping_file = tmpdir.join("ping_timezone.txt")
+        tmp_ping_file.write(UBUNTU_SUCCESS_1.value)
+        tmp_ping_path = str(tmp_ping_file)
+
+        runner = SubprocessRunner(
+            [
+                sys.executable,
+                "-m",
+                "pingparsing",
+                "--icmp-reply",
+                "--timezone",
+                "UTC",
+                "--no-color",
+                tmp_ping_path,
+            ]
+        )
+        runner.run()
+        print_result(stdout=runner.stdout, stderr=runner.stderr)
+        assert runner.returncode == 0
+        assert json.loads(runner.stdout)[tmp_ping_path] == {
+            "destination": "google.com",
+            "packet_transmit": 5,
+            "packet_receive": 5,
+            "packet_loss_count": 0,
+            "packet_loss_rate": 0.0,
+            "rtt_min": 136.537,
+            "rtt_avg": 139.174,
+            "rtt_max": 148.006,
+            "rtt_mdev": 4.425,
+            "packet_duplicate_count": 0,
+            "packet_duplicate_rate": 0.0,
+            "icmp_replies": [
+                {
+                    "timestamp": "2018-04-28T15:55:37.003555+00:00",
+                    "icmp_seq": 1,
+                    "ttl": 39,
+                    "time": 148.0,
+                    "duplicate": False,
+                },
+                {
+                    "timestamp": "2018-04-28T15:55:37.787175+00:00",
+                    "icmp_seq": 2,
+                    "ttl": 39,
+                    "time": 137.0,
+                    "duplicate": False,
+                },
+                {
+                    "timestamp": "2018-04-28T15:55:38.787642+00:00",
+                    "icmp_seq": 3,
+                    "ttl": 39,
+                    "time": 137.0,
+                    "duplicate": False,
+                },
+                {
+                    "timestamp": "2018-04-28T15:55:39.787653+00:00",
+                    "icmp_seq": 4,
+                    "ttl": 39,
+                    "time": 136.0,
+                    "duplicate": False,
+                },
+                {
+                    "timestamp": "2018-04-28T15:55:40.788365+00:00",
+                    "icmp_seq": 5,
+                    "ttl": 39,
+                    "time": 136.0,
+                    "duplicate": False,
+                },
+            ],
+        }
 
 
 @pytest.mark.xfail(run=False)

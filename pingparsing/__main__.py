@@ -13,6 +13,7 @@ from textwrap import dedent
 from typing import Any, Dict, Optional, Tuple
 
 import humanreadable as hr
+from pytz import timezone
 from subprocrunner import CommandError
 
 from .__version__ import __version__
@@ -162,6 +163,10 @@ def parse_option() -> argparse.Namespace:
         help="print results for each ICMP packet reply.",
     )
     group.add_argument(
+        "--timezone",
+        help="Time zone for timestamps.",
+    )
+    group.add_argument(
         "--no-color",
         action="store_true",
         default=False,
@@ -236,6 +241,7 @@ def parse_ping(
     timeout: TimeArg,
     is_parse_icmp_reply: bool,
     timestamp: str,
+    timezone_name: str,
     addopts: str,
 ) -> Tuple[str, Any]:
     if os.path.isfile(dest_or_file):
@@ -265,7 +271,11 @@ def parse_ping(
             if result.stderr:
                 logger.error(result.stderr)
 
-    ping_parser = PingParsing()
+    if timezone_name:
+        ping_parser = PingParsing(timezone=timezone(timezone_name))
+    else:
+        ping_parser = PingParsing()
+
     stats = ping_parser.parse(ping_result_text)
     output = stats.as_dict(include_icmp_replies=is_parse_icmp_reply)
 
@@ -375,6 +385,7 @@ def main() -> int:
                             timeout,
                             options.icmp_reply,
                             options.timestamp,
+                            options.timezone,
                             options.addopts,
                         )
                     )
