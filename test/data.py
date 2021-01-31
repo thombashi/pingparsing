@@ -5,6 +5,8 @@
 from datetime import datetime
 from textwrap import dedent
 
+import pytz
+
 from .common import PingTestData
 
 
@@ -105,35 +107,35 @@ UBUNTU_SUCCESS_1 = PingTestData(
     },
     [
         {
-            "timestamp": datetime(2018, 4, 29, 0, 55, 37, 3555),
+            "timestamp": datetime(2018, 4, 28, 15, 55, 37, 3555, tzinfo=pytz.UTC),
             "icmp_seq": 1,
             "ttl": 39,
             "time": 148.0,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2018, 4, 29, 0, 55, 37, 787175),
+            "timestamp": datetime(2018, 4, 28, 15, 55, 37, 787175, tzinfo=pytz.UTC),
             "icmp_seq": 2,
             "ttl": 39,
             "time": 137.0,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2018, 4, 29, 0, 55, 38, 787642),
+            "timestamp": datetime(2018, 4, 28, 15, 55, 38, 787642, tzinfo=pytz.UTC),
             "icmp_seq": 3,
             "ttl": 39,
             "time": 137.0,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2018, 4, 29, 0, 55, 39, 787653),
+            "timestamp": datetime(2018, 4, 28, 15, 55, 39, 787653, tzinfo=pytz.UTC),
             "icmp_seq": 4,
             "ttl": 39,
             "time": 136.0,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2018, 4, 29, 0, 55, 40, 788365),
+            "timestamp": datetime(2018, 4, 28, 15, 55, 40, 788365, tzinfo=pytz.UTC),
             "icmp_seq": 5,
             "ttl": 39,
             "time": 136.0,

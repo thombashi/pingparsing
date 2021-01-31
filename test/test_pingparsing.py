@@ -6,6 +6,7 @@ from datetime import datetime
 from textwrap import dedent
 
 import pytest
+import pytz
 
 from pingparsing import ParseError, PingResult
 
@@ -98,41 +99,41 @@ UBUNTU_FAIL_0 = PingTestData(
     },
     [
         {
-            "timestamp": datetime(2020, 8, 8, 10, 5, 33, 81556),
+            "timestamp": datetime(2020, 8, 8, 10, 5, 33, 81556, tzinfo=pytz.UTC),
             "icmp_seq": 1,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2020, 8, 8, 10, 5, 33, 81898),
+            "timestamp": datetime(2020, 8, 8, 10, 5, 33, 81898, tzinfo=pytz.UTC),
             "icmp_seq": 2,
             "ttl": 64,
             "time": 0.262,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2020, 8, 8, 10, 5, 35, 129517),
+            "timestamp": datetime(2020, 8, 8, 10, 5, 35, 129517, tzinfo=pytz.UTC),
             "icmp_seq": 3,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2020, 8, 8, 10, 5, 36, 153055),
+            "timestamp": datetime(2020, 8, 8, 10, 5, 36, 153055, tzinfo=pytz.UTC),
             "icmp_seq": 4,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2020, 8, 8, 10, 5, 37, 180056),
+            "timestamp": datetime(2020, 8, 8, 10, 5, 37, 180056, tzinfo=pytz.UTC),
             "icmp_seq": 5,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2020, 8, 8, 10, 5, 37, 180326),
+            "timestamp": datetime(2020, 8, 8, 10, 5, 37, 180326, tzinfo=pytz.UTC),
             "icmp_seq": 6,
             "ttl": 64,
             "time": 0.221,
             "duplicate": False,
         },
         {
-            "timestamp": datetime(2020, 8, 8, 10, 5, 38, 201538),
+            "timestamp": datetime(2020, 8, 8, 10, 5, 38, 201538, tzinfo=pytz.UTC),
             "icmp_seq": 7,
             "ttl": 64,
             "time": 0.257,

@@ -2,7 +2,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from typing import Union
+from datetime import tzinfo
+from typing import Optional, Union
 
 import pyparsing as pp
 import typepy
@@ -25,10 +26,15 @@ from .error import ParseError, ParseErrorReason
 class PingParsing:
     """
     Parser class to parsing ping command output.
+
+    Args:
+        timezone (Optional[tzinfo]):
+            Time zone for parsing timestamps.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, timezone: Optional[tzinfo] = None) -> None:
         self.__parser = NullPingParser()  # type: PingParser
+        self.__timezone = timezone
 
     @property
     def parser_name(self) -> str:
@@ -73,7 +79,7 @@ class PingParsing:
         )
 
         for parser_class in parser_class_list:
-            self.__parser = parser_class()  # type: ignore
+            self.__parser = parser_class(timezone=self.__timezone)  # type: ignore
             try:
                 return self.__parser.parse(ping_lines)
             except ParseError as e:

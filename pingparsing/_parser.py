@@ -4,7 +4,7 @@
 
 import abc
 import re
-from datetime import datetime  # noqa
+from datetime import datetime, tzinfo
 from typing import Dict, List, Optional, Pattern, Sequence, Tuple, Union  # noqa
 
 import pyparsing as pp
@@ -34,6 +34,9 @@ class PingParser(PingParserInterface):
     _ICMP_SEQ_PATTERN = r"icmp_seq=(?P<icmp_seq>\d+)"
     _TTL_PATTERN = r"ttl=(?P<ttl>\d+)"
     _TIME_PATTERN = r"time=(?P<time>[0-9\.]+)"
+
+    def __init__(self, timezone: Optional[tzinfo] = None) -> None:
+        self.__timezone = timezone
 
     @abc.abstractproperty
     def _parser_name(self) -> str:  # pragma: no cover
@@ -128,7 +131,7 @@ class PingParser(PingParserInterface):
         return i
 
     def __timestamp_to_datetime(self, timestamp: str) -> datetime:
-        return DateTime(timestamp.lstrip("[").rstrip("]")).force_convert()
+        return DateTime(timestamp.lstrip("[").rstrip("]"), timezone=self.__timezone).force_convert()
 
     def __validate_stats_body(self, body_line_list: Sequence[str]) -> None:
         if typepy.is_empty_sequence(body_line_list):
