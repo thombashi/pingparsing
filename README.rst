@@ -18,13 +18,9 @@ Summary
     :target: https://pypi.org/project/pingparsing
     :alt: Supported Python implementations
 
-.. image:: https://img.shields.io/travis/thombashi/pingparsing/master.svg?label=Linux/macOS%20CI
-    :target: https://travis-ci.org/thombashi/pingparsing
-    :alt: Linux/macOS CI status
-
-.. image:: https://img.shields.io/appveyor/ci/thombashi/pingparsing/master.svg?label=Windows%20CI
-    :target: https://ci.appveyor.com/project/thombashi/pingparsing
-    :alt: Windows CI status
+.. image:: https://github.com/thombashi/pingparsing/workflows/Tests/badge.svg
+    :target: https://github.com/thombashi/pingparsing/actions?query=workflow%3ATests
+    :alt: Linux/macOS/Windows CI status
 
 .. image:: https://img.shields.io/github/stars/thombashi/pingparsing.svg?style=social&label=Star
     :target: https://github.com/thombashi/pingparsing
@@ -286,8 +282,8 @@ CLI help
                        [--timestamp {none,epoch,datetime}] [-c COUNT]
                        [-s PACKET_SIZE] [--ttl TTL] [-w DEADLINE]
                        [--timeout TIMEOUT] [-I INTERFACE] [--addopts OPTIONS]
-                       [--indent INDENT] [--icmp-reply] [--no-color]
-                       [--debug | --quiet]
+                       [--indent INDENT] [--icmp-reply] [--timezone TIMEZONE]
+                       [--no-color] [--debug | --quiet]
                        destination_or_file [destination_or_file ...]
 
     positional arguments:
@@ -347,6 +343,7 @@ CLI help
                             level. (default= 4)
       --icmp-reply, --icmp-replies
                             print results for each ICMP packet reply.
+      --timezone TIMEZONE   Time zone for timestamps.
       --no-color            Turn off colors.
 
     Documentation: https://pingparsing.rtfd.io/
