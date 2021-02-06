@@ -306,6 +306,30 @@ MACOS_UNREACHABLE_1 = PingTestData(
     },
     [],
 )
+MACOS_UNREACHABLE_2 = PingTestData(
+    dedent(
+        """\
+        PING example.net (93.184.216.34): 56 data bytes
+
+        --- example.net ping statistics ---
+        10 packets transmitted, 0 packets received, 100.0% packet loss
+        """
+    ),
+    {
+        "destination": "example.net",
+        "packet_transmit": 10,
+        "packet_receive": 0,
+        "packet_loss_count": 10,
+        "packet_loss_rate": 100.0,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": None,
+        "rtt_min": None,
+        "rtt_avg": None,
+        "rtt_max": None,
+        "rtt_mdev": None,
+    },
+    [],
+)
 MACOS_DUPLICATE_0 = PingTestData(
     dedent(
         """\
@@ -495,6 +519,7 @@ class Test_PingParsing_parse:
             [MACOS_SUCCESS_1, "macOS"],
             [MACOS_UNREACHABLE_0, "macOS"],
             [MACOS_UNREACHABLE_1, "macOS"],
+            [MACOS_UNREACHABLE_2, "macOS"],
             [MACOS_DUPLICATE_0, "macOS"],
             [ALPINE_LINUX_SUCCESS, "AlpineLinux"],
             [ALPINE_LINUX_DUP_LOSS, "AlpineLinux"],
