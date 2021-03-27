@@ -37,7 +37,7 @@ class PingParser(PingParserInterface):
     _IPADDR_PATTERN = r"(\d{1,3}\.){3}\d{1,3}"
     _ICMP_SEQ_PATTERN = r"icmp_seq=(?P<{key}>\d+)".format(key=IcmpReplyKey.SEQUENCE_NO)
     _TTL_PATTERN = r"ttl=(?P<{key}>\d+)".format(key=IcmpReplyKey.TTL)
-    _TIME_PATTERN = r"time=(?P<{key}>[0-9\.]+)".format(key=IcmpReplyKey.TIME)
+    _TIME_PATTERN = r"time[=<](?P<{key}>[0-9\.]+)".format(key=IcmpReplyKey.TIME)
 
     def __init__(self, timezone: Optional[tzinfo] = None) -> None:
         self.__timezone = timezone
