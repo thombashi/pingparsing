@@ -20,6 +20,7 @@ from .error import ParseError, ParseErrorReason
 
 
 class IcmpReplyKey:
+    DESTINATION = "destination"
     TIMESTAMP = "timestamp"
     TIMESTAMP_NO_ANS = "timestamp_no_ans"
     SEQUENCE_NO = "icmp_seq"
@@ -30,6 +31,7 @@ class IcmpReplyKey:
 
 class PingParser(PingParserInterface):
 
+    _DEST_PATTERN = r"[a-zA-Z0-9:\-\.\(\)%]+"  # host or ipv4/ipv6 addr
     _IPADDR_PATTERN = r"(\d{1,3}\.){3}\d{1,3}"
     _ICMP_SEQ_PATTERN = r"icmp_seq=(?P<icmp_seq>\d+)"
     _TTL_PATTERN = r"ttl=(?P<ttl>\d+)"
@@ -119,9 +121,11 @@ class PingParser(PingParserInterface):
         return (lines[stats_headline_idx], packet_info_line, body_line_list)
 
     def _parse_destination(self, stats_headline: str) -> str:
-        start_len = len("--- ")
-        end_len = len(" ping statistics ---")
-        return stats_headline[start_len:-end_len]
+        match = re.search(self._stats_headline_pattern, stats_headline)
+        if not match:
+            return "unknown"
+
+        return match.groupdict()[IcmpReplyKey.DESTINATION].strip(":")
 
     def __find_stats_headline_idx(self, lines: Sequence[str], re_stats_header: Pattern) -> int:
         for i, line in enumerate(lines):
@@ -209,7 +213,9 @@ class LinuxPingParser(PingParser):
 
     @property
     def _stats_headline_pattern(self) -> str:
-        return "--- .* ping statistics ---"
+        return r"--- (?P<{key}>{pattern}) ping statistics ---".format(
+            key=IcmpReplyKey.DESTINATION, pattern=self._DEST_PATTERN
+        )
 
     @property
     def _is_support_packet_duplicate(self) -> bool:
@@ -286,7 +292,9 @@ class WindowsPingParser(PingParser):
 
     @property
     def _stats_headline_pattern(self) -> str:
-        return "^Ping statistics for "
+        return r"^Ping statistics for (?P<{key}>{pattern})".format(
+            key=IcmpReplyKey.DESTINATION, pattern=self._DEST_PATTERN
+        )
 
     @property
     def _is_support_packet_duplicate(self) -> bool:
@@ -347,9 +355,6 @@ class WindowsPingParser(PingParser):
             icmp_replies=icmp_replies,
         )
 
-    def _parse_destination(self, stats_headline):
-        return stats_headline.lstrip("Ping statistics for ").rstrip(":")
-
 
 class MacOsPingParser(PingParser):
     @property
@@ -369,7 +374,9 @@ class MacOsPingParser(PingParser):
 
     @property
     def _stats_headline_pattern(self) -> str:
-        return "--- .* ping statistics ---"
+        return r"--- (?P<{key}>{pattern}) ping statistics ---".format(
+            key=IcmpReplyKey.DESTINATION, pattern=self._DEST_PATTERN
+        )
 
     @property
     def _is_support_packet_duplicate(self) -> bool:
