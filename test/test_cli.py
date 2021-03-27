@@ -142,7 +142,7 @@ class Test_cli_file:
 
 @pytest.mark.xfail(run=False)
 class Test_cli_pipe:
-    def test_normal(self, tmpdir):
+    def test_normal(self):
         runner = SubprocessRunner([sys.executable, "-m", "pingparsing"])
         runner.run(input=DEBIAN_SUCCESS_0.value)
 
@@ -151,7 +151,7 @@ class Test_cli_pipe:
         assert runner.returncode == 0
         assert json.loads(runner.stdout) == DEBIAN_SUCCESS_0.expected
 
-    def test_normal_w_option(self, tmpdir):
+    def test_normal_w_option(self):
         expected = dedent(
             """\
             {
