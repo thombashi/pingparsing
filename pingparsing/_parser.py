@@ -21,6 +21,7 @@ from .error import ParseError, ParseErrorReason
 
 class IcmpReplyKey:
     DESTINATION = "destination"
+    BYTES = "bytes"
     TIMESTAMP = "timestamp"
     TIMESTAMP_NO_ANS = "timestamp_no_ans"
     SEQUENCE_NO = "icmp_seq"
@@ -31,6 +32,7 @@ class IcmpReplyKey:
 
 class PingParser(PingParserInterface):
 
+    _BYTES_PATTERN = r"\s*(?P<{key}>[0-9]+) bytes".format(key=IcmpReplyKey.BYTES)
     _DEST_PATTERN = r"(?P<{key}>[a-zA-Z0-9:\-\.\(\)% ]+)".format(
         key=IcmpReplyKey.DESTINATION
     )  # host or ipv4/ipv6 addr
@@ -84,6 +86,9 @@ class PingParser(PingParserInterface):
 
             if IcmpReplyKey.DESTINATION in results:
                 reply[IcmpReplyKey.DESTINATION] = results[IcmpReplyKey.DESTINATION]
+
+            if IcmpReplyKey.BYTES in results:
+                reply[IcmpReplyKey.BYTES] = int(results[IcmpReplyKey.BYTES])
 
             if results.get(IcmpReplyKey.TIMESTAMP):
                 reply[IcmpReplyKey.TIMESTAMP] = self.__timestamp_to_datetime(
@@ -208,7 +213,9 @@ class LinuxPingParser(PingParser):
     def _icmp_reply_pattern(self) -> str:
         return (
             self._TIMESTAMP_PATTERN
-            + r"?\s?.+ from "
+            + "?"
+            + self._BYTES_PATTERN
+            + r"\s+from "
             + self._DEST_PATTERN
             + ": "
             + self._ICMP_SEQ_PATTERN
@@ -294,7 +301,13 @@ class WindowsPingParser(PingParser):
     @property
     def _icmp_reply_pattern(self) -> str:
         return (
-            " from " + self._DEST_PATTERN + ": .+" + self._TIME_PATTERN + "ms " + self._TTL_PATTERN
+            " from "
+            + self._DEST_PATTERN
+            + r":\s*bytes=(?P<{key}>[0-9]+)".format(key=IcmpReplyKey.BYTES)
+            + " "
+            + self._TIME_PATTERN
+            + "ms "
+            + self._TTL_PATTERN
         )
 
     @property
@@ -369,7 +382,8 @@ class MacOsPingParser(PingParser):
     @property
     def _icmp_reply_pattern(self) -> str:
         return (
-            " from "
+            self._BYTES_PATTERN
+            + r"\s+from "
             + self._DEST_PATTERN
             + ": "
             + self._ICMP_SEQ_PATTERN
@@ -455,7 +469,8 @@ class AlpineLinuxPingParser(LinuxPingParser):
     @property
     def _icmp_reply_pattern(self) -> str:
         return (
-            " from "
+            self._BYTES_PATTERN
+            + r"\s+from "
             + self._DEST_PATTERN
             + ": "
             + r"seq=(?P<{key}>\d+) ".format(key=IcmpReplyKey.SEQUENCE_NO)

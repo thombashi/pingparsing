@@ -70,6 +70,7 @@ UBUNTU_SUCCESS_0 = PingTestData(
     [
         {
             "destination": "104.244.42.65",
+            "bytes": 64,
             "icmp_seq": 1,
             "ttl": 53,
             "time": 68.5,
@@ -77,6 +78,7 @@ UBUNTU_SUCCESS_0 = PingTestData(
         },
         {
             "destination": "104.244.42.65",
+            "bytes": 64,
             "icmp_seq": 2,
             "ttl": 53,
             "time": 67.7,
@@ -84,6 +86,7 @@ UBUNTU_SUCCESS_0 = PingTestData(
         },
         {
             "destination": "104.244.42.65",
+            "bytes": 64,
             "icmp_seq": 3,
             "ttl": 53,
             "time": 65.6,
@@ -91,6 +94,7 @@ UBUNTU_SUCCESS_0 = PingTestData(
         },
         {
             "destination": "104.244.42.65",
+            "bytes": 64,
             "icmp_seq": 4,
             "ttl": 53,
             "time": 65.6,
@@ -98,6 +102,7 @@ UBUNTU_SUCCESS_0 = PingTestData(
         },
         {
             "destination": "104.244.42.65",
+            "bytes": 64,
             "icmp_seq": 5,
             "ttl": 53,
             "time": 64.9,
@@ -138,6 +143,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
     [
         {
             "destination": "74.125.24.100",
+            "bytes": 64,
             "timestamp": datetime(2018, 4, 28, 15, 55, 37, 3555, tzinfo=pytz.UTC),
             "icmp_seq": 1,
             "ttl": 39,
@@ -146,6 +152,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
         },
         {
             "destination": "74.125.24.100",
+            "bytes": 64,
             "timestamp": datetime(2018, 4, 28, 15, 55, 37, 787175, tzinfo=pytz.UTC),
             "icmp_seq": 2,
             "ttl": 39,
@@ -154,6 +161,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
         },
         {
             "destination": "74.125.24.100",
+            "bytes": 64,
             "timestamp": datetime(2018, 4, 28, 15, 55, 38, 787642, tzinfo=pytz.UTC),
             "icmp_seq": 3,
             "ttl": 39,
@@ -162,6 +170,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
         },
         {
             "destination": "74.125.24.100",
+            "bytes": 64,
             "timestamp": datetime(2018, 4, 28, 15, 55, 39, 787653, tzinfo=pytz.UTC),
             "icmp_seq": 4,
             "ttl": 39,
@@ -170,6 +179,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
         },
         {
             "destination": "74.125.24.100",
+            "bytes": 64,
             "timestamp": datetime(2018, 4, 28, 15, 55, 40, 788365, tzinfo=pytz.UTC),
             "icmp_seq": 5,
             "ttl": 39,
@@ -209,6 +219,7 @@ UBUNTU_SUCCESS_2 = PingTestData(
     [
         {
             "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
+            "bytes": 64,
             "icmp_seq": 1,
             "ttl": 50,
             "time": 64.3,
@@ -216,6 +227,7 @@ UBUNTU_SUCCESS_2 = PingTestData(
         },
         {
             "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
+            "bytes": 64,
             "icmp_seq": 2,
             "ttl": 50,
             "time": 49.7,
@@ -223,6 +235,7 @@ UBUNTU_SUCCESS_2 = PingTestData(
         },
         {
             "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
+            "bytes": 64,
             "icmp_seq": 3,
             "ttl": 50,
             "time": 48.8,
@@ -267,15 +280,27 @@ WINDOWS7SP1_SUCCESS = PingTestData(
         "rtt_mdev": None,
     },
     [
-        {"destination": "216.58.196.238", "ttl": 51, "time": 87.0, "duplicate": False},
-        {"destination": "216.58.196.238", "ttl": 51, "time": 97.0, "duplicate": False},
-        {"destination": "216.58.196.238", "ttl": 51, "time": 56.0, "duplicate": False},
-        {"destination": "216.58.196.238", "ttl": 51, "time": 95.0, "duplicate": False},
-        {"destination": "216.58.196.238", "ttl": 51, "time": 194.0, "duplicate": False},
-        {"destination": "216.58.196.238", "ttl": 51, "time": 98.0, "duplicate": False},
-        {"destination": "216.58.196.238", "ttl": 51, "time": 93.0, "duplicate": False},
-        {"destination": "216.58.196.238", "ttl": 51, "time": 96.0, "duplicate": False},
-        {"destination": "216.58.196.238", "ttl": 51, "time": 96.0, "duplicate": False},
-        {"destination": "216.58.196.238", "ttl": 51, "time": 165.0, "duplicate": False},
+        {"bytes": 32, "destination": "216.58.196.238", "ttl": 51, "time": 87.0, "duplicate": False},
+        {"bytes": 32, "destination": "216.58.196.238", "ttl": 51, "time": 97.0, "duplicate": False},
+        {"bytes": 32, "destination": "216.58.196.238", "ttl": 51, "time": 56.0, "duplicate": False},
+        {"bytes": 32, "destination": "216.58.196.238", "ttl": 51, "time": 95.0, "duplicate": False},
+        {
+            "bytes": 32,
+            "destination": "216.58.196.238",
+            "ttl": 51,
+            "time": 194.0,
+            "duplicate": False,
+        },
+        {"bytes": 32, "destination": "216.58.196.238", "ttl": 51, "time": 98.0, "duplicate": False},
+        {"bytes": 32, "destination": "216.58.196.238", "ttl": 51, "time": 93.0, "duplicate": False},
+        {"bytes": 32, "destination": "216.58.196.238", "ttl": 51, "time": 96.0, "duplicate": False},
+        {"bytes": 32, "destination": "216.58.196.238", "ttl": 51, "time": 96.0, "duplicate": False},
+        {
+            "bytes": 32,
+            "destination": "216.58.196.238",
+            "ttl": 51,
+            "time": 165.0,
+            "duplicate": False,
+        },
     ],
 )

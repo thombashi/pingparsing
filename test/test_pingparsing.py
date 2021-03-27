@@ -104,6 +104,7 @@ UBUNTU_FAIL_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.11.222",
             "timestamp": datetime(2020, 8, 8, 10, 5, 33, 81898, tzinfo=pytz.UTC),
             "icmp_seq": 2,
@@ -127,6 +128,7 @@ UBUNTU_FAIL_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.11.222",
             "timestamp": datetime(2020, 8, 8, 10, 5, 37, 180326, tzinfo=pytz.UTC),
             "icmp_seq": 6,
@@ -135,6 +137,7 @@ UBUNTU_FAIL_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.11.222",
             "timestamp": datetime(2020, 8, 8, 10, 5, 38, 201538, tzinfo=pytz.UTC),
             "icmp_seq": 7,
@@ -230,6 +233,7 @@ MACOS_SUCCESS_0 = PingTestData(
     },
     [
         {
+            "bytes": 64,
             "destination": "172.217.6.238",
             "icmp_seq": 0,
             "ttl": 53,
@@ -237,6 +241,7 @@ MACOS_SUCCESS_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "172.217.6.238",
             "icmp_seq": 1,
             "ttl": 53,
@@ -244,6 +249,7 @@ MACOS_SUCCESS_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "172.217.6.238",
             "icmp_seq": 2,
             "ttl": 53,
@@ -251,6 +257,7 @@ MACOS_SUCCESS_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "172.217.6.238",
             "icmp_seq": 3,
             "ttl": 53,
@@ -258,6 +265,7 @@ MACOS_SUCCESS_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "172.217.6.238",
             "icmp_seq": 4,
             "ttl": 53,
@@ -451,6 +459,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
     },
     [
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 0,
             "ttl": 64,
@@ -458,6 +467,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 0,
             "ttl": 64,
@@ -465,6 +475,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": True,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 1,
             "ttl": 64,
@@ -472,6 +483,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 2,
             "ttl": 64,
@@ -479,6 +491,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 3,
             "ttl": 64,
@@ -486,6 +499,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 4,
             "ttl": 64,
@@ -493,6 +507,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 5,
             "ttl": 64,
@@ -500,6 +515,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 6,
             "ttl": 64,
@@ -507,6 +523,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 8,
             "ttl": 64,
@@ -514,6 +531,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 9,
             "ttl": 64,
@@ -521,6 +539,7 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
             "duplicate": False,
         },
         {
+            "bytes": 64,
             "destination": "192.168.2.106",
             "icmp_seq": 9,
             "ttl": 64,
@@ -542,7 +561,7 @@ IPV6_LINUX = PingTestData(
         """
     ),
     {
-        "destination": "ff02::2%usb0",
+        "destination": r"ff02::2%usb0",
         "packet_transmit": 1,
         "packet_receive": 1,
         "packet_duplicate_count": 0,
@@ -556,6 +575,7 @@ IPV6_LINUX = PingTestData(
     },
     [
         {
+            "bytes": 64,
             "destination": r"fe80::783c:caff:fe12:b46c%usb0",
             "icmp_seq": 1,
             "ttl": 64,
@@ -600,15 +620,15 @@ WINDOWS10_LOSS = PingTestData(
         "rtt_mdev": None,
     },
     [
-        {"destination": "192.168.2.106", "ttl": 64, "time": 16.0, "duplicate": False},
-        {"destination": "192.168.2.106", "ttl": 64, "time": 6.0, "duplicate": False},
-        {"destination": "192.168.2.106", "ttl": 64, "time": 12.0, "duplicate": False},
-        {"destination": "192.168.2.106", "ttl": 64, "time": 16.0, "duplicate": False},
-        {"destination": "192.168.2.106", "ttl": 64, "time": 8.0, "duplicate": False},
-        {"destination": "192.168.2.106", "ttl": 64, "time": 33.0, "duplicate": False},
-        {"destination": "192.168.2.106", "ttl": 64, "time": 13.0, "duplicate": False},
-        {"destination": "192.168.2.106", "ttl": 64, "time": 23.0, "duplicate": False},
-        {"destination": "192.168.2.106", "ttl": 64, "time": 1.0, "duplicate": False},
+        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 16.0, "duplicate": False},
+        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 6.0, "duplicate": False},
+        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 12.0, "duplicate": False},
+        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 16.0, "duplicate": False},
+        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 8.0, "duplicate": False},
+        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 33.0, "duplicate": False},
+        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 13.0, "duplicate": False},
+        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 23.0, "duplicate": False},
+        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 1.0, "duplicate": False},
     ],
 )
 WINDOWS_UNREACHABLE_0 = PingTestData(

@@ -98,6 +98,7 @@ class Test_cli_file:
             "icmp_replies": [
                 {
                     "destination": "74.125.24.100",
+                    "bytes": 64,
                     "timestamp": "2018-04-28T15:55:37.003555+00:00",
                     "icmp_seq": 1,
                     "ttl": 39,
@@ -106,6 +107,7 @@ class Test_cli_file:
                 },
                 {
                     "destination": "74.125.24.100",
+                    "bytes": 64,
                     "timestamp": "2018-04-28T15:55:37.787175+00:00",
                     "icmp_seq": 2,
                     "ttl": 39,
@@ -114,6 +116,7 @@ class Test_cli_file:
                 },
                 {
                     "destination": "74.125.24.100",
+                    "bytes": 64,
                     "timestamp": "2018-04-28T15:55:38.787642+00:00",
                     "icmp_seq": 3,
                     "ttl": 39,
@@ -122,6 +125,7 @@ class Test_cli_file:
                 },
                 {
                     "destination": "74.125.24.100",
+                    "bytes": 64,
                     "timestamp": "2018-04-28T15:55:39.787653+00:00",
                     "icmp_seq": 4,
                     "ttl": 39,
@@ -130,6 +134,7 @@ class Test_cli_file:
                 },
                 {
                     "destination": "74.125.24.100",
+                    "bytes": 64,
                     "timestamp": "2018-04-28T15:55:40.788365+00:00",
                     "icmp_seq": 5,
                     "ttl": 39,
@@ -169,6 +174,7 @@ class Test_cli_pipe:
                 "icmp_replies": [
                     {
                         "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
+                        "bytes": 64,
                         "icmp_seq": 1,
                         "ttl": 50,
                         "time": 64.3,
@@ -176,6 +182,7 @@ class Test_cli_pipe:
                     },
                     {
                         "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
+                        "bytes": 64,
                         "icmp_seq": 2,
                         "ttl": 50,
                         "time": 49.7,
@@ -183,6 +190,7 @@ class Test_cli_pipe:
                     },
                     {
                         "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
+                        "bytes": 64,
                         "icmp_seq": 3,
                         "ttl": 50,
                         "time": 48.8,
