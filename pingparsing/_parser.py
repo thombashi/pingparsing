@@ -99,13 +99,13 @@ class PingParser(PingParserInterface):
                     results[IcmpReplyKey.TIMESTAMP_NO_ANS]
                 )
 
-            if results.get(IcmpReplyKey.SEQUENCE_NO):
+            if IcmpReplyKey.SEQUENCE_NO in results:
                 reply[IcmpReplyKey.SEQUENCE_NO] = int(results[IcmpReplyKey.SEQUENCE_NO])
 
-            if results.get(IcmpReplyKey.TTL):
+            if IcmpReplyKey.TTL in results:
                 reply[IcmpReplyKey.TTL] = int(results[IcmpReplyKey.TTL])
 
-            if results.get(IcmpReplyKey.TIME):
+            if IcmpReplyKey.TIME in results:
                 reply[IcmpReplyKey.TIME] = float(results[IcmpReplyKey.TIME])
 
             if duplicate_packet_regexp.search(line):
