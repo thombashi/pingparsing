@@ -183,7 +183,7 @@ class NullPingParser(PingParser):
     def _is_support_packet_duplicate(self) -> bool:  # pragma: no cover
         return False
 
-    def parse(self, ping_message: List[str]) -> PingStats:  # pragma: no cover
+    def parse(self, ping_message: Sequence[str]) -> PingStats:  # pragma: no cover
         return PingStats()
 
     def _preprocess_parse_stats(
@@ -226,7 +226,7 @@ class LinuxPingParser(PingParser):
     def _is_support_packet_duplicate(self) -> bool:
         return True
 
-    def parse(self, ping_message: List[str]) -> PingStats:
+    def parse(self, ping_message: Sequence[str]) -> PingStats:
         icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
@@ -303,7 +303,7 @@ class WindowsPingParser(PingParser):
     def _is_support_packet_duplicate(self) -> bool:
         return False
 
-    def parse(self, ping_message: List[str]) -> PingStats:
+    def parse(self, ping_message: Sequence[str]) -> PingStats:
         icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
@@ -385,7 +385,7 @@ class MacOsPingParser(PingParser):
     def _is_support_packet_duplicate(self) -> bool:
         return True
 
-    def parse(self, ping_message: List[str]) -> PingStats:
+    def parse(self, ping_message: Sequence[str]) -> PingStats:
         icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
@@ -466,7 +466,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
     def _is_support_packet_duplicate(self) -> bool:
         return True
 
-    def parse(self, ping_message: List[str]) -> PingStats:
+    def parse(self, ping_message: Sequence[str]) -> PingStats:
         icmp_replies = self._parse_icmp_reply(ping_message)
         stats_headline, packet_info_line, body_line_list = self._preprocess_parse_stats(
             lines=ping_message
