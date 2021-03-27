@@ -103,29 +103,35 @@ The parsed result outputted with JSON format.
             "packet_receive": 3,
             "packet_loss_count": 0,
             "packet_loss_rate": 0.0,
-            "rtt_min": 19.885,
-            "rtt_avg": 38.829,
-            "rtt_max": 57.751,
-            "rtt_mdev": 15.459,
+            "rtt_min": 36.997,
+            "rtt_avg": 49.1,
+            "rtt_max": 60.288,
+            "rtt_mdev": 9.533,
             "packet_duplicate_count": 0,
             "packet_duplicate_rate": 0.0,
             "icmp_replies": [
                 {
+                    "destination": "nrt20s21-in-f14.1e100.net (172.217.175.110)",
+                    "bytes": 64,
                     "icmp_seq": 1,
-                    "ttl": 53,
-                    "time": 19.8,
+                    "ttl": 113,
+                    "time": 50.0,
                     "duplicate": false
                 },
                 {
+                    "destination": "nrt20s21-in-f14.1e100.net (172.217.175.110)",
+                    "bytes": 64,
                     "icmp_seq": 2,
-                    "ttl": 53,
-                    "time": 38.8,
+                    "ttl": 113,
+                    "time": 60.2,
                     "duplicate": false
                 },
                 {
+                    "destination": "nrt20s21-in-f14.1e100.net (172.217.175.110)",
+                    "bytes": 64,
                     "icmp_seq": 3,
-                    "ttl": 53,
-                    "time": 57.7,
+                    "ttl": 113,
+                    "time": 36.9,
                     "duplicate": false
                 }
             ]
@@ -422,7 +428,7 @@ Parsing ``ping`` command output
 :Output:
     ::
 
-        [extract ping statistics]
+        [ping statistics]
         {
             "destination": "google.com",
             "packet_transmit": 5,
@@ -437,12 +443,12 @@ Parsing ``ping`` command output
             "packet_duplicate_rate": 0.0
         }
 
-        [extract icmp replies]
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 1, 'ttl': 39, 'time': 148.0, 'duplicate': False}
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 2, 'ttl': 39, 'time': 137.0, 'duplicate': False}
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 38), 'icmp_seq': 3, 'ttl': 39, 'time': 137.0, 'duplicate': False}
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 39), 'icmp_seq': 4, 'ttl': 39, 'time': 136.0, 'duplicate': False}
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 40), 'icmp_seq': 5, 'ttl': 39, 'time': 136.0, 'duplicate': False}
+        [icmp replies]
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37, 3555), 'icmp_seq': 1, 'ttl': 39, 'time': 148.0, 'duplicate': False}
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37, 787175), 'icmp_seq': 2, 'ttl': 39, 'time': 137.0, 'duplicate': False}
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 38, 787642), 'icmp_seq': 3, 'ttl': 39, 'time': 137.0, 'duplicate': False}
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 39, 787653), 'icmp_seq': 4, 'ttl': 39, 'time': 136.0, 'duplicate': False}
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 40, 788365), 'icmp_seq': 5, 'ttl': 39, 'time': 136.0, 'duplicate': False}
 
 
 Recommended ping command execution
@@ -510,6 +516,8 @@ Tested Environments
 | Ubuntu 16.04 | ``iputils-ping 20121221-5ubuntu2``|
 +--------------+-----------------------------------+
 | Ubuntu 18.04 | ``iputils-ping 20161105-1ubuntu2``|
++--------------+-----------------------------------+
+| Ubuntu 20.04 | ``iputils-ping 20190709-3``       |
 +--------------+-----------------------------------+
 | Debian 8.6   | ``iputils-ping 20121221-5+b2``    |
 +--------------+-----------------------------------+
