@@ -119,7 +119,9 @@ class PingParser(PingParserInterface):
         return (lines[stats_headline_idx], packet_info_line, body_line_list)
 
     def _parse_destination(self, stats_headline: str) -> str:
-        return stats_headline.lstrip("--- ").rstrip(" ping statistics ---")
+        start_len = len("--- ")
+        end_len = len(" ping statistics ---")
+        return stats_headline[start_len:-end_len]
 
     def __find_stats_headline_idx(self, lines: Sequence[str], re_stats_header: Pattern) -> int:
         for i, line in enumerate(lines):
