@@ -155,6 +155,9 @@ class PingStats:
         """
         ICMP packet reply information.
 
+            .. note:
+                ``time<1ms`` considered as ``time=1``
+
         Returns:
             |list| of |dict|:
         """
