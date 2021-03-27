@@ -37,9 +37,9 @@ class PingParser(PingParserInterface):
         key=IcmpReplyKey.DESTINATION
     )  # host or ipv4/ipv6 addr
     _IPADDR_PATTERN = r"(\d{1,3}\.){3}\d{1,3}"
-    _ICMP_SEQ_PATTERN = r"icmp_seq=(?P<{key}>\d+)".format(key=IcmpReplyKey.SEQUENCE_NO)
-    _TTL_PATTERN = r"ttl=(?P<{key}>\d+)".format(key=IcmpReplyKey.TTL)
-    _TIME_PATTERN = r"time[=<](?P<{key}>[0-9\.]+)".format(key=IcmpReplyKey.TIME)
+    _ICMP_SEQ_PATTERN = r"\s*icmp_seq=(?P<{key}>\d+)".format(key=IcmpReplyKey.SEQUENCE_NO)
+    _TTL_PATTERN = r"\s*ttl=(?P<{key}>\d+)".format(key=IcmpReplyKey.TTL)
+    _TIME_PATTERN = r"\s*time[=<](?P<{key}>[0-9\.]+)".format(key=IcmpReplyKey.TIME)
 
     def __init__(self, timezone: Optional[tzinfo] = None) -> None:
         self.__timezone = timezone
@@ -217,11 +217,9 @@ class LinuxPingParser(PingParser):
             + self._BYTES_PATTERN
             + r"\s+from "
             + self._DEST_PATTERN
-            + ": "
+            + ":"
             + self._ICMP_SEQ_PATTERN
-            + " "
             + self._TTL_PATTERN
-            + " "
             + self._TIME_PATTERN
         )
 
@@ -304,9 +302,8 @@ class WindowsPingParser(PingParser):
             " from "
             + self._DEST_PATTERN
             + r":\s*bytes=(?P<{key}>[0-9]+)".format(key=IcmpReplyKey.BYTES)
-            + " "
             + self._TIME_PATTERN
-            + "ms "
+            + "ms"
             + self._TTL_PATTERN
         )
 
@@ -385,11 +382,9 @@ class MacOsPingParser(PingParser):
             self._BYTES_PATTERN
             + r"\s+from "
             + self._DEST_PATTERN
-            + ": "
+            + ":"
             + self._ICMP_SEQ_PATTERN
-            + " "
             + self._TTL_PATTERN
-            + " "
             + self._TIME_PATTERN
         )
 
@@ -475,7 +470,6 @@ class AlpineLinuxPingParser(LinuxPingParser):
             + ": "
             + r"seq=(?P<{key}>\d+) ".format(key=IcmpReplyKey.SEQUENCE_NO)
             + self._TTL_PATTERN
-            + " "
             + self._TIME_PATTERN
         )
 
