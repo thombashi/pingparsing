@@ -71,7 +71,7 @@ Parsing ``ping`` command output
 :Output:
     ::
 
-        [extract ping statistics]
+        [ping statistics]
         {
             "destination": "google.com",
             "packet_transmit": 5,
@@ -86,12 +86,12 @@ Parsing ``ping`` command output
             "packet_duplicate_rate": 0.0
         }
 
-        [extract icmp replies]
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 1, 'ttl': 39, 'time': 148.0, 'duplicate': False}
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37), 'icmp_seq': 2, 'ttl': 39, 'time': 137.0, 'duplicate': False}
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 38), 'icmp_seq': 3, 'ttl': 39, 'time': 137.0, 'duplicate': False}
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 39), 'icmp_seq': 4, 'ttl': 39, 'time': 136.0, 'duplicate': False}
-        {'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 40), 'icmp_seq': 5, 'ttl': 39, 'time': 136.0, 'duplicate': False}
+        [icmp replies]
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37, 3555), 'icmp_seq': 1, 'ttl': 39, 'time': 148.0, 'duplicate': False}
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 37, 787175), 'icmp_seq': 2, 'ttl': 39, 'time': 137.0, 'duplicate': False}
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 38, 787642), 'icmp_seq': 3, 'ttl': 39, 'time': 137.0, 'duplicate': False}
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 39, 787653), 'icmp_seq': 4, 'ttl': 39, 'time': 136.0, 'duplicate': False}
+        {'destination': '74.125.24.100', 'bytes': 64, 'timestamp': datetime.datetime(2018, 4, 29, 0, 55, 40, 788365), 'icmp_seq': 5, 'ttl': 39, 'time': 136.0, 'duplicate': False}
 
 
 Recommended ping command execution
