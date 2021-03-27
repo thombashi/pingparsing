@@ -266,5 +266,16 @@ WINDOWS7SP1_SUCCESS = PingTestData(
         "rtt_max": 194,
         "rtt_mdev": None,
     },
-    [],
+    [
+        {"destination": "216.58.196.238", "ttl": 51, "time": 87.0, "duplicate": False},
+        {"destination": "216.58.196.238", "ttl": 51, "time": 97.0, "duplicate": False},
+        {"destination": "216.58.196.238", "ttl": 51, "time": 56.0, "duplicate": False},
+        {"destination": "216.58.196.238", "ttl": 51, "time": 95.0, "duplicate": False},
+        {"destination": "216.58.196.238", "ttl": 51, "time": 194.0, "duplicate": False},
+        {"destination": "216.58.196.238", "ttl": 51, "time": 98.0, "duplicate": False},
+        {"destination": "216.58.196.238", "ttl": 51, "time": 93.0, "duplicate": False},
+        {"destination": "216.58.196.238", "ttl": 51, "time": 96.0, "duplicate": False},
+        {"destination": "216.58.196.238", "ttl": 51, "time": 96.0, "duplicate": False},
+        {"destination": "216.58.196.238", "ttl": 51, "time": 165.0, "duplicate": False},
+    ],
 )

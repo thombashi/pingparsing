@@ -293,7 +293,9 @@ class WindowsPingParser(PingParser):
 
     @property
     def _icmp_reply_pattern(self) -> str:
-        return " from  " + self._DEST_PATTERN + ": " + self._TTL_PATTERN + " " + self._TIME_PATTERN
+        return (
+            " from " + self._DEST_PATTERN + ": .+" + self._TIME_PATTERN + "ms " + self._TTL_PATTERN
+        )
 
     @property
     def _stats_headline_pattern(self) -> str:

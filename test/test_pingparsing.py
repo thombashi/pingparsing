@@ -599,7 +599,17 @@ WINDOWS10_LOSS = PingTestData(
         "rtt_max": 33.0,
         "rtt_mdev": None,
     },
-    [],
+    [
+        {"destination": "192.168.2.106", "ttl": 64, "time": 16.0, "duplicate": False},
+        {"destination": "192.168.2.106", "ttl": 64, "time": 6.0, "duplicate": False},
+        {"destination": "192.168.2.106", "ttl": 64, "time": 12.0, "duplicate": False},
+        {"destination": "192.168.2.106", "ttl": 64, "time": 16.0, "duplicate": False},
+        {"destination": "192.168.2.106", "ttl": 64, "time": 8.0, "duplicate": False},
+        {"destination": "192.168.2.106", "ttl": 64, "time": 33.0, "duplicate": False},
+        {"destination": "192.168.2.106", "ttl": 64, "time": 13.0, "duplicate": False},
+        {"destination": "192.168.2.106", "ttl": 64, "time": 23.0, "duplicate": False},
+        {"destination": "192.168.2.106", "ttl": 64, "time": 1.0, "duplicate": False},
+    ],
 )
 WINDOWS_UNREACHABLE_0 = PingTestData(
     dedent(
