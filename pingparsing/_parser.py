@@ -35,9 +35,9 @@ class PingParser(PingParserInterface):
         key=IcmpReplyKey.DESTINATION
     )  # host or ipv4/ipv6 addr
     _IPADDR_PATTERN = r"(\d{1,3}\.){3}\d{1,3}"
-    _ICMP_SEQ_PATTERN = r"icmp_seq=(?P<icmp_seq>\d+)"
-    _TTL_PATTERN = r"ttl=(?P<ttl>\d+)"
-    _TIME_PATTERN = r"time=(?P<time>[0-9\.]+)"
+    _ICMP_SEQ_PATTERN = r"icmp_seq=(?P<{key}>\d+)".format(key=IcmpReplyKey.SEQUENCE_NO)
+    _TTL_PATTERN = r"ttl=(?P<{key}>\d+)".format(key=IcmpReplyKey.TTL)
+    _TIME_PATTERN = r"time=(?P<{key}>[0-9\.]+)".format(key=IcmpReplyKey.TIME)
 
     def __init__(self, timezone: Optional[tzinfo] = None) -> None:
         self.__timezone = timezone
@@ -197,8 +197,8 @@ class LinuxPingParser(PingParser):
     def _parser_name(self) -> str:
         return "Linux"
 
-    _TIMESTAMP_PATTERN = r"(?P<timestamp>\[[0-9\.]+\])"
-    _NO_ANS_TIMESTAMP_PATTERN = r"(?P<timestamp_no_ans>\[[0-9\.]+\])"
+    _TIMESTAMP_PATTERN = r"(?P<{key}>\[[0-9\.]+\])".format(key=IcmpReplyKey.TIMESTAMP)
+    _NO_ANS_TIMESTAMP_PATTERN = r"(?P<{key}>\[[0-9\.]+\])".format(key=IcmpReplyKey.TIMESTAMP_NO_ANS)
 
     @property
     def _icmp_no_ans_pattern(self) -> str:
@@ -456,7 +456,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             " from "
             + self._DEST_PATTERN
             + ": "
-            + r"seq=(?P<icmp_seq>\d+) "
+            + r"seq=(?P<{key}>\d+) ".format(key=IcmpReplyKey.SEQUENCE_NO)
             + self._TTL_PATTERN
             + " "
             + self._TIME_PATTERN
