@@ -68,11 +68,41 @@ UBUNTU_SUCCESS_0 = PingTestData(
         "rtt_mdev": 1.430,
     },
     [
-        {"icmp_seq": 1, "ttl": 53, "time": 68.5, "duplicate": False},
-        {"icmp_seq": 2, "ttl": 53, "time": 67.7, "duplicate": False},
-        {"icmp_seq": 3, "ttl": 53, "time": 65.6, "duplicate": False},
-        {"icmp_seq": 4, "ttl": 53, "time": 65.6, "duplicate": False},
-        {"icmp_seq": 5, "ttl": 53, "time": 64.9, "duplicate": False},
+        {
+            "destination": "104.244.42.65",
+            "icmp_seq": 1,
+            "ttl": 53,
+            "time": 68.5,
+            "duplicate": False,
+        },
+        {
+            "destination": "104.244.42.65",
+            "icmp_seq": 2,
+            "ttl": 53,
+            "time": 67.7,
+            "duplicate": False,
+        },
+        {
+            "destination": "104.244.42.65",
+            "icmp_seq": 3,
+            "ttl": 53,
+            "time": 65.6,
+            "duplicate": False,
+        },
+        {
+            "destination": "104.244.42.65",
+            "icmp_seq": 4,
+            "ttl": 53,
+            "time": 65.6,
+            "duplicate": False,
+        },
+        {
+            "destination": "104.244.42.65",
+            "icmp_seq": 5,
+            "ttl": 53,
+            "time": 64.9,
+            "duplicate": False,
+        },
     ],
 )
 
@@ -107,6 +137,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
     },
     [
         {
+            "destination": "74.125.24.100",
             "timestamp": datetime(2018, 4, 28, 15, 55, 37, 3555, tzinfo=pytz.UTC),
             "icmp_seq": 1,
             "ttl": 39,
@@ -114,6 +145,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
             "duplicate": False,
         },
         {
+            "destination": "74.125.24.100",
             "timestamp": datetime(2018, 4, 28, 15, 55, 37, 787175, tzinfo=pytz.UTC),
             "icmp_seq": 2,
             "ttl": 39,
@@ -121,6 +153,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
             "duplicate": False,
         },
         {
+            "destination": "74.125.24.100",
             "timestamp": datetime(2018, 4, 28, 15, 55, 38, 787642, tzinfo=pytz.UTC),
             "icmp_seq": 3,
             "ttl": 39,
@@ -128,6 +161,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
             "duplicate": False,
         },
         {
+            "destination": "74.125.24.100",
             "timestamp": datetime(2018, 4, 28, 15, 55, 39, 787653, tzinfo=pytz.UTC),
             "icmp_seq": 4,
             "ttl": 39,
@@ -135,6 +169,7 @@ UBUNTU_SUCCESS_1 = PingTestData(
             "duplicate": False,
         },
         {
+            "destination": "74.125.24.100",
             "timestamp": datetime(2018, 4, 28, 15, 55, 40, 788365, tzinfo=pytz.UTC),
             "icmp_seq": 5,
             "ttl": 39,
@@ -172,9 +207,27 @@ UBUNTU_SUCCESS_2 = PingTestData(
         "rtt_mdev": 7.098,
     },
     [
-        {"icmp_seq": 1, "ttl": 50, "time": 64.3, "duplicate": False},
-        {"icmp_seq": 2, "ttl": 50, "time": 49.7, "duplicate": False},
-        {"icmp_seq": 3, "ttl": 50, "time": 48.8, "duplicate": False},
+        {
+            "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
+            "icmp_seq": 1,
+            "ttl": 50,
+            "time": 64.3,
+            "duplicate": False,
+        },
+        {
+            "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
+            "icmp_seq": 2,
+            "ttl": 50,
+            "time": 49.7,
+            "duplicate": False,
+        },
+        {
+            "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
+            "icmp_seq": 3,
+            "ttl": 50,
+            "time": 48.8,
+            "duplicate": False,
+        },
     ],
 )
 

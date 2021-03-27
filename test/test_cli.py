@@ -97,6 +97,7 @@ class Test_cli_file:
             "packet_duplicate_rate": 0.0,
             "icmp_replies": [
                 {
+                    "destination": "74.125.24.100",
                     "timestamp": "2018-04-28T15:55:37.003555+00:00",
                     "icmp_seq": 1,
                     "ttl": 39,
@@ -104,6 +105,7 @@ class Test_cli_file:
                     "duplicate": False,
                 },
                 {
+                    "destination": "74.125.24.100",
                     "timestamp": "2018-04-28T15:55:37.787175+00:00",
                     "icmp_seq": 2,
                     "ttl": 39,
@@ -111,6 +113,7 @@ class Test_cli_file:
                     "duplicate": False,
                 },
                 {
+                    "destination": "74.125.24.100",
                     "timestamp": "2018-04-28T15:55:38.787642+00:00",
                     "icmp_seq": 3,
                     "ttl": 39,
@@ -118,6 +121,7 @@ class Test_cli_file:
                     "duplicate": False,
                 },
                 {
+                    "destination": "74.125.24.100",
                     "timestamp": "2018-04-28T15:55:39.787653+00:00",
                     "icmp_seq": 4,
                     "ttl": 39,
@@ -125,6 +129,7 @@ class Test_cli_file:
                     "duplicate": False,
                 },
                 {
+                    "destination": "74.125.24.100",
                     "timestamp": "2018-04-28T15:55:40.788365+00:00",
                     "icmp_seq": 5,
                     "ttl": 39,
@@ -163,18 +168,21 @@ class Test_cli_pipe:
                 "packet_duplicate_rate": 0.0,
                 "icmp_replies": [
                     {
+                        "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
                         "icmp_seq": 1,
                         "ttl": 50,
                         "time": 64.3,
                         "duplicate": false
                     },
                     {
+                        "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
                         "icmp_seq": 2,
                         "ttl": 50,
                         "time": 49.7,
                         "duplicate": false
                     },
                     {
+                        "destination": "kix05s01-in-f14.1e100.net (172.217.26.110)",
                         "icmp_seq": 3,
                         "ttl": 50,
                         "time": 48.8,
@@ -214,6 +222,7 @@ class Test_PingParsing_ping:
         count = 1
         dest_list = ["google.com", "twitter.com"]
         runner = SubprocessRunner([sys.executable, "-m", "pingparsing"] + dest_list + ["-c", count])
+        print(runner.command_str, file=sys.stderr)
         runner.run()
 
         print_result(stdout=runner.stdout, stderr=runner.stderr)

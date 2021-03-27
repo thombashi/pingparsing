@@ -104,6 +104,7 @@ UBUNTU_FAIL_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "destination": "192.168.11.222",
             "timestamp": datetime(2020, 8, 8, 10, 5, 33, 81898, tzinfo=pytz.UTC),
             "icmp_seq": 2,
             "ttl": 64,
@@ -126,6 +127,7 @@ UBUNTU_FAIL_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "destination": "192.168.11.222",
             "timestamp": datetime(2020, 8, 8, 10, 5, 37, 180326, tzinfo=pytz.UTC),
             "icmp_seq": 6,
             "ttl": 64,
@@ -133,6 +135,7 @@ UBUNTU_FAIL_0 = PingTestData(
             "duplicate": False,
         },
         {
+            "destination": "192.168.11.222",
             "timestamp": datetime(2020, 8, 8, 10, 5, 38, 201538, tzinfo=pytz.UTC),
             "icmp_seq": 7,
             "ttl": 64,
@@ -226,11 +229,41 @@ MACOS_SUCCESS_0 = PingTestData(
         "rtt_mdev": 8.292,
     },
     [
-        {"icmp_seq": 0, "ttl": 53, "time": 20.482, "duplicate": False},
-        {"icmp_seq": 1, "ttl": 53, "time": 32.55, "duplicate": False},
-        {"icmp_seq": 2, "ttl": 53, "time": 32.013, "duplicate": False},
-        {"icmp_seq": 3, "ttl": 53, "time": 28.498, "duplicate": False},
-        {"icmp_seq": 4, "ttl": 53, "time": 46.093, "duplicate": False},
+        {
+            "destination": "172.217.6.238",
+            "icmp_seq": 0,
+            "ttl": 53,
+            "time": 20.482,
+            "duplicate": False,
+        },
+        {
+            "destination": "172.217.6.238",
+            "icmp_seq": 1,
+            "ttl": 53,
+            "time": 32.55,
+            "duplicate": False,
+        },
+        {
+            "destination": "172.217.6.238",
+            "icmp_seq": 2,
+            "ttl": 53,
+            "time": 32.013,
+            "duplicate": False,
+        },
+        {
+            "destination": "172.217.6.238",
+            "icmp_seq": 3,
+            "ttl": 53,
+            "time": 28.498,
+            "duplicate": False,
+        },
+        {
+            "destination": "172.217.6.238",
+            "icmp_seq": 4,
+            "ttl": 53,
+            "time": 46.093,
+            "duplicate": False,
+        },
     ],
 )
 MACOS_SUCCESS_1 = PingTestData(
@@ -417,17 +450,118 @@ ALPINE_LINUX_DUP_LOSS = PingTestData(
         "rtt_mdev": None,
     },
     [
-        {"icmp_seq": 0, "ttl": 64, "time": 0.936, "duplicate": False},
-        {"icmp_seq": 0, "ttl": 64, "time": 1.003, "duplicate": True},
-        {"icmp_seq": 1, "ttl": 64, "time": 0.802, "duplicate": False},
-        {"icmp_seq": 2, "ttl": 64, "time": 0.696, "duplicate": False},
-        {"icmp_seq": 3, "ttl": 64, "time": 0.664, "duplicate": False},
-        {"icmp_seq": 4, "ttl": 64, "time": 1.194, "duplicate": False},
-        {"icmp_seq": 5, "ttl": 64, "time": 0.613, "duplicate": False},
-        {"icmp_seq": 6, "ttl": 64, "time": 0.898, "duplicate": False},
-        {"icmp_seq": 8, "ttl": 64, "time": 1.066, "duplicate": False},
-        {"icmp_seq": 9, "ttl": 64, "time": 1.144, "duplicate": False},
-        {"icmp_seq": 9, "ttl": 64, "time": 1.219, "duplicate": True},
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 0,
+            "ttl": 64,
+            "time": 0.936,
+            "duplicate": False,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 0,
+            "ttl": 64,
+            "time": 1.003,
+            "duplicate": True,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 1,
+            "ttl": 64,
+            "time": 0.802,
+            "duplicate": False,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 2,
+            "ttl": 64,
+            "time": 0.696,
+            "duplicate": False,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 3,
+            "ttl": 64,
+            "time": 0.664,
+            "duplicate": False,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 4,
+            "ttl": 64,
+            "time": 1.194,
+            "duplicate": False,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 5,
+            "ttl": 64,
+            "time": 0.613,
+            "duplicate": False,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 6,
+            "ttl": 64,
+            "time": 0.898,
+            "duplicate": False,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 8,
+            "ttl": 64,
+            "time": 1.066,
+            "duplicate": False,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 9,
+            "ttl": 64,
+            "time": 1.144,
+            "duplicate": False,
+        },
+        {
+            "destination": "192.168.2.106",
+            "icmp_seq": 9,
+            "ttl": 64,
+            "time": 1.219,
+            "duplicate": True,
+        },
+    ],
+)
+
+IPV6_LINUX = PingTestData(
+    dedent(
+        r"""\
+        PING ff02::2%usb0(ff02::2%usb0) 56 data bytes
+        64 bytes from fe80::783c:caff:fe12:b46c%usb0: icmp_seq=1 ttl=64 time=2.71 ms
+
+        --- ff02::2%usb0 ping statistics ---
+        1 packets transmitted, 1 received, 0% packet loss, time 0ms
+        rtt min/avg/max/mdev = 2.708/2.708/2.708/0.000 ms
+        """
+    ),
+    {
+        "destination": "ff02::2%usb0",
+        "packet_transmit": 1,
+        "packet_receive": 1,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": 0,
+        "packet_loss_count": 0,
+        "packet_loss_rate": 0.0,
+        "rtt_min": 2.708,
+        "rtt_avg": 2.708,
+        "rtt_max": 2.708,
+        "rtt_mdev": 0.0,
+    },
+    [
+        {
+            "destination": r"fe80::783c:caff:fe12:b46c%usb0",
+            "icmp_seq": 1,
+            "ttl": 64,
+            "time": 2.71,
+            "duplicate": False,
+        },
     ],
 )
 
@@ -528,6 +662,7 @@ class Test_PingParsing_parse:
             [WINDOWS_UNREACHABLE_0, "Windows"],
             [WINDOWS_UNREACHABLE_1, "Windows"],
             [WINDOWS_UNREACHABLE_2, "Windows"],
+            [IPV6_LINUX, "Linux"],
         ],
     )
     def test_normal_text(self, ping_parser, test_data, parser_name):
