@@ -44,6 +44,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         command_items = (
             self._get_initial_command()
             + self._get_ping_command()
+            + self._get_interface_option()
             + self._get_deadline_option()
             + self._get_timeout_option()
             + self._get_count_option()
@@ -104,6 +105,9 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def _get_ttl_option(self) -> List[str]:
         raise NotImplementedError()
+
+    def _get_interface_option(self) -> List[str]:
+        return []
 
     def _require_shell_command(self) -> bool:
         return False
@@ -188,6 +192,12 @@ class LinuxPingCmdMaker(PosixPingCmdMaker):
             return []
 
         return ["-W", str(int(math.ceil(self.timeout.seconds)))]
+
+    def _get_interface_option(self) -> List[str]:
+        if not self.interface:
+            return []
+
+        return ["-I", self.interface]
 
 
 class WindowsPingCmdMaker(PingCmdMaker):

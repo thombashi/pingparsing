@@ -33,8 +33,20 @@ class Test_CmdMaker_make_cmd:
     @pytest.mark.parametrize(
         ["maker_class", "host", "ipv6", "timeout", "expected"],
         [
-            [LinuxPingCmdMaker, "localhost", False, "1sec", "ping -w 3 -W 1 localhost".split()],
-            [LinuxPingCmdMaker, "localhost", True, "1sec", "ping6 -w 3 -W 1 localhost".split()],
+            [
+                LinuxPingCmdMaker,
+                "localhost",
+                False,
+                "1sec",
+                "ping -I eth0 -w 3 -W 1 localhost".split(),
+            ],
+            [
+                LinuxPingCmdMaker,
+                "localhost",
+                True,
+                "1sec",
+                "ping6 -I eth0 -w 3 -W 1 localhost".split(),
+            ],
             [MacosPingCmdMaker, "localhost", False, "1sec", "ping -t 3 localhost".split()],
             [MacosPingCmdMaker, "localhost", True, "1sec", "ping6 -i 1 -c 3 localhost".split()],
             [
