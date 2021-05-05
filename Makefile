@@ -20,7 +20,7 @@ docs:
 
 .PHONY: idocs
 idocs:
-	@python3 -m pip install --upgrade .
+	@$(PYTHON) -m pip install -q --disable-pip-version-check --upgrade .
 	@make docs
 
 .PHONY: fmt
@@ -39,5 +39,5 @@ release:
 
 .PHONY: setup
 setup:
-	@python3 -m pip install --upgrade -e .[test] releasecmd tox
-	python3 -m pip check
+	@$(PYTHON) -m pip install -q --disable-pip-version-check --upgrade -e .[test] releasecmd tox
+	@$(PYTHON) -m pip check
