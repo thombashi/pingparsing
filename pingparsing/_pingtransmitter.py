@@ -66,7 +66,7 @@ class PingTransmitter:
         Specifies the Time to Live.
 
     .. py:attribute:: ping_option
-        :type: Union[str, Sequence]
+        :type: Union[str, Sequence[str]]
         :value: ""
 
         Additional ``ping`` command option.
