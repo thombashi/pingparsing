@@ -41,14 +41,15 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         self.ping_option = ping_option
 
     def make_cmd(self, destination: str) -> str:
-        command_items = self._get_initial_command()
-        command_items.extend(self._get_ping_command())
-
-        command_items.extend(self._get_deadline_option())
-        command_items.extend(self._get_timeout_option())
-        command_items.extend(self._get_count_option())
-        command_items.extend(self._get_packet_size_option())
-        command_items.extend(self._get_ttl_option())
+        command_items = (
+            self._get_initial_command()
+            + self._get_ping_command()
+            + self._get_deadline_option()
+            + self._get_timeout_option()
+            + self._get_count_option()
+            + self._get_packet_size_option()
+            + self._get_ttl_option()
+        )
 
         if self._timestamp:
             command_items.extend(self._get_timestamp_option())
