@@ -10,6 +10,7 @@ from typing import Optional, cast
 import humanreadable as hr
 import subprocrunner
 import typepy
+from subprocrunner.typing import Command
 from typepy import Integer, StrictLevel, String, TypeConversionError
 
 from ._cmd_maker import LinuxPingCmdMaker, MacosPingCmdMaker, WindowsPingCmdMaker
@@ -296,7 +297,7 @@ class PingTransmitter:
         if typepy.is_null_string(self.interface):
             raise ValueError("interface required to ping to IPv6 link local address")
 
-    def __make_ping_command(self) -> str:
+    def __make_ping_command(self) -> Command:
         from typing import Any  # noqa
 
         maker_class = None  # type: Any

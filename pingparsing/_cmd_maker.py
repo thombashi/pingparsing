@@ -1,9 +1,9 @@
 import abc
 import math
-import re
 from typing import List, Optional
 
 import humanreadable as hr
+from subprocrunner.typing import Command
 from typepy import Integer
 
 from ._typing import PingAddOpts
@@ -40,7 +40,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         self.auto_codepage = auto_codepage
         self.ping_option = ping_option
 
-    def make_cmd(self, destination: str) -> str:
+    def make_cmd(self, destination: str) -> Command:
         command_items = (
             self._get_initial_command()
             + self._get_ping_command()
@@ -55,13 +55,16 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
             command_items.extend(self._get_timestamp_option())
 
         if isinstance(self.ping_option, str):
-            command_items.append(self.ping_option)
+            command_items.extend(self.ping_option.strip().split())
         else:
             command_items.extend(self.ping_option)
 
         command_items.append(self._get_destination_host(destination))
 
-        return re.sub(r"[\s]{2,}", " ", " ".join(command_items))
+        if self._require_shell_command():
+            return " ".join(command_items)
+
+        return command_items
 
     def _get_initial_command(self) -> List[str]:
         return []
@@ -101,6 +104,9 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def _get_ttl_option(self) -> List[str]:
         raise NotImplementedError()
+
+    def _require_shell_command(self) -> bool:
+        return False
 
 
 class PosixPingCmdMaker(PingCmdMaker):
@@ -241,3 +247,6 @@ class WindowsPingCmdMaker(PingCmdMaker):
             return []
 
         return ["-i", str(self._ttl)]
+
+    def _require_shell_command(self) -> bool:
+        return self.auto_codepage
