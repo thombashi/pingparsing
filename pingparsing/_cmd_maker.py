@@ -49,7 +49,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         command_items.extend(self._get_ttl_option())
 
         if self._timestamp:
-            command_items.append(self._get_timestamp_option())
+            command_items.extend(self._get_timestamp_option())
 
         if self.ping_option:
             command_items.append(self.ping_option)
@@ -74,7 +74,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def _get_timestamp_option(self) -> str:
+    def _get_timestamp_option(self) -> List[str]:
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -111,8 +111,8 @@ class PosixPingCmdMaker(PingCmdMaker):
     def _get_quiet_option(self) -> str:
         return "-q"
 
-    def _get_timestamp_option(self) -> str:
-        return "-D -O"
+    def _get_timestamp_option(self) -> List[str]:
+        return ["-D", "-O"]
 
     def _get_count_option(self) -> List[str]:
         if self.count is None:
@@ -198,8 +198,8 @@ class WindowsPingCmdMaker(PingCmdMaker):
     def _get_quiet_option(self) -> str:
         return ""
 
-    def _get_timestamp_option(self) -> str:
-        return ""
+    def _get_timestamp_option(self) -> List[str]:
+        return []
 
     def _get_deadline_option(self) -> List[str]:
         if self.deadline is None:
