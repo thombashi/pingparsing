@@ -6,6 +6,8 @@ from typing import List, Optional
 import humanreadable as hr
 from typepy import Integer
 
+from ._typing import PingAddOpts
+
 
 DEFAULT_DEADLINE = 3
 
@@ -22,7 +24,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         is_ipv6: bool = False,
         timestamp: bool = False,
         auto_codepage: bool = False,
-        ping_option: Optional[str] = None,
+        ping_option: PingAddOpts = "",
     ):
         self.count = count
         if self.count is not None:
@@ -51,8 +53,10 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         if self._timestamp:
             command_items.extend(self._get_timestamp_option())
 
-        if self.ping_option:
+        if isinstance(self.ping_option, str):
             command_items.append(self.ping_option)
+        else:
+            command_items.extend(self.ping_option)
 
         command_items.append(self._get_destination_host(destination))
 

@@ -20,7 +20,7 @@ from .__version__ import __version__
 from ._logger import logger, set_logger
 from ._pingparsing import PingParsing
 from ._pingtransmitter import PingTransmitter
-from ._typing import TimeArg
+from ._typing import PingAddOpts, TimeArg
 
 
 try:
@@ -243,7 +243,7 @@ def parse_ping(
     is_parse_icmp_reply: bool,
     timestamp: str,
     timezone_name: str,
-    addopts: str,
+    addopts: PingAddOpts,
 ) -> Tuple[str, Any]:
     if os.path.isfile(dest_or_file):
         with open(dest_or_file) as f:
@@ -387,7 +387,7 @@ def main() -> int:
                             options.icmp_reply,
                             options.timestamp,
                             options.timezone,
-                            options.addopts,
+                            options.addopts if options.addopts is not None else [],
                         )
                     )
 

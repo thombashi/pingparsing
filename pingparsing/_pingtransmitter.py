@@ -14,7 +14,7 @@ from typepy import Integer, StrictLevel, String, TypeConversionError
 
 from ._cmd_maker import LinuxPingCmdMaker, MacosPingCmdMaker, WindowsPingCmdMaker
 from ._logger import logger
-from ._typing import TimeArg
+from ._typing import PingAddOpts, TimeArg
 
 
 DEFAULT_DEADLINE = 3
@@ -65,7 +65,7 @@ class PingTransmitter:
         Specifies the Time to Live.
 
     .. py:attribute:: ping_option
-        :type: str
+        :type: Union[str, Sequence]
         :value: ""
 
         Additional ``ping`` command option.
@@ -222,7 +222,7 @@ class PingTransmitter:
         self.count = None  # type: Optional[int]
         self.packet_size = None  # type: Optional[int]
         self.ttl = None  # type: Optional[int]
-        self.ping_option = ""
+        self.ping_option = []  # type: PingAddOpts
         self.is_quiet = False
         self.interface = None  # type: Optional[str]
         self.auto_codepage = True

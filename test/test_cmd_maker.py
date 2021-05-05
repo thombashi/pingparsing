@@ -107,10 +107,13 @@ class Test_CmdMaker_make_cmd:
     @pytest.mark.parametrize(
         ["maker_class", "host", "expected"],
         [
-            [LinuxPingCmdMaker, "localhost", "ping -c 1 -a localhost"],
-            [MacosPingCmdMaker, "localhost", "ping -c 1 -a localhost"],
-            [WindowsPingCmdMaker, "localhost", "ping -n 1 -a localhost"],
+            [LinuxPingCmdMaker, "localhost", "ping -c 1 -a -b localhost"],
+            [MacosPingCmdMaker, "localhost", "ping -c 1 -a -b localhost"],
+            [WindowsPingCmdMaker, "localhost", "ping -n 1 -a -b localhost"],
         ],
     )
     def test_normal_ping_option(self, maker_class, host, expected):
-        assert maker_class(ping_option="-a", count=1).make_cmd(destination=host) == expected
+        cmd_0 = maker_class(ping_option="-a -b", count=1).make_cmd(destination=host)
+        cmd_1 = maker_class(ping_option=["-a", "-b"], count=1).make_cmd(destination=host)
+        assert cmd_0 == expected
+        assert cmd_1 == expected
