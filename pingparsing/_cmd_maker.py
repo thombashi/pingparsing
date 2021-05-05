@@ -46,11 +46,8 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
             ]
         )
 
-        if self._packet_size:
-            command_items.extend(self._get_packet_size_option())
-
-        if self._ttl:
-            command_items.extend(self._get_ttl_option())
+        command_items.extend(self._get_packet_size_option())
+        command_items.extend(self._get_ttl_option())
 
         if self._timestamp:
             command_items.append(self._get_timestamp_option())
@@ -127,11 +124,17 @@ class PosixPingCmdMaker(PingCmdMaker):
         return "-c {:d}".format(count)
 
     def _get_packet_size_option(self) -> List[str]:
+        if self._packet_size is None:
+            return []
+
         return ["-s", str(self._packet_size)]
 
 
 class MacosPingCmdMaker(PosixPingCmdMaker):
     def _get_ttl_option(self) -> List[str]:
+        if self._ttl is None:
+            return []
+
         return ["-T", str(self._ttl)]
 
     def _get_deadline_option(self) -> str:
@@ -156,6 +159,9 @@ class MacosPingCmdMaker(PosixPingCmdMaker):
 
 class LinuxPingCmdMaker(PosixPingCmdMaker):
     def _get_ttl_option(self) -> List[str]:
+        if self._ttl is None:
+            return []
+
         return ["-t", str(self._ttl)]
 
     def _get_deadline_option(self) -> str:
@@ -225,7 +231,13 @@ class WindowsPingCmdMaker(PingCmdMaker):
         return "-n {:d}".format(count)
 
     def _get_packet_size_option(self) -> List[str]:
+        if self._packet_size is None:
+            return []
+
         return ["-l", str(self._packet_size)]
 
     def _get_ttl_option(self) -> List[str]:
+        if self._ttl is None:
+            return []
+
         return ["-i", str(self._ttl)]
