@@ -1,3 +1,6 @@
+PYTHON := python3
+
+
 .PHONY: build
 build:
 	@make clean
