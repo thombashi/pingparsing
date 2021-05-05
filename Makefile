@@ -36,7 +36,7 @@ readme:
 
 .PHONY: release
 release:
-	@python setup.py release --sign
+	@$(PYTHON) setup.py release --sign --search-dir pingparsing
 	@make clean
 
 .PHONY: setup
