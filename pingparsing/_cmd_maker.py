@@ -40,11 +40,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
 
     def make_cmd(self, destination: str) -> str:
         command_items = self._get_initial_options()
-        command_items.extend(
-            [
-                self._get_ping_command(),
-            ]
-        )
+        command_items.extend(self._get_ping_command())
 
         command_items.extend(self._get_deadline_option())
         command_items.extend(self._get_timeout_option())
@@ -70,7 +66,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def _get_ping_command(self) -> str:
+    def _get_ping_command(self) -> List[str]:
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -106,11 +102,11 @@ class PosixPingCmdMaker(PingCmdMaker):
     def _get_destination_host(self, destination: str) -> str:
         return destination
 
-    def _get_ping_command(self) -> str:
+    def _get_ping_command(self) -> List[str]:
         if self._is_ipv6:
-            return "ping6"
+            return ["ping6"]
 
-        return "ping"
+        return ["ping"]
 
     def _get_quiet_option(self) -> str:
         return "-q"
@@ -196,8 +192,8 @@ class WindowsPingCmdMaker(PingCmdMaker):
 
         return destination
 
-    def _get_ping_command(self) -> str:
-        return "ping"
+    def _get_ping_command(self) -> List[str]:
+        return ["ping"]
 
     def _get_quiet_option(self) -> str:
         return ""
