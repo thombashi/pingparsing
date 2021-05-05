@@ -39,7 +39,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         self.ping_option = ping_option
 
     def make_cmd(self, destination: str) -> str:
-        command_items = self._get_initial_options()
+        command_items = self._get_initial_command()
         command_items.extend(self._get_ping_command())
 
         command_items.extend(self._get_deadline_option())
@@ -58,7 +58,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
 
         return re.sub(r"[\s]{2,}", " ", " ".join(command_items))
 
-    def _get_initial_options(self) -> List[str]:
+    def _get_initial_command(self) -> List[str]:
         return []
 
     @abc.abstractmethod
@@ -180,7 +180,7 @@ class LinuxPingCmdMaker(PosixPingCmdMaker):
 
 
 class WindowsPingCmdMaker(PingCmdMaker):
-    def _get_initial_options(self) -> List[str]:
+    def _get_initial_command(self) -> List[str]:
         if self.auto_codepage:
             return ["chcp 437 &"]
 
