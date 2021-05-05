@@ -25,6 +25,9 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         ping_option: Optional[str] = None,
     ):
         self.count = count
+        if self.count is not None:
+            self.count = Integer(self.count).convert()
+
         self.deadline = deadline
         self.timeout = timeout
         self._packet_size = packet_size
@@ -42,10 +45,10 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
                 self._get_ping_command(),
                 self._get_deadline_option(),
                 self._get_timeout_option(),
-                self._get_count_option(),
             ]
         )
 
+        command_items.extend(self._get_count_option())
         command_items.extend(self._get_packet_size_option())
         command_items.extend(self._get_ttl_option())
 
@@ -87,7 +90,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def _get_count_option(self) -> str:
+    def _get_count_option(self) -> List[str]:
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -115,13 +118,11 @@ class PosixPingCmdMaker(PingCmdMaker):
     def _get_timestamp_option(self) -> str:
         return "-D -O"
 
-    def _get_count_option(self) -> str:
-        try:
-            count = Integer(self.count).convert()
-        except TypeConversionError:
-            return ""
+    def _get_count_option(self) -> List[str]:
+        if self.count is None:
+            return []
 
-        return "-c {:d}".format(count)
+        return ["-c", str(self.count)]
 
     def _get_packet_size_option(self) -> List[str]:
         if self._packet_size is None:
@@ -222,13 +223,11 @@ class WindowsPingCmdMaker(PingCmdMaker):
 
         return "-w {:d}".format(int(math.ceil(self.timeout.milliseconds)))
 
-    def _get_count_option(self) -> str:
-        try:
-            count = Integer(self.count).convert()
-        except TypeConversionError:
-            return ""
+    def _get_count_option(self) -> List[str]:
+        if self.count is None:
+            return []
 
-        return "-n {:d}".format(count)
+        return ["-n", str(self.count)]
 
     def _get_packet_size_option(self) -> List[str]:
         if self._packet_size is None:
