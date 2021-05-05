@@ -44,10 +44,10 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
             [
                 self._get_ping_command(),
                 self._get_deadline_option(),
-                self._get_timeout_option(),
             ]
         )
 
+        command_items.extend(self._get_timeout_option())
         command_items.extend(self._get_count_option())
         command_items.extend(self._get_packet_size_option())
         command_items.extend(self._get_ttl_option())
@@ -86,7 +86,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def _get_timeout_option(self) -> str:
+    def _get_timeout_option(self) -> List[str]:
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -154,8 +154,8 @@ class MacosPingCmdMaker(PosixPingCmdMaker):
 
         return "-t {:d}".format(deadline)
 
-    def _get_timeout_option(self) -> str:
-        return ""
+    def _get_timeout_option(self) -> List[str]:
+        return []
 
 
 class LinuxPingCmdMaker(PosixPingCmdMaker):
@@ -176,11 +176,11 @@ class LinuxPingCmdMaker(PosixPingCmdMaker):
 
         return "-w {:d}".format(deadline)
 
-    def _get_timeout_option(self) -> str:
+    def _get_timeout_option(self) -> List[str]:
         if self.timeout is None:
-            return ""
+            return []
 
-        return "-W {:d}".format(int(math.ceil(self.timeout.seconds)))
+        return ["-W", str(int(math.ceil(self.timeout.seconds)))]
 
 
 class WindowsPingCmdMaker(PingCmdMaker):
@@ -217,11 +217,11 @@ class WindowsPingCmdMaker(PingCmdMaker):
         # ping for Windows does not have the option with equals to the deadline option.
         return "-n {:d}".format(deadline)
 
-    def _get_timeout_option(self) -> str:
+    def _get_timeout_option(self) -> List[str]:
         if self.timeout is None:
-            return ""
+            return []
 
-        return "-w {:d}".format(int(math.ceil(self.timeout.milliseconds)))
+        return ["-w", str(int(math.ceil(self.timeout.milliseconds)))]
 
     def _get_count_option(self) -> List[str]:
         if self.count is None:
