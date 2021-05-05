@@ -4,7 +4,7 @@ import re
 from typing import List, Optional
 
 import humanreadable as hr
-from typepy import Integer, TypeConversionError
+from typepy import Integer
 
 
 DEFAULT_DEADLINE = 3
@@ -43,10 +43,10 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         command_items.extend(
             [
                 self._get_ping_command(),
-                self._get_deadline_option(),
             ]
         )
 
+        command_items.extend(self._get_deadline_option())
         command_items.extend(self._get_timeout_option())
         command_items.extend(self._get_count_option())
         command_items.extend(self._get_packet_size_option())
@@ -82,7 +82,7 @@ class PingCmdMaker(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def _get_deadline_option(self) -> str:
+    def _get_deadline_option(self) -> List[str]:
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -138,10 +138,10 @@ class MacosPingCmdMaker(PosixPingCmdMaker):
 
         return ["-T", str(self._ttl)]
 
-    def _get_deadline_option(self) -> str:
+    def _get_deadline_option(self) -> List[str]:
         if self.deadline is None:
             if self.count:
-                return ""
+                return []
 
             deadline = DEFAULT_DEADLINE
         else:
@@ -150,9 +150,9 @@ class MacosPingCmdMaker(PosixPingCmdMaker):
         if self._is_ipv6:
             # there is no timeout option for macOS ping6.
             # so, using -i and -c option to simulate timeout.
-            return "-i 1 -c {:d}".format(deadline)
+            return ["-i", "1", "-c", str(deadline)]
 
-        return "-t {:d}".format(deadline)
+        return ["-t", str(deadline)]
 
     def _get_timeout_option(self) -> List[str]:
         return []
@@ -165,16 +165,16 @@ class LinuxPingCmdMaker(PosixPingCmdMaker):
 
         return ["-t", str(self._ttl)]
 
-    def _get_deadline_option(self) -> str:
+    def _get_deadline_option(self) -> List[str]:
         if self.deadline is None:
             if self.count:
-                return ""
+                return []
 
             deadline = DEFAULT_DEADLINE
         else:
             deadline = int(math.ceil(self.deadline.seconds))
 
-        return "-w {:d}".format(deadline)
+        return ["-w", str(deadline)]
 
     def _get_timeout_option(self) -> List[str]:
         if self.timeout is None:
@@ -205,17 +205,17 @@ class WindowsPingCmdMaker(PingCmdMaker):
     def _get_timestamp_option(self) -> str:
         return ""
 
-    def _get_deadline_option(self) -> str:
+    def _get_deadline_option(self) -> List[str]:
         if self.deadline is None:
             if self.count:
-                return ""
+                return []
 
             deadline = DEFAULT_DEADLINE
         else:
             deadline = int(math.ceil(self.deadline.seconds))
 
         # ping for Windows does not have the option with equals to the deadline option.
-        return "-n {:d}".format(deadline)
+        return ["-n", str(deadline)]
 
     def _get_timeout_option(self) -> List[str]:
         if self.timeout is None:
