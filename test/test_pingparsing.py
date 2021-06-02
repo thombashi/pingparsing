@@ -585,6 +585,62 @@ IPV6_LINUX = PingTestData(
     ],
 )
 
+LINUX_PIPE = PingTestData(
+    dedent(
+        r"""\
+        PING 91.221.122.179 (91.221.122.179) 64(92) bytes of data.
+        [1622145167.999326] no answer yet for icmp_seq=1
+        [1622145168.201746] no answer yet for icmp_seq=2
+        [1622145168.405761] no answer yet for icmp_seq=3
+        [1622145168.609750] no answer yet for icmp_seq=4
+        [1622145170.826836] From 91.221.122.179 icmp_seq=1 Destination Host Unreachable
+        [1622145170.826888] From 91.221.122.179 icmp_seq=2 Destination Host Unreachable
+        [1622145170.826896] From 91.221.122.179 icmp_seq=3 Destination Host Unreachable
+        [1622145170.826901] From 91.221.122.179 icmp_seq=4 Destination Host Unreachable
+        [1622145170.826907] From 91.221.122.179 icmp_seq=5 Destination Host Unreachable
+
+        --- 91.221.122.179 ping statistics ---
+        5 packets transmitted, 0 received, +5 errors, 100% packet loss, time 811ms
+        pipe 5
+        """
+    ),
+    {
+        "destination": "91.221.122.179",
+        "packet_transmit": 5,
+        "packet_receive": 0,
+        "packet_loss_count": 5,
+        "packet_loss_rate": 100.0,
+        "rtt_min": None,
+        "rtt_avg": None,
+        "rtt_max": None,
+        "rtt_mdev": None,
+        "packet_duplicate_count": 0,
+        "packet_duplicate_rate": None,
+    },
+    [
+        {
+            "timestamp": datetime(2021, 5, 27, 19, 52, 47, 999326, tzinfo=pytz.UTC),
+            "icmp_seq": 1,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2021, 5, 27, 19, 52, 48, 201746, tzinfo=pytz.UTC),
+            "icmp_seq": 2,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2021, 5, 27, 19, 52, 48, 405761, tzinfo=pytz.UTC),
+            "icmp_seq": 3,
+            "duplicate": False,
+        },
+        {
+            "timestamp": datetime(2021, 5, 27, 19, 52, 48, 609750, tzinfo=pytz.UTC),
+            "icmp_seq": 4,
+            "duplicate": False,
+        },
+    ],
+)
+
 WINDOWS10_LOSS = PingTestData(
     dedent(
         """\
@@ -693,6 +749,7 @@ class Test_PingParsing_parse:
             [WINDOWS_UNREACHABLE_1, "Windows"],
             [WINDOWS_UNREACHABLE_2, "Windows"],
             [IPV6_LINUX, "Linux"],
+            [LINUX_PIPE, "Linux"],
         ],
     )
     def test_normal_text(self, ping_parser, test_data, parser_name):

@@ -276,7 +276,19 @@ class LinuxPingParser(PingParser):
             + pp.Word(pp.nums + ".")
             + pp.Word(pp.nums + "ms")
         )
-        parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
+        try:
+            parse_list = rtt_pattern.parseString(_to_unicode(rtt_line))
+        except pp.ParseException:
+            if not re.search(r"\s*pipe \d+", rtt_line):
+                raise ValueError
+
+            return PingStats(
+                destination=destination,
+                packet_transmit=packet_transmit,
+                packet_receive=packet_receive,
+                duplicates=duplicates,
+                icmp_replies=icmp_replies,
+            )
 
         return PingStats(
             destination=destination,
