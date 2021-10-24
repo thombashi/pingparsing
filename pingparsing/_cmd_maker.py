@@ -209,7 +209,7 @@ class WindowsPingCmdMaker(PingCmdMaker):
 
     def _get_destination_host(self, destination: str) -> str:
         if self._is_ipv6:
-            return "{:s}%{}".format(destination, self.interface)
+            return f"{destination:s}%{self.interface}"
 
         return destination
 

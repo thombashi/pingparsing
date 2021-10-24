@@ -14,10 +14,10 @@ from .data import DEBIAN_SUCCESS_0, UBUNTU_SUCCESS_1, UBUNTU_SUCCESS_2, WINDOWS7
 
 def print_result(stdout, stderr, expected=None):
     if expected:
-        print("[expected]\n{}".format(expected))
+        print(f"[expected]\n{expected}")
 
-    print("[stdout]\n{}".format(stdout))
-    print("[stderr]\n{}".format(stderr))
+    print(f"[stdout]\n{stdout}")
+    print(f"[stderr]\n{stderr}")
 
 
 @pytest.mark.xfail(run=False)

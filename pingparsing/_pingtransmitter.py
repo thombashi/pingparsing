@@ -156,7 +156,7 @@ class PingTransmitter:
     @timeout.setter
     def timeout(self, value: TimeArg) -> None:
         if value is None:
-            self.__timeout = value  # type: Optional[hr.Time]
+            self.__timeout: Optional[hr.Time] = value
             return
 
         if isinstance(value, hr.Time):
@@ -220,12 +220,12 @@ class PingTransmitter:
 
     def __init__(self) -> None:
         self.__destination = ""
-        self.count = None  # type: Optional[int]
-        self.packet_size = None  # type: Optional[int]
-        self.ttl = None  # type: Optional[int]
-        self.ping_option = []  # type: PingAddOpts
+        self.count: Optional[int] = None
+        self.packet_size: Optional[int] = None
+        self.ttl: Optional[int] = None
+        self.ping_option: PingAddOpts = []
         self.is_quiet = False
-        self.interface = None  # type: Optional[str]
+        self.interface: Optional[str] = None
         self.auto_codepage = True
 
         self.timeout = None
@@ -267,7 +267,7 @@ class PingTransmitter:
             logger.debug(e)
             return False
 
-        logger.debug("IP address: version={}, address={}".format(network.version, self.destination))
+        logger.debug(f"IP address: version={network.version}, address={self.destination}")
 
         return network.version == 6
 
@@ -282,7 +282,7 @@ class PingTransmitter:
         try:
             count = Integer(self.count).convert()
         except TypeConversionError as e:
-            raise ValueError("count must be an integer: {}".format(e))
+            raise ValueError(f"count must be an integer: {e}")
 
         if count <= 0:
             raise ValueError("count must be greater than zero")
@@ -300,7 +300,7 @@ class PingTransmitter:
     def __make_ping_command(self) -> Command:
         from typing import Any  # noqa
 
-        maker_class = None  # type: Any
+        maker_class: Any = None
 
         if self.__is_linux():
             maker_class = LinuxPingCmdMaker
@@ -309,7 +309,7 @@ class PingTransmitter:
         elif self.__is_windows():
             maker_class = WindowsPingCmdMaker
         else:
-            raise RuntimeError("not supported platform: {}".format(platform.system()))
+            raise RuntimeError(f"not supported platform: {platform.system()}")
 
         return maker_class(
             count=self.count,

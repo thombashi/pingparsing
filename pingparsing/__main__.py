@@ -60,9 +60,7 @@ def parse_option() -> argparse.Namespace:
             """
         ),
     )
-    parser.add_argument(
-        "-V", "--version", action="version", version="%(prog)s {}".format(__version__)
-    )
+    parser.add_argument("-V", "--version", action="version", version=f"%(prog)s {__version__}")
 
     use_stdin, found_stdin_specifier = is_use_stdin()
     if not use_stdin or found_stdin_specifier:
@@ -321,7 +319,7 @@ def _serialize_epoch(obj):
     if isinstance(obj, TIMESTAMP_TYPES):
         return obj
 
-    raise TypeError("not supported type to convert: {}".format(type(obj)))
+    raise TypeError(f"not supported type to convert: {type(obj)}")
 
 
 def _serialize_datetime(obj):
@@ -331,7 +329,7 @@ def _serialize_datetime(obj):
     if isinstance(obj, TIMESTAMP_TYPES):
         return obj
 
-    raise TypeError("not supported type to convert: {}".format(type(obj)))
+    raise TypeError(f"not supported type to convert: {type(obj)}")
 
 
 timestamp_serialize_map = {

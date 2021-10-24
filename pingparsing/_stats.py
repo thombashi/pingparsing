@@ -211,7 +211,7 @@ class PingStats:
             }
         """
 
-        d = {
+        d: Dict[str, Union[str, int, float, IcmpReplies, None]] = {
             "destination": self.destination,
             "packet_transmit": self.packet_transmit,
             "packet_receive": self.packet_receive,
@@ -223,7 +223,7 @@ class PingStats:
             "rtt_mdev": self.rtt_mdev,
             "packet_duplicate_count": self.packet_duplicate_count,
             "packet_duplicate_rate": self.packet_duplicate_rate,
-        }  # type: Dict[str, Union[str, int, float, IcmpReplies, None]]
+        }
         if include_icmp_replies:
             d["icmp_replies"] = self.icmp_replies
 

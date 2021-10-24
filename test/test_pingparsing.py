@@ -755,9 +755,9 @@ class Test_PingParsing_parse:
     def test_normal_text(self, ping_parser, test_data, parser_name):
         stats = ping_parser.parse(test_data.value)
 
-        print("[input text]\n{}\n".format(test_data.value))
-        print("[expected]\n{}\n".format(test_data.expected))
-        print("[actual]\n{}\n".format(stats.as_dict()))
+        print(f"[input text]\n{test_data.value}\n")
+        print(f"[expected]\n{test_data.expected}\n")
+        print(f"[actual]\n{stats.as_dict()}\n")
         for icmp_reply in stats.icmp_replies:
             print(icmp_reply)
 
@@ -772,9 +772,9 @@ class Test_PingParsing_parse:
     def test_normal_timestamp(self, ping_parser, test_data, parser_name):
         stats = ping_parser.parse(test_data.value)
 
-        print("[input text]\n{}\n".format(test_data.value))
-        print("[expected]\n{}\n".format(test_data.expected))
-        print("[actual]\n{}\n".format(stats.as_dict()))
+        print(f"[input text]\n{test_data.value}\n")
+        print(f"[expected]\n{test_data.expected}\n")
+        print(f"[actual]\n{stats.as_dict()}\n")
         for icmp_reply in stats.icmp_replies:
             print(icmp_reply)
 

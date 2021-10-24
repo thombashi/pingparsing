@@ -9,22 +9,22 @@ import json
 
 def print_ping_parser(ping_parser):
     print("# properties ---")
-    print("packet_transmit: {:d} packets".format(ping_parser.packet_transmit))
-    print("packet_receive: {:d} packets".format(ping_parser.packet_receive))
-    print("packet_loss_rate: {:.1f} %".format(ping_parser.packet_loss_rate))
-    print("packet_loss_count: {:d} packets".format(ping_parser.packet_loss_count))
+    print(f"packet_transmit: {ping_parser.packet_transmit:d} packets")
+    print(f"packet_receive: {ping_parser.packet_receive:d} packets")
+    print(f"packet_loss_rate: {ping_parser.packet_loss_rate:.1f} %")
+    print(f"packet_loss_count: {ping_parser.packet_loss_count:d} packets")
 
     if ping_parser.packet_duplicate_rate:
-        packet_duplicate_rate = "{:.1f} %".format(ping_parser.packet_duplicate_rate)
+        packet_duplicate_rate = f"{ping_parser.packet_duplicate_rate:.1f} %"
     else:
         packet_duplicate_rate = "NaN"
-    print("packet_duplicate_rate: {:s}".format(packet_duplicate_rate))
+    print(f"packet_duplicate_rate: {packet_duplicate_rate:s}")
 
     if ping_parser.packet_duplicate_count:
-        packet_duplicate_count = "{:d} packets".format(ping_parser.packet_duplicate_count)
+        packet_duplicate_count = f"{ping_parser.packet_duplicate_count:d} packets"
     else:
         packet_duplicate_count = "NaN"
-    print("packet_duplicate_count: {:s}".format(packet_duplicate_count))
+    print(f"packet_duplicate_count: {packet_duplicate_count:s}")
 
     print("rtt_min:", ping_parser.rtt_min)
     print("rtt_avg:", ping_parser.rtt_avg)

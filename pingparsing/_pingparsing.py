@@ -33,7 +33,7 @@ class PingParsing:
     """
 
     def __init__(self, timezone: Optional[tzinfo] = None) -> None:
-        self.__parser = NullPingParser()  # type: PingParser
+        self.__parser: PingParser = NullPingParser()
         self.__timezone = timezone
 
     @property
@@ -61,7 +61,7 @@ class PingParsing:
         else:
             ping_text = ping_message
 
-        logger.debug("parsing ping result: {}".format(ping_text))
+        logger.debug(f"parsing ping result: {ping_text}")
 
         self.__parser = NullPingParser()
 

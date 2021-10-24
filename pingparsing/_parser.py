@@ -32,14 +32,14 @@ class IcmpReplyKey:
 
 class PingParser(PingParserInterface):
 
-    _BYTES_PATTERN = r"\s*(?P<{key}>[0-9]+) bytes".format(key=IcmpReplyKey.BYTES)
+    _BYTES_PATTERN = fr"\s*(?P<{IcmpReplyKey.BYTES}>[0-9]+) bytes"
     _DEST_PATTERN = r"(?P<{key}>[a-zA-Z0-9:\-\.\(\)% ]+)".format(
         key=IcmpReplyKey.DESTINATION
     )  # host or ipv4/ipv6 addr
     _IPADDR_PATTERN = r"(\d{1,3}\.){3}\d{1,3}"
-    _ICMP_SEQ_PATTERN = r"\s*icmp_seq=(?P<{key}>\d+)".format(key=IcmpReplyKey.SEQUENCE_NO)
-    _TTL_PATTERN = r"\s*ttl=(?P<{key}>\d+)".format(key=IcmpReplyKey.TTL)
-    _TIME_PATTERN = r"\s*time[=<](?P<{key}>[0-9\.]+)".format(key=IcmpReplyKey.TIME)
+    _ICMP_SEQ_PATTERN = fr"\s*icmp_seq=(?P<{IcmpReplyKey.SEQUENCE_NO}>\d+)"
+    _TTL_PATTERN = fr"\s*ttl=(?P<{IcmpReplyKey.TTL}>\d+)"
+    _TIME_PATTERN = fr"\s*time[=<](?P<{IcmpReplyKey.TIME}>[0-9\.]+)"
 
     def __init__(self, timezone: Optional[tzinfo] = None) -> None:
         self.__timezone = timezone
@@ -82,7 +82,7 @@ class PingParser(PingParserInterface):
                 continue
 
             results = match.groupdict()
-            reply = {}  # type: Dict[str, Union[str, bool, float, int, datetime]]
+            reply: Dict[str, Union[str, bool, float, int, datetime]] = {}
 
             if IcmpReplyKey.DESTINATION in results:
                 reply[IcmpReplyKey.DESTINATION] = results[IcmpReplyKey.DESTINATION]
@@ -118,7 +118,7 @@ class PingParser(PingParserInterface):
         return icmp_reply_list
 
     def _preprocess_parse_stats(self, lines: Sequence[str]) -> Tuple[str, str, Sequence[str]]:
-        logger.debug("parsing as {:s} ping result format".format(self._parser_name))
+        logger.debug(f"parsing as {self._parser_name:s} ping result format")
 
         stats_headline_idx = self.__find_stats_headline_idx(
             lines, re.compile(self._stats_headline_pattern)
@@ -202,8 +202,8 @@ class LinuxPingParser(PingParser):
     def _parser_name(self) -> str:
         return "Linux"
 
-    _TIMESTAMP_PATTERN = r"(?P<{key}>\[[0-9\.]+\])".format(key=IcmpReplyKey.TIMESTAMP)
-    _NO_ANS_TIMESTAMP_PATTERN = r"(?P<{key}>\[[0-9\.]+\])".format(key=IcmpReplyKey.TIMESTAMP_NO_ANS)
+    _TIMESTAMP_PATTERN = fr"(?P<{IcmpReplyKey.TIMESTAMP}>\[[0-9\.]+\])"
+    _NO_ANS_TIMESTAMP_PATTERN = fr"(?P<{IcmpReplyKey.TIMESTAMP_NO_ANS}>\[[0-9\.]+\])"
 
     @property
     def _icmp_no_ans_pattern(self) -> str:
@@ -225,7 +225,7 @@ class LinuxPingParser(PingParser):
 
     @property
     def _stats_headline_pattern(self) -> str:
-        return r"--- {} ping statistics ---".format(self._DEST_PATTERN)
+        return fr"--- {self._DEST_PATTERN} ping statistics ---"
 
     @property
     def _is_support_packet_duplicate(self) -> bool:
@@ -313,7 +313,7 @@ class WindowsPingParser(PingParser):
         return (
             " from "
             + self._DEST_PATTERN
-            + r":\s*bytes=(?P<{key}>[0-9]+)".format(key=IcmpReplyKey.BYTES)
+            + fr":\s*bytes=(?P<{IcmpReplyKey.BYTES}>[0-9]+)"
             + self._TIME_PATTERN
             + "ms"
             + self._TTL_PATTERN
@@ -321,7 +321,7 @@ class WindowsPingParser(PingParser):
 
     @property
     def _stats_headline_pattern(self) -> str:
-        return r"^Ping statistics for {}".format(self._DEST_PATTERN)
+        return fr"^Ping statistics for {self._DEST_PATTERN}"
 
     @property
     def _is_support_packet_duplicate(self) -> bool:
@@ -402,7 +402,7 @@ class MacOsPingParser(PingParser):
 
     @property
     def _stats_headline_pattern(self) -> str:
-        return r"--- {} ping statistics ---".format(self._DEST_PATTERN)
+        return fr"--- {self._DEST_PATTERN} ping statistics ---"
 
     @property
     def _is_support_packet_duplicate(self) -> bool:
@@ -480,7 +480,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             + r"\s+from "
             + self._DEST_PATTERN
             + ": "
-            + r"seq=(?P<{key}>\d+) ".format(key=IcmpReplyKey.SEQUENCE_NO)
+            + fr"seq=(?P<{IcmpReplyKey.SEQUENCE_NO}>\d+) "
             + self._TTL_PATTERN
             + self._TIME_PATTERN
         )
