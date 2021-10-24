@@ -61,7 +61,7 @@ setuptools.setup(
         "Source": REPOSITORY_URL,
         "Tracker": "{:s}/issues".format(REPOSITORY_URL),
     },
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     install_requires=install_requires,
     extras_require={"test": tests_requires, "cli": CLI_OPT_REQUIRES},
     classifiers=[
@@ -76,7 +76,6 @@ setuptools.setup(
         "Operating System :: POSIX",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
