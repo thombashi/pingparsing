@@ -22,9 +22,9 @@ Summary
     :target: https://github.com/thombashi/pingparsing/actions?query=workflow%3ATests
     :alt: Linux/macOS/Windows CI status
 
-.. image:: https://img.shields.io/github/stars/thombashi/pingparsing.svg?style=social&label=Star
-    :target: https://github.com/thombashi/pingparsing
-    :alt: GitHub stars
+.. image:: https://github.com/thombashi/pingparsing/actions/workflows/codeql-analysis.yml/badge.svg
+    :target: https://github.com/thombashi/pingparsing/actions/workflows/codeql-analysis.yml
+    :alt: CodeQL
 
 CLI Usage
 ====================
@@ -485,7 +485,7 @@ Installation
 
 Dependencies
 ============
-- Python 3.5+
+- Python 3.6+
 - `Python package dependencies (automatically installed) <https://github.com/thombashi/pingparsing/network/dependencies>`__
 
 Optional Dependencies
