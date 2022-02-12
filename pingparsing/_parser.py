@@ -32,14 +32,14 @@ class IcmpReplyKey:
 
 class PingParser(PingParserInterface):
 
-    _BYTES_PATTERN = fr"\s*(?P<{IcmpReplyKey.BYTES}>[0-9]+) bytes"
+    _BYTES_PATTERN = rf"\s*(?P<{IcmpReplyKey.BYTES}>[0-9]+) bytes"
     _DEST_PATTERN = r"(?P<{key}>[a-zA-Z0-9:\-\.\(\)% ]+)".format(
         key=IcmpReplyKey.DESTINATION
     )  # host or ipv4/ipv6 addr
     _IPADDR_PATTERN = r"(\d{1,3}\.){3}\d{1,3}"
-    _ICMP_SEQ_PATTERN = fr"\s*icmp_seq=(?P<{IcmpReplyKey.SEQUENCE_NO}>\d+)"
-    _TTL_PATTERN = fr"\s*ttl=(?P<{IcmpReplyKey.TTL}>\d+)"
-    _TIME_PATTERN = fr"\s*time[=<](?P<{IcmpReplyKey.TIME}>[0-9\.]+)"
+    _ICMP_SEQ_PATTERN = rf"\s*icmp_seq=(?P<{IcmpReplyKey.SEQUENCE_NO}>\d+)"
+    _TTL_PATTERN = rf"\s*ttl=(?P<{IcmpReplyKey.TTL}>\d+)"
+    _TIME_PATTERN = rf"\s*time[=<](?P<{IcmpReplyKey.TIME}>[0-9\.]+)"
 
     def __init__(self, timezone: Optional[tzinfo] = None) -> None:
         self.__timezone = timezone
@@ -202,8 +202,8 @@ class LinuxPingParser(PingParser):
     def _parser_name(self) -> str:
         return "Linux"
 
-    _TIMESTAMP_PATTERN = fr"(?P<{IcmpReplyKey.TIMESTAMP}>\[[0-9\.]+\])"
-    _NO_ANS_TIMESTAMP_PATTERN = fr"(?P<{IcmpReplyKey.TIMESTAMP_NO_ANS}>\[[0-9\.]+\])"
+    _TIMESTAMP_PATTERN = rf"(?P<{IcmpReplyKey.TIMESTAMP}>\[[0-9\.]+\])"
+    _NO_ANS_TIMESTAMP_PATTERN = rf"(?P<{IcmpReplyKey.TIMESTAMP_NO_ANS}>\[[0-9\.]+\])"
 
     @property
     def _icmp_no_ans_pattern(self) -> str:
@@ -225,7 +225,7 @@ class LinuxPingParser(PingParser):
 
     @property
     def _stats_headline_pattern(self) -> str:
-        return fr"--- {self._DEST_PATTERN} ping statistics ---"
+        return rf"--- {self._DEST_PATTERN} ping statistics ---"
 
     @property
     def _is_support_packet_duplicate(self) -> bool:
@@ -313,7 +313,7 @@ class WindowsPingParser(PingParser):
         return (
             " from "
             + self._DEST_PATTERN
-            + fr":\s*bytes=(?P<{IcmpReplyKey.BYTES}>[0-9]+)"
+            + rf":\s*bytes=(?P<{IcmpReplyKey.BYTES}>[0-9]+)"
             + self._TIME_PATTERN
             + "ms"
             + self._TTL_PATTERN
@@ -321,7 +321,7 @@ class WindowsPingParser(PingParser):
 
     @property
     def _stats_headline_pattern(self) -> str:
-        return fr"^Ping statistics for {self._DEST_PATTERN}"
+        return rf"^Ping statistics for {self._DEST_PATTERN}"
 
     @property
     def _is_support_packet_duplicate(self) -> bool:
@@ -402,7 +402,7 @@ class MacOsPingParser(PingParser):
 
     @property
     def _stats_headline_pattern(self) -> str:
-        return fr"--- {self._DEST_PATTERN} ping statistics ---"
+        return rf"--- {self._DEST_PATTERN} ping statistics ---"
 
     @property
     def _is_support_packet_duplicate(self) -> bool:
@@ -480,7 +480,7 @@ class AlpineLinuxPingParser(LinuxPingParser):
             + r"\s+from "
             + self._DEST_PATTERN
             + ": "
-            + fr"seq=(?P<{IcmpReplyKey.SEQUENCE_NO}>\d+) "
+            + rf"seq=(?P<{IcmpReplyKey.SEQUENCE_NO}>\d+) "
             + self._TTL_PATTERN
             + self._TIME_PATTERN
         )
