@@ -60,7 +60,7 @@ jobs:
       - name: Install dependencies
         run: make setup-ci
 
-      - name: Run tox
+      - name: Run tests
         run: tox -e cov -- --discord-verbose=0
         env:
           PYTEST_DISCORD_WEBHOOK: ${{ secrets.PYTEST_DISCORD_WEBHOOK }}
