@@ -28,7 +28,7 @@ Summary
 
 CLI Usage
 ====================
-A CLI command (``pingparsing`` command) included in the packaged. The command could do the following:
+A CLI command (``pingparsing`` command) is included in the package. The command could do the following:
 
 - Execute ``ping`` and parse the result
 - Parse ping results from:
@@ -40,7 +40,7 @@ Execute ping and parse the result
 If you specify destination(s) to the ``pingparsing`` command as positional arguments,
 the command executes ``ping`` for each destination(s) and parses the result.
 ``ping`` will execute in parallel for multiple destinations.
-The parsed result outputted with JSON format.
+The parsed result is outputted in JSON format.
 
 .. code-block:: console
 
@@ -293,16 +293,16 @@ CLI help
                        destination_or_file [destination_or_file ...]
 
     positional arguments:
-      destination_or_file   Destinations to send ping, or files to parse. '-' for
-                            parse the standard input.
+      destination_or_file   Destinations to send ping or files to parse. '-' for
+                            parsing the standard input.
 
-    optional arguments:
+    options:
       -h, --help            show this help message and exit
       -V, --version         show program's version number and exit
       --max-workers MAX_WORKERS
-                            Number of threads for when multiple destination/file
-                            specified. defaults to equals to two times number of
-                            cores.
+                            Number of threads for when multiple destinations/files
+                            are specified. Defaults to equal two times the number
+                            of cores.
       --debug               for debug print.
       --quiet               suppress execution log messages.
 
@@ -325,21 +325,22 @@ CLI help
                             us/usec/usecs/microsecond/microseconds. if no unit
                             string found, considered seconds as the time unit. see
                             also ping(8) [-w deadline] option description. note:
-                            meaning of the 'deadline' may differ system to system.
+                            meaning of the 'deadline' may differ system from to
+                            system.
       --timeout TIMEOUT     Time to wait for a response per packet. Valid time
                             units are: d/day/days, h/hour/hours,
                             m/min/mins/minute/minutes, s/sec/secs/second/seconds,
                             ms/msec/msecs/millisecond/milliseconds,
-                            us/usec/usecs/microsecond/microseconds. if no unit
-                            string found, considered milliseconds as the time
+                            us/usec/usecs/microsecond/microseconds. If no unit
+                            string is found, consider milliseconds as the time
                             unit. Attempt to send packets with milliseconds
                             granularity in default. If the system does not support
                             timeout in milliseconds, round up as seconds. Use
                             system default if not specified. This option will be
                             ignored if the system does not support timeout itself.
                             See also ping(8) [-W timeout] option description.
-                            note: meaning of the 'timeout' may differ system to
-                            system.
+                            note: meaning of the 'timeout' may differ from system
+                            to system.
       -I INTERFACE, --interface INTERFACE
                             network interface
       --addopts OPTIONS     extra command line options
