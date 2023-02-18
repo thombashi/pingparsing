@@ -1,6 +1,6 @@
 CLI Usage
 ====================
-A CLI command (``pingparsing`` command) included in the packaged. The command could do the following:
+A CLI command (``pingparsing`` command) is included in the package. The command could do the following:
 
 - Execute ``ping`` and parse the result
 - Parse ping results from:
@@ -12,7 +12,7 @@ Execute ping and parse the result
 If you specify destination(s) to the ``pingparsing`` command as positional arguments,
 the command executes ``ping`` for each destination(s) and parses the result.
 ``ping`` will execute in parallel for multiple destinations.
-The parsed result outputted with JSON format.
+The parsed result is outputted in JSON format.
 
 .. code-block:: console
     :caption: Execute with a single destination
