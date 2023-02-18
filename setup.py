@@ -40,7 +40,10 @@ with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
 with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_requires = [line.strip() for line in f if line.strip()]
 
-CLI_OPT_REQUIRES = ["loguru>=0.4.1,<1", "Pygments>=2.1,<3"]
+CLI_OPT_REQUIRES = [
+    "loguru>=0.4.1,<1",
+    "Pygments>=2.1,<3",
+]
 
 setuptools.setup(
     name=MODULE_NAME,

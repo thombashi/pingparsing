@@ -31,7 +31,6 @@ class IcmpReplyKey:
 
 
 class PingParser(PingParserInterface):
-
     _BYTES_PATTERN = rf"\s*(?P<{IcmpReplyKey.BYTES}>[0-9]+) bytes"
     _DEST_PATTERN = r"(?P<{key}>[a-zA-Z0-9:\-\.\(\)% ]+)".format(
         key=IcmpReplyKey.DESTINATION
