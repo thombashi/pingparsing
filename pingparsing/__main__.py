@@ -215,7 +215,7 @@ def initialize_logger(log_level: str) -> None:
     else:
         log_format = "<level>[{level}]</level> {message}"
 
-    logger.add(sys.stdout, colorize=True, format=log_format, level=log_level, enqueue=True)
+    logger.add(sys.stderr, colorize=True, format=log_format, level=log_level, enqueue=True)
     set_logger(is_enable=True)
 
 
