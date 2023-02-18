@@ -65,14 +65,14 @@ def parse_option() -> argparse.Namespace:
         parser.add_argument(
             "destination_or_file",
             nargs="+",
-            help="Destinations to send ping, or files to parse. '-' for parse the standard input.",
+            help="Destinations to send ping or files to parse. '-' for parsing the standard input.",
         )
 
     parser.add_argument(
         "--max-workers",
         type=int,
-        help="""Number of threads for when multiple destination/file
-        specified. defaults to equals to two times number of cores.
+        help="""Number of threads for when multiple destinations/files are specified.
+        Defaults to equal two times the number of cores.
         """,
     )
 
@@ -117,7 +117,7 @@ def parse_option() -> argparse.Namespace:
         the time unit.
 
         see also ping(8) [-w deadline] option description.
-        note: meaning of the 'deadline' may differ system to system.
+        note: meaning of the 'deadline' may differ system from to system.
         """.format(
             units=_get_unit_help_msg()
         ),
@@ -126,15 +126,15 @@ def parse_option() -> argparse.Namespace:
         "--timeout",
         type=str,
         help="""Time to wait for a response per packet.
-        Valid time units are: {units}. if no unit string found, considered milliseconds as
-        the time unit.
+        Valid time units are: {units}.
+        If no unit string is found, consider milliseconds as the time unit.
         Attempt to send packets with milliseconds granularity in default.
         If the system does not support timeout in milliseconds, round up as seconds.
         Use system default if not specified.
         This option will be ignored if the system does not support timeout itself.
 
         See also ping(8) [-W timeout] option description.
-        note: meaning of the 'timeout' may differ system to system.
+        note: meaning of the 'timeout' may differ from system to system.
         """.format(
             units=_get_unit_help_msg()
         ),
