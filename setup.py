@@ -53,7 +53,7 @@ setuptools.setup(
     author_email=pkg_info["__email__"],
     description=summary,
     include_package_data=True,
-    keywords=["cli", "network", "ping", "parser", "transmitter"],
+    keywords=["cli", "library", "network", "ping", "parser", "transmitter"],
     license=pkg_info["__license__"],
     long_description=long_description,
     long_description_content_type="text/x-rst",
