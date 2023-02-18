@@ -36,7 +36,7 @@ docs:
 .PHONY: idocs
 idocs:
 	@$(PYTHON) -m pip install -q --disable-pip-version-check --upgrade .
-	@make docs
+	@$(MAKE) docs
 
 .PHONY: fmt
 fmt:
@@ -50,7 +50,7 @@ readme:
 .PHONY: release
 release:
 	@cd $(PKG_BUILD_DIR) && $(PYTHON) setup.py release --sign --search-dir $(PACKAGE)
-	@make clean
+	@$(MAKE) clean
 
 .PHONY: setup-ci
 setup-ci:
