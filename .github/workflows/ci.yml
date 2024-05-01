@@ -8,7 +8,7 @@ jobs:
     permissions:
       contents: read
     concurrency:
-      group: ${{ github.workflow }}-${{ github.job }}
+      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref_name }}-lint
       cancel-in-progress: true
     timeout-minutes: 20
     container:
@@ -30,6 +30,9 @@ jobs:
         exclude:
           - os: macos-latest
             python-version: "3.7"
+    concurrency:
+      group: ${{ github.event_name }}-${{ github.workflow }}-unit-test-${{ matrix.os }}-${{ matrix.python-version }}
+      cancel-in-progress: true
     timeout-minutes: 20
 
     steps:
