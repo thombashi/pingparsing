@@ -49,8 +49,8 @@ readme:
 
 .PHONY: release
 release:
-	@cd $(PKG_BUILD_DIR) && $(PYTHON) setup.py release --sign --search-dir $(PACKAGE)
-	@$(MAKE) clean
+	$(PYTHON) -m tox -e release
+	$(MAKE) clean
 
 .PHONY: setup-ci
 setup-ci:
