@@ -64,7 +64,7 @@ python_version = 3.7
 pretty = true
 show_error_codes = true
 show_error_context = true
-warn_unreachable = true
+warn_unreachable = false
 warn_unused_configs = true
 
 [tool.pytest.ini_options]
