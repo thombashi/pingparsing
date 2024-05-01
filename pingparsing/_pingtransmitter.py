@@ -51,7 +51,7 @@ class PingTransmitter:
         :type: Optional[int]
         :value: None
 
-        Number of sending ICMP packets. This attribute ignored if the value is |None|.
+        Number of sending ICMP packets. This attribute will be ignored if the value is |None|.
 
     .. py:attribute:: packet_size
         :type: Optional[int]
@@ -238,7 +238,7 @@ class PingTransmitter:
 
         :return: ``ping`` command execution result.
         :rtype: :py:class:`.PingResult`
-        :raises ValueError: If parameters not valid.
+        :raises ValueError: If parameters are not valid.
         """
 
         self.__validate_ping_param()
