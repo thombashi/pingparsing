@@ -85,3 +85,9 @@ exclude = [
     "build/",
     "docs/conf.py",
 ]
+
+[tool.ruff.lint]
+ignore = [
+    "F401",
+    "F811",
+]
