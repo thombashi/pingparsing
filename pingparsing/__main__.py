@@ -113,11 +113,11 @@ def parse_option() -> argparse.Namespace:
         "--deadline",
         type=str,
         help="""Timeout before ping exits.
-        valid time units are: {units}. if no unit string found, considered seconds as
+        valid time units are: {units}. if no unit string is found, consider seconds as
         the time unit.
 
         see also ping(8) [-w deadline] option description.
-        note: meaning of the 'deadline' may differ system from to system.
+        note: The meaning of the 'deadline' may differ system from to system.
         """.format(
             units=_get_unit_help_msg()
         ),
@@ -134,7 +134,7 @@ def parse_option() -> argparse.Namespace:
         This option will be ignored if the system does not support timeout itself.
 
         See also ping(8) [-W timeout] option description.
-        note: meaning of the 'timeout' may differ from system to system.
+        note: The meaning of the 'timeout' may differ from system to system.
         """.format(
             units=_get_unit_help_msg()
         ),
