@@ -43,11 +43,13 @@ class PingParser(PingParserInterface):
     def __init__(self, timezone: Optional[tzinfo] = None) -> None:
         self.__timezone = timezone
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def _parser_name(self) -> str:  # pragma: no cover
         pass
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def _icmp_reply_pattern(self) -> str:  # pragma: no cover
         pass
 
@@ -59,11 +61,13 @@ class PingParser(PingParserInterface):
     def _duplicate_packet_pattern(self) -> str:
         return r".+ \(DUP!\)$"
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def _stats_headline_pattern(self) -> str:  # pragma: no cover
         pass
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def _is_support_packet_duplicate(self) -> bool:  # pragma: no cover
         pass
 
