@@ -160,14 +160,14 @@ class PingTransmitter:
             return
 
         if isinstance(value, hr.Time):
-            timeout = cast(hr.Time, value)
+            new_timeout = cast(hr.Time, value)
         else:
-            timeout = hr.Time(str(value), default_unit=hr.Time.Unit.MILLISECOND)
+            new_timeout = hr.Time(str(value), default_unit=hr.Time.Unit.MILLISECOND)
 
-        if timeout.milliseconds <= 0:
+        if new_timeout.milliseconds <= 0:
             raise ValueError("timeout must be greater than zero")
 
-        self.__timeout = cast(hr.Time, timeout)
+        self.__timeout = cast(hr.Time, new_timeout)
 
     @property
     def deadline(self) -> Optional[hr.Time]:
@@ -209,14 +209,14 @@ class PingTransmitter:
             return
 
         if isinstance(value, hr.Time):
-            deadline = cast(hr.Time, value)
+            new_deadline = cast(hr.Time, value)
         else:
-            deadline = hr.Time(str(value), default_unit=hr.Time.Unit.SECOND)
+            new_deadline = hr.Time(str(value), default_unit=hr.Time.Unit.SECOND)
 
-        if deadline.milliseconds <= 0:
+        if new_deadline.milliseconds <= 0:
             raise ValueError("deadline must be greater than zero")
 
-        self.__deadline = deadline
+        self.__deadline = new_deadline
 
     def __init__(self) -> None:
         self.__destination = ""
