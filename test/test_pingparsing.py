@@ -10,7 +10,7 @@ import pytz
 
 from pingparsing import ParseError, PingResult
 
-from .common import PingTestData, ping_parser  # noqa: W0611
+from .common import PingTestData, ping_parser  # noqa
 from .data import (
     DEBIAN_SUCCESS_0,
     UBUNTU_SUCCESS_0,

@@ -31,6 +31,7 @@ class Test_cli_file:
         runner.run()
         print_result(stdout=runner.stdout, stderr=runner.stderr)
         assert runner.returncode == 0
+        assert runner.stdout is not None
         assert json.loads(runner.stdout)[tmp_ping_path] == DEBIAN_SUCCESS_0.expected
 
         runner = SubprocessRunner(
@@ -39,6 +40,7 @@ class Test_cli_file:
         runner.run()
         print_result(stdout=runner.stdout, stderr=runner.stderr)
         assert runner.returncode == 0
+        assert runner.stdout is not None
         assert json.loads(runner.stdout)[tmp_ping_path] == DEBIAN_SUCCESS_0.expected
 
     def test_normal_multi(self, tmpdir):
@@ -58,7 +60,7 @@ class Test_cli_file:
         print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
-
+        assert runner.stdout is not None
         parsed_result = json.loads(runner.stdout)
         assert parsed_result[tmp_ping_path_deb] == DEBIAN_SUCCESS_0.expected
         assert parsed_result[tmp_ping_path_win] == WINDOWS7SP1_SUCCESS.expected
@@ -82,6 +84,7 @@ class Test_cli_file:
         )
         runner.run()
         print_result(stdout=runner.stdout, stderr=runner.stderr)
+        assert runner.stdout is not None
         assert runner.returncode == 0
         assert json.loads(runner.stdout)[tmp_ping_path] == {
             "destination": "google.com",
@@ -154,6 +157,7 @@ class Test_cli_pipe:
         print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
+        assert runner.stdout is not None
         assert json.loads(runner.stdout) == DEBIAN_SUCCESS_0.expected
 
     def test_normal_w_option(self):
@@ -206,6 +210,7 @@ class Test_cli_pipe:
         print_result(stdout=runner.stdout, stderr=runner.stderr, expected=expected)
 
         assert runner.returncode == 0
+        assert runner.stdout is not None
         assert json.loads(runner.stdout) == json.loads(expected)
 
 
@@ -214,29 +219,30 @@ class Test_PingParsing_ping:
     def test_normal_single(self):
         count = 1
         dest = "localhost"
-        runner = SubprocessRunner([sys.executable, "-m", "pingparsing", dest, "-c", count])
+        runner = SubprocessRunner([sys.executable, "-m", "pingparsing", dest, "-c", str(count)])
         runner.run()
 
         print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
-
+        assert runner.stdout is not None
         parsed_result = json.loads(runner.stdout)
-
         assert parsed_result[dest]["packet_transmit"] == count
         assert parsed_result[dest]["rtt_max"] > 0
 
     def test_normal_multi(self):
         count = 1
         dest_list = ["google.com", "twitter.com"]
-        runner = SubprocessRunner([sys.executable, "-m", "pingparsing"] + dest_list + ["-c", count])
+        runner = SubprocessRunner(
+            [sys.executable, "-m", "pingparsing"] + dest_list + ["-c", str(count)]
+        )
         print(runner.command_str, file=sys.stderr)
         runner.run()
 
         print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
-
+        assert runner.stdout is not None
         parsed_result = json.loads(runner.stdout)
         for dest in dest_list:
             assert parsed_result[dest]["packet_transmit"] == count
@@ -252,7 +258,7 @@ class Test_PingParsing_ping:
                 "pingparsing",
                 dest,
                 "-c",
-                count,
+                str(count),
                 "--icmp-reply",
                 "--timestamp",
                 "epoch",
@@ -263,7 +269,7 @@ class Test_PingParsing_ping:
         print_result(stdout=runner.stdout, stderr=runner.stderr)
 
         assert runner.returncode == 0
-
+        assert runner.stdout is not None
         parsed_result = json.loads(runner.stdout)
 
         assert parsed_result[dest]["packet_transmit"] == count
