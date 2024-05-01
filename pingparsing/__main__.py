@@ -245,8 +245,8 @@ def parse_ping(
         transmitter.count = count
         transmitter.packet_size = packet_size
         transmitter.ttl = ttl
-        transmitter.deadline = deadline
-        transmitter.timeout = timeout
+        transmitter.deadline = deadline  # type: ignore
+        transmitter.timeout = timeout  # type: ignore
         transmitter.is_quiet = not is_parse_icmp_reply
         transmitter.timestamp = timestamp != TimestampFormat.NONE
         transmitter.ping_option = addopts
@@ -273,13 +273,15 @@ def parse_ping(
     return (dest_or_file, output)
 
 
-def get_ping_param(options) -> Tuple:
-    count = options.count
-    deadline = options.deadline
-    timeout = options.timeout
+def get_ping_param(ns: argparse.Namespace) -> Tuple[int, TimeArg, TimeArg]:
+    count: int
+    deadline: TimeArg = ns.deadline
+    timeout: TimeArg = ns.timeout
 
-    if not options.count and not options.deadline:
+    if not ns.count and not ns.deadline:
         count = DEFAULT_COUNT
+    else:
+        count = ns.count
 
     return (count, deadline, timeout)
 

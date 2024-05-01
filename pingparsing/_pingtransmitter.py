@@ -228,8 +228,8 @@ class PingTransmitter:
         self.interface: Optional[str] = None
         self.auto_codepage = True
 
-        self.timeout = None
-        self.deadline = None
+        self.timeout: TimeArg = None
+        self.deadline: TimeArg = None
         self.timestamp = False
 
     def ping(self) -> PingResult:
