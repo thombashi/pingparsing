@@ -676,15 +676,69 @@ WINDOWS10_LOSS = PingTestData(
         "rtt_mdev": None,
     },
     [
-        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 16.0, "duplicate": False},
-        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 6.0, "duplicate": False},
-        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 12.0, "duplicate": False},
-        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 16.0, "duplicate": False},
-        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 8.0, "duplicate": False},
-        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 33.0, "duplicate": False},
-        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 13.0, "duplicate": False},
-        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 23.0, "duplicate": False},
-        {"bytes": 32, "destination": "192.168.2.106", "ttl": 64, "time": 1.0, "duplicate": False},
+        {
+            "bytes": 32,
+            "destination": "192.168.2.106",
+            "ttl": 64,
+            "time": 16.0,
+            "duplicate": False,
+        },
+        {
+            "bytes": 32,
+            "destination": "192.168.2.106",
+            "ttl": 64,
+            "time": 6.0,
+            "duplicate": False,
+        },
+        {
+            "bytes": 32,
+            "destination": "192.168.2.106",
+            "ttl": 64,
+            "time": 12.0,
+            "duplicate": False,
+        },
+        {
+            "bytes": 32,
+            "destination": "192.168.2.106",
+            "ttl": 64,
+            "time": 16.0,
+            "duplicate": False,
+        },
+        {
+            "bytes": 32,
+            "destination": "192.168.2.106",
+            "ttl": 64,
+            "time": 8.0,
+            "duplicate": False,
+        },
+        {
+            "bytes": 32,
+            "destination": "192.168.2.106",
+            "ttl": 64,
+            "time": 33.0,
+            "duplicate": False,
+        },
+        {
+            "bytes": 32,
+            "destination": "192.168.2.106",
+            "ttl": 64,
+            "time": 13.0,
+            "duplicate": False,
+        },
+        {
+            "bytes": 32,
+            "destination": "192.168.2.106",
+            "ttl": 64,
+            "time": 23.0,
+            "duplicate": False,
+        },
+        {
+            "bytes": 32,
+            "destination": "192.168.2.106",
+            "ttl": 64,
+            "time": 1.0,
+            "duplicate": False,
+        },
     ],
 )
 WINDOWS_UNREACHABLE_0 = PingTestData(
@@ -767,7 +821,11 @@ class Test_PingParsing_parse:
 
     @pytest.mark.xfail(run=False)
     @pytest.mark.parametrize(
-        ["test_data", "parser_name"], [[UBUNTU_SUCCESS_1, "Linux"], [UBUNTU_SUCCESS_2, "Linux"]]
+        ["test_data", "parser_name"],
+        [
+            [UBUNTU_SUCCESS_1, "Linux"],
+            [UBUNTU_SUCCESS_2, "Linux"],
+        ],
     )
     def test_normal_timestamp(self, ping_parser, test_data, parser_name):
         stats = ping_parser.parse(test_data.value)
@@ -816,7 +874,10 @@ class Test_PingParsing_parse:
 
     @pytest.mark.parametrize(
         ["value", "expected"],
-        [[PING_FEDORA_EMPTY_BODY, ParseError], [PING_WINDOWS_INVALID, ParseError]],
+        [
+            [PING_FEDORA_EMPTY_BODY, ParseError],
+            [PING_WINDOWS_INVALID, ParseError],
+        ],
     )
     def test_exception(self, ping_parser, value, expected):
         with pytest.raises(expected):

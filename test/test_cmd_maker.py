@@ -2,7 +2,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-
 import pytest
 from humanreadable import Time
 
@@ -47,8 +46,20 @@ class Test_CmdMaker_make_cmd:
                 "1sec",
                 "ping6 -I eth0 -w 3 -W 1 localhost".split(),
             ],
-            [MacosPingCmdMaker, "localhost", False, "1sec", "ping -t 3 localhost".split()],
-            [MacosPingCmdMaker, "localhost", True, "1sec", "ping6 -i 1 -c 3 localhost".split()],
+            [
+                MacosPingCmdMaker,
+                "localhost",
+                False,
+                "1sec",
+                "ping -t 3 localhost".split(),
+            ],
+            [
+                MacosPingCmdMaker,
+                "localhost",
+                True,
+                "1sec",
+                "ping6 -i 1 -c 3 localhost".split(),
+            ],
             [
                 WindowsPingCmdMaker,
                 "localhost",
@@ -87,9 +98,24 @@ class Test_CmdMaker_make_cmd:
     @pytest.mark.parametrize(
         ["maker_class", "host", "packet_size", "expected"],
         [
-            [LinuxPingCmdMaker, "localhost", 6000, "ping -c 1 -s 6000 localhost".split()],
-            [MacosPingCmdMaker, "localhost", 6000, "ping -c 1 -s 6000 localhost".split()],
-            [WindowsPingCmdMaker, "localhost", 6000, "ping -n 1 -l 6000 localhost".split()],
+            [
+                LinuxPingCmdMaker,
+                "localhost",
+                6000,
+                "ping -c 1 -s 6000 localhost".split(),
+            ],
+            [
+                MacosPingCmdMaker,
+                "localhost",
+                6000,
+                "ping -c 1 -s 6000 localhost".split(),
+            ],
+            [
+                WindowsPingCmdMaker,
+                "localhost",
+                6000,
+                "ping -n 1 -l 6000 localhost".split(),
+            ],
         ],
     )
     def test_normal_packet_size(self, maker_class, host, packet_size, expected):

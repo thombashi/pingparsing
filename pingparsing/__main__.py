@@ -85,9 +85,7 @@ def parse_option() -> argparse.Namespace:
         {}: no timestamps.
         {}: add timestamps with UNIX epoch time format.
         {}: add timestamps with ISO time format.
-        """.format(
-            TimestampFormat.NONE, TimestampFormat.EPOCH, TimestampFormat.DATETIME
-        ),
+        """.format(TimestampFormat.NONE, TimestampFormat.EPOCH, TimestampFormat.DATETIME),
     )
     group.add_argument(
         "-c",
@@ -118,9 +116,7 @@ def parse_option() -> argparse.Namespace:
 
         see also ping(8) [-w deadline] option description.
         note: The meaning of the 'deadline' may differ system from to system.
-        """.format(
-            units=_get_unit_help_msg()
-        ),
+        """.format(units=_get_unit_help_msg()),
     )
     group.add_argument(
         "--timeout",
@@ -135,9 +131,7 @@ def parse_option() -> argparse.Namespace:
 
         See also ping(8) [-W timeout] option description.
         note: The meaning of the 'timeout' may differ from system to system.
-        """.format(
-            units=_get_unit_help_msg()
-        ),
+        """.format(units=_get_unit_help_msg()),
     )
     group.add_argument("-I", "--interface", dest="interface", help="network interface")
     group.add_argument("--addopts", metavar="OPTIONS", help="extra command line options")
@@ -303,7 +297,9 @@ def print_result(text: str, colorize: bool) -> None:
 
         print(
             highlight(
-                code=text, lexer=JsonLexer(), formatter=TerminalTrueColorFormatter(style="monokai")
+                code=text,
+                lexer=JsonLexer(),
+                formatter=TerminalTrueColorFormatter(style="monokai"),
             ).strip()
         )
     except ImportError:
