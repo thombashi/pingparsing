@@ -82,21 +82,21 @@ class PingTransmitter:
         :type: bool
         :value: False
 
-        [Only for Linux environment] If |True|, add timestamp for each ping result.
+        [Only for Linux environment] If |True|, add a timestamp for each ping result.
         Defaults to ``False``.
 
     .. py:attribute:: auto_codepage
         :type: bool
         :value: True
 
-        [Only for Windows environment] Automatically change code page if
-        ``True``. Defaults to ``True``.
+        [Only for Windows environment] Automatically change the code page if ``True``.
+        Defaults to ``True``.
     """
 
     @property
     def destination(self) -> str:
         """
-        Hostname or IP-address (IPv4/IPv6) to sending ICMP packets.
+        Hostname or IP address (IPv4/IPv6) to send ICMP packets.
         """
 
         return self.__destination
@@ -125,7 +125,8 @@ class PingTransmitter:
         """
         Time to wait for a response per packet.
         You can specify either a number or a string (e.g. ``"1sec"``).
-        If only a number is specified and a unit not found, the unit will be considered as seconds.
+        If only a number is specified and a unit is not found,
+        the unit will be considered as seconds.
 
             +------------+----------------------------------------------------------+
             |    Unit    |                Available specifiers (str)                |
@@ -174,7 +175,8 @@ class PingTransmitter:
         """
         Timeout before ping exits.
         You can specify either a number or a string (e.g. ``"1sec"``).
-        If only a number is specified and a unit not found, the unit will be considered as seconds.
+        If only a number is specified and a unit is not found,
+        the unit will be considered as seconds.
 
             +------------+----------------------------------------------------------+
             |    Unit    |                Available specifiers (str)                |
