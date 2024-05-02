@@ -24,8 +24,8 @@ Summary
     :target: https://github.com/thombashi/pingparsing/actions/workflows/ci.yml
     :alt: CI status of Linux/macOS/Windows
 
-.. |CodeQL| image:: https://github.com/thombashi/pingparsing/actions/workflows/codeql-analysis.yml/badge.svg
-    :target: https://github.com/thombashi/pingparsing/actions/workflows/codeql-analysis.yml
+.. |CodeQL| image:: https://github.com/thombashi/pingparsing/actions/workflows/github-code-scanning/codeql/badge.svg
+    :target: https://github.com/thombashi/pingparsing/actions/workflows/github-code-scanning/codeql
     :alt: CodeQL
 
 CLI Usage
