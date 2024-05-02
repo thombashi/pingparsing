@@ -98,6 +98,7 @@ setuptools.setup(
         "Topic :: System :: Networking",
         "Topic :: System :: Networking :: Monitoring",
         "Topic :: Text Processing",
+        "Typing :: Typed",
     ],
     cmdclass=get_release_command_class(),
     entry_points={"console_scripts": ["pingparsing=pingparsing.__main__:main"]},
