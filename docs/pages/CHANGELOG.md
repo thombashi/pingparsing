@@ -1,3 +1,25 @@
+<a name="v1.4.2"></a>
+# [v1.4.2](https://github.com/thombashi/pingparsing/releases/tag/v1.4.2) - 02 May 2024
+
+* Add `docs` extras
+* Add `__all__` to `__init__.py`
+* Add a build and publish workflow
+* Add Sigstore signatures to release assets
+* Update dependencies in requirements files
+  * Bump minimum version of `typepy` to `1.3.2`
+  * Bump minimum version of `humanreadable` to `0.3`
+* Add support for Python 3.12
+* Drop support for Python 3.6
+* Update help messages
+* Improve type annotations
+* Modify to use `setuptools_scm` for package build
+* Add CHANGELOG
+
+**Full Changelog**: https://github.com/thombashi/pingparsing/compare/v1.4.1...v1.4.2
+
+[Changes][v1.4.2]
+
+
 <a name="v1.4.1"></a>
 # [v1.4.1](https://github.com/thombashi/pingparsing/releases/tag/v1.4.1) - 18 Feb 2023
 
@@ -345,6 +367,7 @@
 [Changes][v0.2.5]
 
 
+[v1.4.2]: https://github.com/thombashi/pingparsing/compare/v1.4.1...v1.4.2
 [v1.4.1]: https://github.com/thombashi/pingparsing/compare/v1.4.0...v1.4.1
 [v1.4.0]: https://github.com/thombashi/pingparsing/compare/v1.3.2...v1.4.0
 [v1.3.2]: https://github.com/thombashi/pingparsing/compare/v1.3.1...v1.3.2

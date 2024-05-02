@@ -1,8 +1,3 @@
-Changelog
-==========
-https://github.com/thombashi/pingparsing/releases
-
-
 .. include:: sponsors.rst
 
 
