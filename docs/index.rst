@@ -16,6 +16,7 @@ Welcome to pingparsing's documentation!
    pages/introduction/index
    pages/usage/index
    pages/reference/index
+   pages/changelog_ref
    pages/links
 
 
