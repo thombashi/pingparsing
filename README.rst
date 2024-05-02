@@ -325,10 +325,10 @@ CLI help
                             s/sec/secs/second/seconds,
                             ms/msec/msecs/millisecond/milliseconds,
                             us/usec/usecs/microsecond/microseconds. if no unit
-                            string found, considered seconds as the time unit. see
-                            also ping(8) [-w deadline] option description. note:
-                            meaning of the 'deadline' may differ system from to
-                            system.
+                            string is found, consider seconds as the time unit.
+                            see also ping(8) [-w deadline] option description.
+                            note: The meaning of the 'deadline' may differ system
+                            from to system.
       --timeout TIMEOUT     Time to wait for a response per packet. Valid time
                             units are: d/day/days, h/hour/hours,
                             m/min/mins/minute/minutes, s/sec/secs/second/seconds,
@@ -341,8 +341,8 @@ CLI help
                             system default if not specified. This option will be
                             ignored if the system does not support timeout itself.
                             See also ping(8) [-W timeout] option description.
-                            note: meaning of the 'timeout' may differ from system
-                            to system.
+                            note: The meaning of the 'timeout' may differ from
+                            system to system.
       -I INTERFACE, --interface INTERFACE
                             network interface
       --addopts OPTIONS     extra command line options

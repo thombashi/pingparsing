@@ -31,7 +31,6 @@ def main():
         is_make_toc=True,
         project_url=f"https://github.com/thombashi/{PROJECT_NAME}",
     )
-    maker.examples_dir_name = "usage"
 
     maker.write_chapter("Summary")
     maker.write_introduction_file("summary.txt")
